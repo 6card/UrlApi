@@ -1,0 +1,49 @@
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+
+import { AppComponent } from './app.component';
+
+import { AppRoutingModule } from "./routing.module";
+import { ClarityModule } from '@clr/angular';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { NavigationComponent } from "./pages/navigation/navigation.component"
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { LoginComponent } from './pages/login/login.component';
+import { SidenavComponent } from './pages/sidenav/sidenav.component';
+
+import { AuthenticationService } from './services/auth.service';
+import { PathService } from './services/path.service';
+import { AuthGuard } from './guards/auth.guard';
+import { SearchComponent } from './pages/search/search.component';
+import { PathComponent } from './pages/search/path/path.component';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    DashboardComponent,
+    LoginComponent,
+    SidenavComponent,
+    SearchComponent,
+    NavigationComponent,
+    PathComponent
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
+    AppRoutingModule,
+    ClarityModule,
+    BrowserAnimationsModule,
+    HttpClientModule
+  ],
+  providers: [
+    AuthGuard,
+    AuthenticationService,
+    PathService
+  ],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }

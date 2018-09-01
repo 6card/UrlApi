@@ -1,0 +1,16 @@
+<header class="header-6">
+    <div class="branding">
+        <a href="javascript://" class="nav-link">
+        <clr-icon shape="vm-bug"></clr-icon>
+        <span class="title">UrlApi</span>
+        </a>
+    </div>
+    <div class="header-nav">
+        <a routerLink="/search" routerLinkActive="active" class="nav-link nav-text">Поиск</a>
+        <a routerLink="/createtag" routerLinkActive="active" class="nav-link nav-text">Создать тег</a>        
+    </div>
+    <div class="header-actions">
+        <a *ngIf="!authService.isAuthenticated()" class="nav-link nav-text" routerLink="/login" routerLinkActive="active">Вход</a>  
+        <a *ngIf="authService.isAuthenticated()" class="nav-link nav-text" routerLink="/login" routerLinkActive="active">{{ authService.username }} Выход</a>  
+    </div>
+</header>
