@@ -61,7 +61,18 @@
     line-height: .75rem;
 }
 
-.login-form-wrapper .login-form .form-group .btn span{
+.form-group .btn span{
     margin-top: 0;
     margin-bottom: 0;
+}
+
+.path-search-form .form-group{
+    padding-left: 0;
+}
+
+.path-search-form .form-group input{
+    width: 50%;
+}
+.path-search-form .form-group button{
+    max-width: 100px;
 }

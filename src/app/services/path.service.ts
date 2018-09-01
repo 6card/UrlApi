@@ -13,19 +13,11 @@ export class PathService {
 
   getByUrl(sessionId: string, url: string) {
 
-    const params = new HttpParams();
-    params.set('sessionId', sessionId);
-    params.set('url', url);
+    const params = new HttpParams()
+    .set('sessionId', sessionId)
+    .set('url', url);
 
-    return this.http.get(`https://api.newstube.ru/urldev/Path/GetByUrl`, {params: params})
-      .pipe(
-        catchError(this.handleError)
-      );
+    return this.http.get(`https://api.newstube.ru/urldev/Path/GetByUrl`, {params});
   }
 
-  public handleError = (error: HttpErrorResponse) => {
-            
-    // Do messaging and error handling here
-    return Observable.throw(error)
-  }
 }
