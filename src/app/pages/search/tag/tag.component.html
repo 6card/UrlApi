@@ -1,32 +1,79 @@
-<form class="tag-search-form" [formGroup]="tagSearchForm" (ngSubmit)="onSubmit()">
-
-  <div formArrayName="items"
+<form class="clr-form clr-form-horizontal search-form" [formGroup]="tagSearchForm" (ngSubmit)="onSubmit()">
+    <div formArrayName="items"
     *ngFor="let item of tagSearchForm.get('items').controls; let i = index;">
-    <div [formGroupName]="i" class="form-group" >
-      <input formControlName="column" type="text" placeholder="Column">
-      <div class="select">
-          <select formControlName="operation">
-            <option value="1">равно</option>
-            <option value="2">больше</option>
-            <option value="3">меньше</option>
-            <option value="4">больше или равно</option>
-            <option value="5">меньше или равно</option>
-            <option value="6">не равно</option>
-            <option value="7">вхождение текста</option>
-            <option value="8">текст не должен входить</option>
-            <option value="9">список значенией</option>
-            <option value="10">исключить список значений</option>
-            <option value="11">в начале текста</option>
-            <option value="12">в конце текста</option>
-            <option value="13">не сначала текста</option>
-            <option value="14">не с конца текста</option>
-          </select>
+      <div class="clr-form-control clr-row" [formGroupName]="i">
+          <div class="clr-control-container clr-col-xs-12 clr-col-md-4">
+              <div class="select">
+                <select formControlName="column">
+                  <option value="1">Id</option>
+                  <option value="2">ParentId</option>
+                  <option value="4">ParentName</option>
+                  <option value="8">Name</option>
+                  <option value="16">FullName</option>
+                  <option value="32">Description</option>
+                  <option value="64">ShootDate</option>
+                  <option value="128">PubDate</option>
+                  <option value="256">CreateTime</option>
+                  <option value="512">UpdateTime</option>
+                  <option value="1024">StateId</option>
+                  <option value="2048">StateName</option>
+                  <option value="4096">Duration</option>
+                  <option value="8192">ChannelId</option>
+                  <option value="16384">ChannelName</option>
+                  <option value="32768">SectionId</option>
+                  <option value="65536">SectionName</option>
+                  <option value="131072">SeriesId</option>
+                  <option value="262144">SeriesName</option>
+                  <option value="524288">ObjectId</option>
+                  <option value="1048576">GlobalId</option>
+                  <option value="8388608">PathId</option>
+                  <option value="16777216">PathLatin</option>
+                  <option value="33554432">PathSuffix</option>
+                  <option value="67108864">ParentPathId</option>
+                  <option value="134217728">ParentPathLatin</option>
+                  <option value="268435456">ParentPathSuffix</option>
+                  <option value="536870912">ObjectTypeId</option>
+                  <option value="1073741824">ObjectTypeName</option>
+                  <option value="2147483648">SeoTitle</option>
+                  <option value="4294967296">SeoDescription</option>
+                  <option value="8589934592">SeoKeywords</option>
+                  <option value="17179869184">KeyFrameId</option>
+                  <option value="34359738368">IconId</option>
+                  <option value="68719476736">LogoId</option>
+                </select>                  
+              </div>
+          </div>
+          <div class="clr-control-container clr-col-xs-12 clr-col-md-4">
+              <div class="select">
+                <select formControlName="operation">
+                  <option value="1">равно</option>
+                  <option value="2">больше</option>
+                  <option value="3">меньше</option>
+                  <option value="4">больше или равно</option>
+                  <option value="5">меньше или равно</option>
+                  <option value="6">не равно</option>
+                  <option value="7">вхождение текста</option>
+                  <option value="8">текст не должен входить</option>
+                  <option value="9">список значенией</option>
+                  <option value="10">исключить список значений</option>
+                  <option value="11">в начале текста</option>
+                  <option value="12">в конце текста</option>
+                  <option value="13">не сначала текста</option>
+                  <option value="14">не с конца текста</option>
+                </select>
+              </div>
+          </div>
+          <div class="clr-control-container clr-col-xs-12 clr-col-md-4">
+              <input  type="text" formControlName="value" placeholder="Value" />
+          </div>
       </div>
-      <input formControlName="value" type="text" placeholder="Value">
     </div>
-    
-  </div>
-  <button class="btn" (click)="addItem()" type="button">Добавить условие</button>
+    <div class="clr-form-control clr-row">
+      <div class="clr-control-container clr-col-xs-12 offset-md-4 clr-col-md-4">
+          <button class="btn" (click)="addItem()" type="button">Добавить условие</button>
+      </div>
+    </div>
+  
   <button [clrLoading]="submitLoading" type="submit" class="btn">Search</button>
 </form>
 

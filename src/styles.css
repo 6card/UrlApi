@@ -66,12 +66,21 @@
     margin-bottom: 0;
 }
 
-.path-search-form .form-group{
+.search-form .clr-control-container .select, .search-form .clr-control-container input {
+    width: 100%;
+}
+
+.search-form .clr-control-container button {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.search-form .form-group{
     padding-left: 0;
 }
 
-.path-search-form .form-group input{
-    width: 50%;
+.search-form .form-group input[type=text]{
+    margin-top: 7px;
 }
 .path-search-form .form-group button{
     max-width: 100px;

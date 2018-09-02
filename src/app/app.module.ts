@@ -6,7 +6,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 
 import { AppRoutingModule } from "./routing.module";
-import { ClarityModule } from '@clr/angular';
+import { ClarityModule, ClrFormsNextModule } from '@clr/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NavigationComponent } from "./pages/navigation/navigation.component"
@@ -38,6 +38,7 @@ import { TagComponent } from './pages/search/tag/tag.component';
     ReactiveFormsModule,
     AppRoutingModule,
     ClarityModule,
+    ClrFormsNextModule,
     BrowserAnimationsModule,
     HttpClientModule
   ],

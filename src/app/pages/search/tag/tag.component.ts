@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 
 import { AuthenticationService } from '../../../services/auth.service';
 import { PathService } from '../../../services/path.service';
 import { ChannelService } from '../../../services/channel.service';
+
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tag',
@@ -29,9 +31,9 @@ export class TagComponent implements OnInit {
 
   createTagSearchItem() {
     return this.formBuilder.group({
-      column: '',
-      operation: '',
-      value: ''
+      column: ['', Validators.required],
+      operation: ['', Validators.required],
+      value: ['', Validators.required]
     });
   }
 
@@ -40,13 +42,58 @@ export class TagComponent implements OnInit {
     this.searchItems.push(this.createTagSearchItem());
   }
 
-  onSubmit() {
-    let arr = this.tagSearchForm.controls.items.value
-      .map(item => {
-        return `"Query" :[{"Operation": 0, "Columns": [{"Column": ${item.column}, "Operation": ${item.operation}, "Value": ${item.value}}]}]`;
-      });
+  /*
+  public markFormGroupTouched(formGroup: any) {
+    Object.values(formGroup.controls.items.controls[0].controls).forEach(control => {
+      control.markAsTouched();
+      console.log(control);
 
-    console.log(arr);
+    });
+    
+  }
+  */
+ 
+  onSubmit() {
+    //this.markFormGroupTouched(this.tagSearchForm);
+    let arr = {
+      Query: this.tagSearchForm.controls.items.value
+      .map(item => {
+        return {
+              Operation: 0, 
+              Columns: [
+                {
+                  Column: item.column, 
+                  Operation: item.operation, 
+                  Value: item.value
+                }
+              ]          
+        };
+      }),
+      Page: {
+        Start: 1,        
+        Length: 10,        
+        Sort: [        
+          {        
+            Column: 1,        
+            Desc: true        
+          }        
+         ]        
+        }
+    };
+
+      console.log(arr);
+      this.channelService.search(this.authenticationService.sessionId, arr)
+      .pipe(first())
+      .subscribe(
+          data => {
+            console.log(data);
+          },
+          error => {
+              //console.log(error);
+              //this.alertService.error(error);                
+          },
+          () => {
+        });
   }
 
 }

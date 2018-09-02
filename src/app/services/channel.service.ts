@@ -11,8 +11,8 @@ export class ChannelService {
 
   constructor(private http: HttpClient) { }
 
-  search(sessionId: string) {
-
+  search(sessionId: string, data: any) {
+  /*
     const data = {
       "Query": [
         {
@@ -47,10 +47,11 @@ export class ChannelService {
       }
     };
 
+    */
     const params = new HttpParams()
     .set('sessionId', sessionId);
 
-    return this.http.post<any>(`https://api.newstube.ru/urldev/Media/Search`, {parameters: data}, {params})
+    return this.http.post<any>(`https://api.newstube.ru/urldev/Tag/Search`, data, {params})
     .pipe(
       catchError(this.handleError)
     );

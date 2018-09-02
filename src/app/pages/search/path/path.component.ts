@@ -46,7 +46,7 @@ export class PathComponent implements OnInit {
   }
 
   onSearch() {
-    this.channelService.search(this.authenticationService.sessionId)
+    this.channelService.search(this.authenticationService.sessionId, [])
     .pipe(first())
         .subscribe(
             data => {
