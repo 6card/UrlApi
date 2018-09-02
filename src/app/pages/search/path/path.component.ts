@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+//https://alligator.io/angular/reactive-forms-formarray-dynamic-fields/
 
 import { AuthenticationService } from '../../../services/auth.service';
 import { PathService } from '../../../services/path.service';
@@ -13,6 +14,7 @@ import { first } from 'rxjs/operators';
 })
 export class PathComponent implements OnInit {
   pathByUrlForm: FormGroup;
+  items: FormArray;
   submitLoading: boolean = false;
 
   constructor(
@@ -24,9 +26,23 @@ export class PathComponent implements OnInit {
 
   ngOnInit() {
     this.pathByUrlForm = this.formBuilder.group({
-      url: [' https://www.newstube.ru/obrashchenie-putina', Validators.required]
+      url: [' https://www.newstube.ru/obrashchenie-putina', Validators.required],
+      items: this.formBuilder.array([ this.createSearchItem() ])
     });
 
+  }
+
+  createSearchItem() {
+    return this.formBuilder.group({
+      name: '',
+      description: '',
+      price: ''
+    });
+  }
+
+  addItem(): void {
+    this.items = this.pathByUrlForm.get('items') as FormArray;
+    this.items.push(this.createSearchItem());
   }
 
   onSearch() {
@@ -37,7 +53,7 @@ export class PathComponent implements OnInit {
               console.log(data);
             },
             error => {
-                console.log(error);
+                //console.log(error);
                 //this.alertService.error(error);                
             },
             () => {

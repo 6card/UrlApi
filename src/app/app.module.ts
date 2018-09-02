@@ -19,6 +19,7 @@ import { PathService } from './services/path.service';
 import { AuthGuard } from './guards/auth.guard';
 import { SearchComponent } from './pages/search/search.component';
 import { PathComponent } from './pages/search/path/path.component';
+import { TagComponent } from './pages/search/tag/tag.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { PathComponent } from './pages/search/path/path.component';
     SidenavComponent,
     SearchComponent,
     NavigationComponent,
-    PathComponent
+    PathComponent,
+    TagComponent
   ],
   imports: [
     BrowserModule,

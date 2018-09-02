@@ -3,6 +3,7 @@ import {Routes, RouterModule}from '@angular/router';
 
 import { LoginComponent } from './pages/login/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { TagComponent } from './pages/search/tag/tag.component';
 import { PathComponent } from './pages/search/path/path.component';
 import { SearchComponent } from './pages/search/search.component';
 
@@ -29,6 +30,10 @@ const appRoutes: Routes = [
          path : 'path',
          component: PathComponent
         },
+        {
+          path : 'tag',
+          component: TagComponent
+         },
         {
           path : 'dashboard',
           component: DashboardComponent
