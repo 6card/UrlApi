@@ -13,7 +13,7 @@ import { first } from 'rxjs/operators';
 })
 export class TagComponent implements OnInit {
   tagSearchForm: FormGroup;
-  searchItems: FormArray;
+  //searchItems: FormArray;
   submitLoading: boolean = false;
 
   constructor(
@@ -29,37 +29,70 @@ export class TagComponent implements OnInit {
     });
   }
 
-  createTagSearchItem() {
+  createTagSearchItem(qop: number = 0) {
     return this.formBuilder.group({
-      column: ['', Validators.required],
-      operation: ['', Validators.required],
+      queryOperation: [qop, Validators.required],
+      column: [null, Validators.required],
+      operation: [null, Validators.required],
       value: ['', Validators.required]
     });
   }
 
-  addItem(): void {
-    this.searchItems = this.tagSearchForm.get('items') as FormArray;
-    this.searchItems.push(this.createTagSearchItem());
+  deleteTagSearchItem(index: number) {
+    let searchItems: FormArray;    
+    searchItems = this.tagSearchForm.get('items') as FormArray;
+    searchItems.removeAt(index);
   }
 
-  /*
-  public markFormGroupTouched(formGroup: any) {
-    Object.values(formGroup.controls.items.controls[0].controls).forEach(control => {
-      control.markAsTouched();
-      console.log(control);
+  addItem(qop? : number): void {
+    let searchItems: FormArray;
+    searchItems = this.tagSearchForm.get('items') as FormArray;
+    searchItems.push(this.createTagSearchItem(qop));
+  }
 
+  getCondition(qop: number) {
+    switch (qop) {
+      case 0 : return "ИЛИ";
+      case 1 : return "И";
+      case 2 : return "НЕ";
+    }
+  }
+
+  public controlIsInvalid(control) {
+    return control.invalid && control.touched;
+  }
+
+  
+  public markFormGroupTouched(formGroup: FormGroup) {
+    let searchItems: FormArray;
+    searchItems = formGroup.get('items') as FormArray;
+
+
+    (<any>Object).values(searchItems.controls).forEach(control => {
+      control.get('column').markAsTouched();
+      control.get('operation').markAsTouched();
+      control.get('value').markAsTouched();
     });
-    
+ 
+    //searchItems.controls[0].get('value').setValue('yourEmailId@gmail.com');
+    //searchItems.controls[0].get('value').markAsTouched();
+
+    //console.log(this.tagSearchForm.controls.items);
+
   }
-  */
+  
  
   onSubmit() {
-    //this.markFormGroupTouched(this.tagSearchForm);
+    this.markFormGroupTouched(this.tagSearchForm);
+    if (!this.tagSearchForm.valid)
+      return;
+
+    this.submitLoading = true;
     let arr = {
       Query: this.tagSearchForm.controls.items.value
       .map(item => {
         return {
-              Operation: 0, 
+              Operation: item.queryOperation,  
               Columns: [
                 {
                   Column: item.column, 
@@ -81,7 +114,7 @@ export class TagComponent implements OnInit {
         }
     };
 
-      console.log(arr);
+      //console.log(arr);
       this.channelService.search(this.authenticationService.sessionId, arr)
       .pipe(first())
       .subscribe(
@@ -93,6 +126,7 @@ export class TagComponent implements OnInit {
               //this.alertService.error(error);                
           },
           () => {
+            this.submitLoading = false;
         });
   }
 
