@@ -13,7 +13,7 @@ import { first } from 'rxjs/operators';
 })
 export class TagComponent implements OnInit {
   tagSearchForm: FormGroup;
-  //searchItems: FormArray;
+  searchResult: Array<any>;
   submitLoading: boolean = false;
 
   constructor(
@@ -119,7 +119,8 @@ export class TagComponent implements OnInit {
       .pipe(first())
       .subscribe(
           data => {
-            console.log(data);
+            //console.log(data);
+            this.searchResult = data;
           },
           error => {
               //console.log(error);
