@@ -114,7 +114,7 @@
     <clr-dg-column>ParentPathLatin</clr-dg-column>
     <clr-dg-column>ParentPathSuffix</clr-dg-column>
 
-    <clr-dg-row *clrDgItems="let res of searchResult">
+    <clr-dg-row *ngFor="let res of searchResult">
         <clr-dg-cell>{{res.Id}}</clr-dg-cell>
         <clr-dg-cell>{{res.Name}}</clr-dg-cell>
         <clr-dg-cell>{{res.SeoNoIndex}}</clr-dg-cell>
@@ -128,10 +128,11 @@
     </clr-dg-row>
 
     <clr-dg-footer>
-            <clr-dg-pagination #pagination [clrDgPageSize]="10">
-                1 of 100 items
-            </clr-dg-pagination>
-        </clr-dg-footer>
+        <clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems]="totalItems" (clrDgPageChange)="pageChange($event)">
+            {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
+            of {{pagination.totalItems}} users
+        </clr-dg-pagination>
+    </clr-dg-footer>
 </clr-datagrid>
 
 

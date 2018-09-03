@@ -59,6 +59,18 @@ export class ChannelService {
 
   }
 
+  searchCount(sessionId: string, data: any) {
+      const params = new HttpParams()
+      .set('sessionId', sessionId);
+  
+      return this.http.post<any>(`https://api.newstube.ru/urldev/Tag/SearchCount`, data, {params})
+      .pipe(
+        catchError(this.handleError)
+      );
+  
+  
+    }
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.

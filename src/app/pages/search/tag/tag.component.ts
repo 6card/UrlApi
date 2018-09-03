@@ -16,6 +16,8 @@ export class TagComponent implements OnInit {
   searchResult: Array<any>;
   submitLoading: boolean = false;
 
+  totalItems: number = 0;
+
   constructor(
     private formBuilder: FormBuilder,
     private pathService: PathService,
@@ -80,6 +82,13 @@ export class TagComponent implements OnInit {
     //console.log(this.tagSearchForm.controls.items);
 
   }
+
+  public pageChange(page: number) {
+    /*
+    this.currentPage = page;
+    this.navigate();
+    */
+  }
   
  
   onSubmit() {
@@ -88,8 +97,8 @@ export class TagComponent implements OnInit {
       return;
 
     this.submitLoading = true;
-    let arr = {
-      Query: this.tagSearchForm.controls.items.value
+
+    let arr2 = this.tagSearchForm.controls.items.value
       .map(item => {
         return {
               Operation: item.queryOperation,  
@@ -101,7 +110,10 @@ export class TagComponent implements OnInit {
                 }
               ]          
         };
-      }),
+      });
+      
+    let arr = {
+      Query: arr2,
       Page: {
         Start: 1,        
         Length: 10,        
@@ -114,6 +126,8 @@ export class TagComponent implements OnInit {
         }
     };
 
+    
+
       //console.log(arr);
       this.channelService.search(this.authenticationService.sessionId, arr)
       .pipe(first())
@@ -121,6 +135,21 @@ export class TagComponent implements OnInit {
           data => {
             //console.log(data);
             this.searchResult = data;
+          },
+          error => {
+              //console.log(error);
+              //this.alertService.error(error);                
+          },
+          () => {
+            this.submitLoading = false;
+        });
+
+      this.channelService.searchCount(this.authenticationService.sessionId, arr2)
+      .pipe(first())
+      .subscribe(
+          data => {
+            //console.log(data);
+            this.totalItems = data;
           },
           error => {
               //console.log(error);
