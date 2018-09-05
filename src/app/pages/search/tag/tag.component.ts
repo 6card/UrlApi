@@ -17,6 +17,8 @@ export class TagComponent implements OnInit {
   submitLoading: boolean = false;
 
   totalItems: number = 0;
+  pageSize: number = 10;
+  currentPage: number = 0;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -64,6 +66,12 @@ export class TagComponent implements OnInit {
     return control.invalid && control.touched;
   }
 
+  public getGroupControls(){
+    let searchItems: FormArray;
+    searchItems = this.tagSearchForm.get('items') as FormArray;
+    return (<any>Object).values(searchItems.controls);
+  }
+
   
   public markFormGroupTouched(formGroup: FormGroup) {
     let searchItems: FormArray;
@@ -83,11 +91,9 @@ export class TagComponent implements OnInit {
 
   }
 
-  public pageChange(page: number) {
-    /*
-    this.currentPage = page;
-    this.navigate();
-    */
+  public pageChange(page: number) {    
+    this.currentPage = page - 1;
+    this.onSubmit();    
   }
   
  
@@ -115,8 +121,8 @@ export class TagComponent implements OnInit {
     let arr = {
       Query: arr2,
       Page: {
-        Start: 1,        
-        Length: 10,        
+        Start: this.currentPage * this.pageSize + 1,        
+        Length: this.pageSize,        
         Sort: [        
           {        
             Column: 1,        
@@ -156,7 +162,7 @@ export class TagComponent implements OnInit {
               //this.alertService.error(error);                
           },
           () => {
-            this.submitLoading = false;
+            //this.submitLoading = false;
         });
   }
 

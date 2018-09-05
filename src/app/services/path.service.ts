@@ -20,4 +20,23 @@ export class PathService {
     return this.http.get(`https://api.newstube.ru/urldev/Path/GetByUrl`, {params});
   }
 
+  getByPathIdDetail(sessionId: string, id: any) {
+
+    const params = new HttpParams()
+    .set('sessionId', sessionId)
+    .set('id', id);
+
+    return this.http.get(`https://api.newstube.ru/urldev/Path/GetByPathIdDetail`, {params});
+  }
+
+  getByObjectDetail(sessionId: string, typeId: any, objectId: any) {
+
+    const params = new HttpParams()
+    .set('sessionId', sessionId)
+    .set('objectId', objectId)
+    .set('typeId', typeId);
+
+    return this.http.get(`https://api.newstube.ru/urldev/Path/GetByObjectDetail`, {params});
+  }
+
 }

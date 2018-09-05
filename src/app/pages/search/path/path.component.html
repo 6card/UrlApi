@@ -1,19 +1,42 @@
-<form class="path-search-form" [formGroup]="pathByUrlForm" (ngSubmit)="onSubmit()">
-  <div class="form-group">
-    <input formControlName="url" type="text">
-    <button [clrLoading]="submitLoading" type="submit" class="btn">Search</button>
-  </div>
-
-  <div formArrayName="items"
-    *ngFor="let item of pathByUrlForm.get('items').controls; let i = index;">
-    <div [formGroupName]="i" class="form-group" >
-      <input formControlName="name" placeholder="Item name">
-      <input formControlName="description" placeholder="Item description">
-      <input formControlName="price" placeholder="Item price">
+<form class="clr-form clr-form-horizontal path-search-form" [formGroup]="pathByUrlForm" (ngSubmit)="onSubmit()">
+    <div class="clr-form-control clr-row">
+        <div class="clr-control-container clr-col-xs-12 clr-col-md-11">
+            <input formControlName="url" type="text">
+        </div>
+        <div class="clr-control-container clr-col-xs-12 clr-col-md-1">
+            <button [clrLoading]="submitLoading" type="submit" class="btn">Search</button>
+        </div>
     </div>
-
-  </div>
 </form>
 
-<button class="btn" (click)="addItem()">Add</button>
-<button class="btn" (click)="onSearch()">SCH</button>
+
+<div *ngIf="item">
+    <div class="row">
+        <div class="col-md-4 col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    Результат поиска
+                </div>
+                <div class="card-block">
+                    <ul class="list-unstyled">
+                        <li>GlobalId = {{item.GlobalId}}</li>
+                        <li>Id = {{item.Id}}</li>
+                        <li>ObjectId = {{item.ObjectId}}</li>
+                        <li>ObjectTypeId = {{item.ObjectTypeId}}</li>
+                        <li>ObjectTypeName = {{item.ObjectTypeName}}</li>
+                        <li>ParentPathId = {{item.ParentPathId}}</li>
+                        <li>ParentPathLatin = {{item.ParentPathLatin}}</li>
+                        <li>ParentPathSuffix = {{item.ParentPathSuffix}}</li>
+                        <li>PathLatin = {{item.PathLatin}}</li>
+                        <li>PathSuffix = {{item.PathSuffix}}</li>
+                        <li>SeoNoIndex = {{item.SeoNoIndex}}</li>
+                        <li>SeoStatusId = {{item.SeoStatusId}}</li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a [routerLink]="['/search/editpath', item.Id]" class="btn btn-primary">Edit</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

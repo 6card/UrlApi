@@ -13,13 +13,15 @@ import { NavigationComponent } from "./pages/navigation/navigation.component"
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { LoginComponent } from './pages/login/login.component';
 import { SidenavComponent } from './pages/sidenav/sidenav.component';
+import { ObjectComponent } from './pages/object/object.component';
+import { SearchComponent } from './pages/search/search.component';
+import { PathComponent } from './pages/search/path/path.component';
+import { EditPathComponent } from './pages/search/path/edit-path.component';
+import { TagComponent } from './pages/search/tag/tag.component';
 
 import { AuthenticationService } from './services/auth.service';
 import { PathService } from './services/path.service';
 import { AuthGuard } from './guards/auth.guard';
-import { SearchComponent } from './pages/search/search.component';
-import { PathComponent } from './pages/search/path/path.component';
-import { TagComponent } from './pages/search/tag/tag.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import { TagComponent } from './pages/search/tag/tag.component';
     SearchComponent,
     NavigationComponent,
     PathComponent,
-    TagComponent
+    EditPathComponent,
+    TagComponent,
+    ObjectComponent
   ],
   imports: [
     BrowserModule,

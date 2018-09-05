@@ -14,8 +14,8 @@ import { first } from 'rxjs/operators';
 })
 export class PathComponent implements OnInit {
   pathByUrlForm: FormGroup;
-  items: FormArray;
   submitLoading: boolean = false;
+  item: Object = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -27,23 +27,9 @@ export class PathComponent implements OnInit {
   ngOnInit() {
     this.pathByUrlForm = this.formBuilder.group({
       url: [' https://www.newstube.ru/obrashchenie-putina', Validators.required],
-      items: this.formBuilder.array([ this.createSearchItem() ])
-    });
-
-  }
-
-  createSearchItem() {
-    return this.formBuilder.group({
-      name: '',
-      description: '',
-      price: ''
     });
   }
 
-  addItem(): void {
-    this.items = this.pathByUrlForm.get('items') as FormArray;
-    this.items.push(this.createSearchItem());
-  }
 
   onSearch() {
     this.channelService.search(this.authenticationService.sessionId, [])
@@ -71,7 +57,8 @@ export class PathComponent implements OnInit {
         .pipe(first())
         .subscribe(
             data => {
-              console.log(data);
+              this.item = data;
+              //console.log(data);
             },
             error => {
                 console.log(error);

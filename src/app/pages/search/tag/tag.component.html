@@ -1,6 +1,6 @@
 <form class="clr-form clr-form-horizontal search-form" [formGroup]="tagSearchForm" (ngSubmit)="onSubmit()">
     <div formArrayName="items"
-    *ngFor="let item of tagSearchForm.get('items').controls; let i = index;">
+    *ngFor="let item of getGroupControls(); let i = index;">
       <div [formGroupName]="i">
         <input type="hidden" formControlName="queryOperation">
         <div class="clr-form-control clr-row">
@@ -102,10 +102,14 @@
 </form>
 
 
-<clr-datagrid>
-    <clr-dg-column>User ID</clr-dg-column>
-    <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
-    <clr-dg-column>SeoNoIndex</clr-dg-column>
+<clr-datagrid [clrDgLoading]="submitLoading">
+    <clr-dg-column>ID</clr-dg-column>
+    <clr-dg-column [clrDgSortBy]="'name'">Name</clr-dg-column>
+    <clr-dg-column>SeoNoIndex
+        <clr-dg-filter [clrDgFilter]="false">
+
+        </clr-dg-filter>
+    </clr-dg-column>
     <clr-dg-column>SeoStatusId</clr-dg-column>
     <clr-dg-column>PathId</clr-dg-column>
     <clr-dg-column>PathLatin</clr-dg-column>
@@ -113,6 +117,8 @@
     <clr-dg-column>ParentPathId</clr-dg-column>
     <clr-dg-column>ParentPathLatin</clr-dg-column>
     <clr-dg-column>ParentPathSuffix</clr-dg-column>
+
+    <clr-dg-placeholder>Ничего не найдено</clr-dg-placeholder>
 
     <clr-dg-row *ngFor="let res of searchResult">
         <clr-dg-cell>{{res.Id}}</clr-dg-cell>
@@ -127,10 +133,10 @@
         <clr-dg-cell>{{res.ParentPathSuffix}}</clr-dg-cell>
     </clr-dg-row>
 
-    <clr-dg-footer>
+    <clr-dg-footer *ngIf="totalItems">
         <clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems]="totalItems" (clrDgPageChange)="pageChange($event)">
             {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
-            of {{pagination.totalItems}} users
+            of {{pagination.totalItems}} items
         </clr-dg-pagination>
     </clr-dg-footer>
 </clr-datagrid>

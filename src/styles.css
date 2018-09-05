@@ -74,6 +74,14 @@
     margin-bottom: 0;
 }
 
+.datagrid-body {
+    min-height: 1rem;
+}
+
+.path-search-form input {
+    width: 100%;
+}
+
 /*
 .search-form .clr-control-container .select, .search-form .clr-control-container input {
     width: 100%;

@@ -1,0 +1,117 @@
+<div *ngIf="item">
+    <div class="row">
+        <div class="col-md-4 col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    Блок Путь
+                </div>
+                <div class="card-block">
+                    <ul class="list-unstyled">
+                        <li>Id = {{item.Id}}</li>
+                        <li>PathLatin = {{item.PathLatin}}</li>
+                        <li>PathSuffix = {{item.PathSuffix}}</li>
+                        <li>ParentPathId = {{item.ParentPathId}}</li>
+                        <li>ParentPathLatin = {{item.ParentPathLatin}}</li>
+                        <li>ParentPathSuffix = {{item.ParentPathSuffix}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    
+
+        <div class="col-md-4 col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    Блок Объект
+                </div>
+                <div class="card-block">
+                    <ul class="list-unstyled">
+                        <li>GlobalId = {{item.GlobalId}}</li>
+                        <li>ObjectId = {{item.ObjectId}}</li>
+                        <li>ObjectTypeId = {{item.ObjectTypeId}}</li>
+                        <li>ObjectTypeName = {{item.ObjectTypeName}}</li>
+                        <li>Name = {{item.Name}}</li>
+                        <li>Descripiton = {{item.Descripiton}}</li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a [routerLink]="['/object', item.ObjectTypeId, item.ObjectId]" class="btn btn-primary">Edit</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    Блок SEO
+                </div>
+                <div class="card-block">
+                    <ul class="list-unstyled">
+                        <li>SeoNoIndex = {{item.SeoNoIndex}}</li>
+                        <li>SeoStatusId = {{item.SeoStatusId}}</li>
+                        <li>SeoTitle = {{item.SeoTitle}}</li>
+                        <li>SeoDescription = {{item.SeoDescription}}</li>
+                        <li>SeoKeywords = {{item.SeoKeywords}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>История изменения пути у объекта HistoryPath</h3>
+            <clr-datagrid>
+                <clr-dg-column>Id</clr-dg-column>
+                <clr-dg-column>Date</clr-dg-column>
+                <clr-dg-column>Edit</clr-dg-column>
+                <clr-dg-row *ngFor="let path of item.HistoryPath">      
+                    <clr-dg-cell>{{path.Id}}</clr-dg-cell>
+                    <clr-dg-cell>{{path.CreateTime}}</clr-dg-cell>
+                    <clr-dg-cell><a [routerLink]="['/search/editpath', path.Id]">Edit</a></clr-dg-cell>
+                </clr-dg-row>
+            </clr-datagrid>            
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <h3>История изменения объектов на пути HistoryObject</h3>
+
+            <clr-datagrid>
+                <clr-dg-column>Id</clr-dg-column>
+                <clr-dg-column>Date</clr-dg-column>
+                <clr-dg-column>Edit</clr-dg-column>
+                <clr-dg-row *ngFor="let obj of item.HistoryObject">      
+                    <clr-dg-cell>{{obj.Id}}</clr-dg-cell>
+                    <clr-dg-cell>{{obj.CreateTime}}</clr-dg-cell>
+                    <clr-dg-cell><a [routerLink]="['/search/editpath', obj.Id]">Edit</a></clr-dg-cell>
+                </clr-dg-row>
+                </clr-datagrid>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+
+        <h3>Список редиректов на данный путь</h3>
+        
+        <clr-datagrid>
+            <clr-dg-action-bar>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-secondary"><clr-icon shape="plus"></clr-icon> Add new redirect</button>
+                </div>
+            </clr-dg-action-bar>
+            <clr-dg-column>Id</clr-dg-column>
+            <clr-dg-column>PathLatin</clr-dg-column>
+            <clr-dg-row *ngFor="let red of item.Redirects">      
+                <clr-dg-cell>{{red.Id}}</clr-dg-cell>
+                <clr-dg-cell>{{red.PathLatin}}</clr-dg-cell>
+            </clr-dg-row>
+        </clr-datagrid>
+        </div>
+    </div>  
+
+</div>
