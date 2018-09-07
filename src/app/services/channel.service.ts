@@ -11,43 +11,29 @@ export class ChannelService {
 
   constructor(private http: HttpClient) { }
 
+  mediaSearch(sessionId: string, data: any) {
+    const params = new HttpParams()
+    .set('sessionId', sessionId);
+
+    return this.http.post<any>(`https://api.newstube.ru/urldev/Media/Search`, data, {params})
+    .pipe(
+      catchError(this.handleError)
+    );
+
+
+  }
+
+  mediaSearchCount(sessionId: string, data: any) {
+      const params = new HttpParams()
+      .set('sessionId', sessionId);
+  
+      return this.http.post<any>(`https://api.newstube.ru/urldev/Media/SearchCount`, data, {params})
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   search(sessionId: string, data: any) {
-  /*
-    const data = {
-      "Query": [
-        {
-          "Operation": 0,
-          "Columns": [
-            {
-              "Column": 7,
-              "Operation": 7,
-              "Value": "погода"
-            }
-          ],
-          "Tables": [
-            {
-              "Table": 6,
-              "Values": [
-                65
-              ]
-            }
-          ]
-
-        }
-      ],
-      "Page": {
-        "Start": 0,
-        "Length": 10,
-        "Sort": [
-          {
-            "Column": 1,
-            "Desc": true
-          }
-        ]
-      }
-    };
-
-    */
     const params = new HttpParams()
     .set('sessionId', sessionId);
 
@@ -67,8 +53,6 @@ export class ChannelService {
       .pipe(
         catchError(this.handleError)
       );
-  
-  
   }
 
   private handleError(error: HttpErrorResponse) {

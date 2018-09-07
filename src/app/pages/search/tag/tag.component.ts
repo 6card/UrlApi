@@ -5,7 +5,7 @@ import { AuthenticationService } from '../../../services/auth.service';
 import { PathService } from '../../../services/path.service';
 import { ChannelService } from '../../../services/channel.service';
 
-import { first } from 'rxjs/operators';
+import { first, finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tag',
@@ -136,7 +136,9 @@ export class TagComponent implements OnInit {
 
       //console.log(arr);
       this.channelService.search(this.authenticationService.sessionId, arr)
-      .pipe(first())
+      .pipe(
+        finalize(() => this.submitLoading = false)
+      )
       .subscribe(
           data => {
             //console.log(data);
@@ -145,13 +147,12 @@ export class TagComponent implements OnInit {
           error => {
               //console.log(error);
               //this.alertService.error(error);                
-          },
-          () => {
-            this.submitLoading = false;
-        });
+          });
 
       this.channelService.searchCount(this.authenticationService.sessionId, arr2)
-      .pipe(first())
+      .pipe(
+        finalize(() => this.submitLoading = false)
+      )
       .subscribe(
           data => {
             //console.log(data);

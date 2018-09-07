@@ -102,5 +102,33 @@
 
             </form>
         </div>
+
+
+        <clr-datagrid >
+            <clr-dg-column>ID</clr-dg-column>
+            <clr-dg-column>Name</clr-dg-column>
+            <clr-dg-column>ChannelName</clr-dg-column>
+            <clr-dg-column>SectionName</clr-dg-column>
+            <clr-dg-column>StateName</clr-dg-column>
+            <clr-dg-column>ShootDate</clr-dg-column>
+            <clr-dg-placeholder>Ничего не найдено</clr-dg-placeholder>
+
+            <clr-dg-row *ngFor="let media of medias">
+                <clr-dg-cell>{{media.Id}}</clr-dg-cell>
+                <clr-dg-cell>{{media.Name}}</clr-dg-cell>      
+                <clr-dg-cell>{{media.ChannelName}}</clr-dg-cell>        
+                <clr-dg-cell>{{media.SectionName}}</clr-dg-cell>
+                <clr-dg-cell>{{media.StateName}}</clr-dg-cell>
+                <clr-dg-cell>{{media.ShootDate | date: 'dd.MM.yyyy HH:mm:ss'}}</clr-dg-cell>  
+            </clr-dg-row>
+
+            <clr-dg-footer *ngIf="totalMediasItems">
+                <clr-dg-pagination #pagination [clrDgPageSize]="pageMediasSize" [clrDgTotalItems]="totalMediasItems" (clrDgPageChange)="pageChange($event)">
+                    {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
+                    of {{pagination.totalItems}} items
+                </clr-dg-pagination>
+            </clr-dg-footer>
+        </clr-datagrid>
+
     </div>
 </div>
