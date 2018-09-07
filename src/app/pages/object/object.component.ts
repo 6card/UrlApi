@@ -17,24 +17,29 @@ import { first } from 'rxjs/operators';
 
 export class ObjectComponent implements OnInit {
   item: ObjectBase;
-  objectForm: FormGroup;
+  //objectForm: FormGroup;
 
-  /*
+  
   objectForm = new FormGroup({
-      ObjectId: new FormControl('', Validators.required),
-      ObjectTypeId: new FormControl('', Validators.required),
-      Name: new FormControl('', Validators.required),
-      Description: new FormControl('', Validators.required),
-      SeoNoIndex: new FormControl('', Validators.required),
-      SeoStatusId: new FormControl('', Validators.required),
-      SeoTitle: new FormControl('', Validators.required),
-      SeoDescription: new FormControl('', Validators.required),
-      SeoKeywords: new FormControl('', Validators.required),
-      PathParentId: new FormControl('', Validators.required),
-      PathLatin: new FormControl('', Validators.required),
-      PathId: new FormControl('', Validators.required),
+      Id: new FormControl(''),
+      GlobalId: new FormControl(''),
+      ObjectId: new FormControl(''),
+      ObjectTypeId: new FormControl(''),
+      ObjectTypeName: new FormControl(''),
+      Name: new FormControl(''),
+      Description: new FormControl(''),
+      SeoNoIndex: new FormControl(''),
+      SeoStatusId: new FormControl(''),
+      //SeoTitle: new FormControl(''),
+      //SeoDescription: new FormControl(''),
+      //SeoKeywords: new FormControl(''),
+      ParentPathId: new FormControl(''),
+      PathLatin: new FormControl(''),
+      PathSuffix: new FormControl(''),
+      ParentPathLatin: new FormControl(''),
+      ParentPathSuffix: new FormControl(''),
   });
-  */
+  
     
     constructor(
         private pathService: PathService,
@@ -44,15 +49,22 @@ export class ObjectComponent implements OnInit {
     
     public loadItem(typeid: number, id: number) {
       this.pathService.getByObjectDetail(this.authenticationService.sessionId, typeid, id)
-        .pipe(first())
+        .subscribe(
+            (data: ObjectBase) => {
+              this.item = data;
+              this.setValuesToForm(this.item);
+              //console.log(this.item);
+              //this.objectForm = this.toFormGroup(this.item);
+            });
+    }
+
+    public updateItem(item: ObjectBase) {
+      this.pathService.updatePath(this.authenticationService.sessionId, item)
         .subscribe(
             data => {
-              this.item = new ObjectBase(data);
-              console.log(this.item);
-              this.objectForm = this.toFormGroup(this.item);
-            },
-            error => {
-                console.log(error);              
+              //this.setValuesToForm(data);
+              //console.log(data);
+              //this.objectForm = this.toFormGroup(this.item);
             });
     }
 
@@ -60,7 +72,7 @@ export class ObjectComponent implements OnInit {
       let group: any = {};
 
       for (let key in item) {
-        group[key] = new FormControl(item[key] || '', Validators.required)
+        group[key] = new FormControl(item[key] || '')
       }
 
       return new FormGroup(group);
@@ -71,4 +83,28 @@ export class ObjectComponent implements OnInit {
         this.loadItem(routeParams.typeid, routeParams.id);
       });        
     }
+
+    setValuesToForm(item: ObjectBase) {      
+      for (let key in item) {
+        //console.log(key);
+        let control = this.objectForm.get(key);
+        if (!Array.isArray(item[key]) && control !== null )
+        //if (control !== null)
+          control.setValue(item[key]);
+      }      
+    }
+
+
+    onSubmit() {  
+      /*
+      if (this.objectForm.invalid) {
+          return;
+      }
+      */
+
+      this.updateItem(this.objectForm.value); 
+ 
+    }
+
+
 }

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
 
+import { ObjectBase } from '../models/object-base';
+
 import {Observable, of} from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
@@ -16,7 +18,6 @@ export class PathService {
     const params = new HttpParams()
     .set('sessionId', sessionId)
     .set('url', url);
-
     return this.http.get(`https://api.newstube.ru/urldev/Path/GetByUrl`, {params});
   }
 
@@ -25,7 +26,6 @@ export class PathService {
     const params = new HttpParams()
     .set('sessionId', sessionId)
     .set('id', id);
-
     return this.http.get(`https://api.newstube.ru/urldev/Path/GetByPathIdDetail`, {params});
   }
 
@@ -35,8 +35,15 @@ export class PathService {
     .set('sessionId', sessionId)
     .set('objectId', objectId)
     .set('typeId', typeId);
-
-    return this.http.get(`https://api.newstube.ru/urldev/Path/GetByObjectDetail`, {params});
+    return this.http.get<ObjectBase>(`https://api.newstube.ru/urldev/Path/GetByObjectDetail`, {params});
   }
+
+  updatePath(sessionId: string, data: any) {
+    const params = new HttpParams()
+      .set('sessionId', sessionId);
+      return this.http.post<any>(`https://api.newstube.ru/urldev/Path/Update`, data, {params});
+
+  }
+
 
 }

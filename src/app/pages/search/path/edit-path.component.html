@@ -64,12 +64,19 @@
             <h3>История изменения пути у объекта HistoryPath</h3>
             <clr-datagrid>
                 <clr-dg-column>Id</clr-dg-column>
+                <clr-dg-column>ObjectTypeName</clr-dg-column>
+                <clr-dg-column>PathLatin</clr-dg-column>
                 <clr-dg-column>Date</clr-dg-column>
                 <clr-dg-column>Edit</clr-dg-column>
                 <clr-dg-row *ngFor="let path of item.HistoryPath">      
                     <clr-dg-cell>{{path.Id}}</clr-dg-cell>
+                    <clr-dg-cell>{{path.Item ? path.Item.ObjectTypeName : ''}}</clr-dg-cell>
+                    <clr-dg-cell>{{path.Item ? path.Item.PathLatin : ''}}</clr-dg-cell>
                     <clr-dg-cell>{{path.CreateTime}}</clr-dg-cell>
-                    <clr-dg-cell><a [routerLink]="['/search/editpath', path.Id]">Edit</a></clr-dg-cell>
+                    <clr-dg-cell>
+                        <a *ngIf="path.Item && path.Item.ObjectTypeId == 11" [routerLink]="['/search/editpath', path.Item.Id]">Edit</a>
+                        <a *ngIf="path.Item && path.Item.ObjectTypeId != 11" [routerLink]="['/object', path.Item.ObjectTypeId, path.Item.ObjectId]">Edit</a>
+                    </clr-dg-cell>
                 </clr-dg-row>
             </clr-datagrid>            
         </div>
@@ -82,12 +89,19 @@
 
             <clr-datagrid>
                 <clr-dg-column>Id</clr-dg-column>
+                <clr-dg-column>ObjectTypeName</clr-dg-column>
+                <clr-dg-column>PathLatin</clr-dg-column>
                 <clr-dg-column>Date</clr-dg-column>
                 <clr-dg-column>Edit</clr-dg-column>
                 <clr-dg-row *ngFor="let obj of item.HistoryObject">      
                     <clr-dg-cell>{{obj.Id}}</clr-dg-cell>
+                    <clr-dg-cell>{{obj.Item ? obj.Item.ObjectTypeName : ''}}</clr-dg-cell>
+                    <clr-dg-cell>{{obj.Item ? obj.Item.PathLatin : ''}}</clr-dg-cell>
                     <clr-dg-cell>{{obj.CreateTime}}</clr-dg-cell>
-                    <clr-dg-cell><a [routerLink]="['/search/editpath', obj.Id]">Edit</a></clr-dg-cell>
+                    <clr-dg-cell>
+                        <a *ngIf="obj.Item && obj.Item.ObjectTypeId == 11" [routerLink]="['/search/editpath', obj.Item.Id]">Edit</a>
+                        <a *ngIf="obj.Item && obj.Item.ObjectTypeId != 11" [routerLink]="['/object', obj.Item.ObjectTypeId, obj.Item.ObjectId]">Edit</a>
+                    </clr-dg-cell>
                 </clr-dg-row>
                 </clr-datagrid>
         </div>

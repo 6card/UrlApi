@@ -69,7 +69,7 @@ export class ChannelService {
       );
   
   
-    }
+  }
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
