@@ -3,6 +3,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
+import { CookieService } from 'ngx-cookie-service';
+
 import { AppComponent } from './app.component';
 
 import { AppRoutingModule } from "./routing.module";
@@ -49,6 +51,7 @@ import { AuthGuard } from './guards/auth.guard';
   providers: [
     AuthGuard,
     AuthenticationService,
+    CookieService,
     PathService
   ],
   bootstrap: [AppComponent]

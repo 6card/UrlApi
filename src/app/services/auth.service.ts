@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
+import { CookieService } from 'ngx-cookie-service';
+
 import { map, first } from 'rxjs/operators';
  
 @Injectable({
@@ -11,8 +13,13 @@ export class AuthenticationService {
     username: string;
     access: string = '2B646AA4-4ECC-43E0-8C42-4527329B0051';
 
-    constructor(private http: HttpClient) {
-        let lcstg = localStorage.getItem('currentUser');
+    constructor(
+        private http: HttpClient,
+        private cookieService: CookieService
+    
+    ) {
+        //let lcstg = localStorage.getItem('currentUser');
+        let lcstg = this.cookieService.get('currentUser');
         this.sessionId = lcstg ? JSON.parse(lcstg).token : null;
         this.username = lcstg ? JSON.parse(lcstg).username : null;
 
@@ -45,7 +52,8 @@ export class AuthenticationService {
                 if (token) {
                     this.sessionId = token;
                     this.username = username;
-                    localStorage.setItem('currentUser', JSON.stringify({ username: username, token: token }));
+                    //localStorage.setItem('currentUser', JSON.stringify({ username: username, token: token }));
+                    this.cookieService.set('currentUser', JSON.stringify({ username: username, token: token }), 1);
                     return true;
                 }
  
@@ -57,7 +65,8 @@ export class AuthenticationService {
         // remove user from local storage to log user out
         this.username = null;
         this.sessionId = null;
-        localStorage.removeItem('currentUser');
+        //localStorage.removeItem('currentUser');
+        this.cookieService.delete('currentUser');
     }
 
     public isAuthenticated() {
