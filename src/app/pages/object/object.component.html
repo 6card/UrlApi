@@ -1,5 +1,6 @@
 <div class="content-container">
     <div class="content-area">
+        <h2>Данные объекта</h2>
         <div *ngIf="item">
             <form clrForm clrLayout="horizontal" [formGroup]="objectForm" (ngSubmit)="onSubmit()">
                 <clr-input-container>
@@ -55,7 +56,7 @@
                     <input clrInput type="text" formControlName="SeoStatusId" />
                     <clr-control-error>This field is required!</clr-control-error>
                 </clr-input-container>
-            <!--
+            
                 <clr-input-container>
                     <label>SeoTitle</label>
                     <input clrInput type="text" formControlName="SeoTitle" />
@@ -72,8 +73,8 @@
                     <label>SeoKeywords</label>
                     <input clrInput type="text" formControlName="SeoKeywords" />
                     <clr-control-error>This field is required!</clr-control-error>
-                </clr-input-container>
-            -->
+                </clr-input-container>                
+            
                 <clr-input-container>
                     <label>PathLatin</label>
                     <input clrInput type="text" formControlName="PathLatin" />
@@ -83,6 +84,12 @@
                 <clr-input-container>
                     <label>PathSuffix</label>
                     <input clrInput type="text" formControlName="PathSuffix" />
+                    <clr-control-error>This field is required!</clr-control-error>
+                </clr-input-container>
+
+                <clr-input-container>
+                    <label>ParentPathId</label>
+                    <input clrInput type="text" formControlName="ParentPathId" />
                     <clr-control-error>This field is required!</clr-control-error>
                 </clr-input-container>
 
@@ -103,6 +110,7 @@
             </form>
         </div>
 
+        <h2>Список роликов</h2>
 
         <clr-datagrid >
             <clr-dg-column>ID</clr-dg-column>

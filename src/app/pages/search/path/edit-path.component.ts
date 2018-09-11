@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../../../services/auth.service';
 import { PathService } from '../../../services/path.service';
 
-import { first } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 
 //https://kamranahmed.info/blog/2018/02/28/dealing-with-route-params-in-angular-5/
 
@@ -14,7 +14,7 @@ import { first } from 'rxjs/operators';
   })
 
 export class EditPathComponent implements OnInit {
-  item: Object;
+  item: any;
     
     constructor(
         private pathService: PathService,
@@ -24,7 +24,6 @@ export class EditPathComponent implements OnInit {
     
     public loadItem(id: number) {
       this.pathService.getByPathIdDetail(this.authenticationService.sessionId, id)
-        .pipe(first())
         .subscribe(
             data => {
               this.item = data;
@@ -38,6 +37,22 @@ export class EditPathComponent implements OnInit {
               //this.submitLoading = false;
             });
 
+    }
+
+    public deleteObject () {
+      const obj = {
+        ObjectTypeId: 0,
+        ObjectId: 0
+      };
+      
+      this.pathService.setObject(this.authenticationService.sessionId, this.item.Id, obj)
+        .subscribe(
+            data => {
+              //this.setValuesToForm(data);
+              //console.log(data);
+              this.loadItem(this.item.Id);
+              //this.objectForm = this.toFormGroup(this.item);
+            });
     }
       ngOnInit() {
         this.activeRoute.params.subscribe(routeParams => {

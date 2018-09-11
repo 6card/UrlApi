@@ -1,0 +1,11 @@
+<search-form (pushQuery)="onQuery($event)" [(loading)]="submitLoading"></search-form>
+
+<search-table 
+    (pushPage)="onPageChange($event)" 
+
+    [(loading)]="submitLoading"
+    [(items)]="searchResult"
+    [(totalItems)]="searchItemsResult"
+    
+></search-table>
+

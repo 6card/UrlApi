@@ -1,0 +1,40 @@
+<clr-datagrid [clrDgLoading]="loading">
+        <clr-dg-column>ID</clr-dg-column>
+        <clr-dg-column [clrDgSortBy]="'name'">Name</clr-dg-column>
+        <clr-dg-column>SeoNoIndex
+            <clr-dg-filter [clrDgFilter]="false">
+    
+            </clr-dg-filter>
+        </clr-dg-column>
+        <clr-dg-column>SeoStatusId</clr-dg-column>
+        <clr-dg-column>PathId</clr-dg-column>
+        <clr-dg-column>PathLatin</clr-dg-column>
+        <clr-dg-column>PathSuffix</clr-dg-column>
+        <clr-dg-column>ParentPathId</clr-dg-column>
+        <clr-dg-column>ParentPathLatin</clr-dg-column>
+        <clr-dg-column>ParentPathSuffix</clr-dg-column>
+        <clr-dg-column>Edit</clr-dg-column>
+    
+        <clr-dg-placeholder>Ничего не найдено</clr-dg-placeholder>
+    
+        <clr-dg-row *ngFor="let res of items">
+            <clr-dg-cell>{{res.Id}}</clr-dg-cell>
+            <clr-dg-cell>{{res.Name}}</clr-dg-cell>
+            <clr-dg-cell>{{res.SeoNoIndex}}</clr-dg-cell>
+            <clr-dg-cell>{{res.SeoStatusId}}</clr-dg-cell>        
+            <clr-dg-cell>{{res.PathId}}</clr-dg-cell>        
+            <clr-dg-cell>{{res.PathLatin}}</clr-dg-cell>
+            <clr-dg-cell>{{res.PathSuffix}}</clr-dg-cell>
+            <clr-dg-cell>{{res.ParentPathId}}</clr-dg-cell>
+            <clr-dg-cell>{{res.ParentPathLatin}}</clr-dg-cell>
+            <clr-dg-cell>{{res.ParentPathSuffix}}</clr-dg-cell>
+            <clr-dg-cell><a *ngIf="res.PathId" [routerLink]="['/search/editpath', res.PathId]">Edit</a></clr-dg-cell>
+        </clr-dg-row>
+    
+        <clr-dg-footer *ngIf="totalItems">
+            <clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems]="totalItems" (clrDgPageChange)="pageChange($event)">
+                {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
+                of {{pagination.totalItems}} items
+            </clr-dg-pagination>
+        </clr-dg-footer>
+    </clr-datagrid>

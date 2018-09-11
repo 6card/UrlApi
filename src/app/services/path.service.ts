@@ -45,5 +45,12 @@ export class PathService {
 
   }
 
+  setObject(sessionId: string, id: any, object: any) {
+    const params = new HttpParams()
+      .set('sessionId', sessionId)
+      .set('id', id);
+      return this.http.post<any>(`https://api.newstube.ru/urldev/Path/SetObject`, object, {params});
+  }
+
 
 }

@@ -19,10 +19,22 @@ import { ObjectComponent } from './pages/object/object.component';
 import { SearchComponent } from './pages/search/search.component';
 import { PathComponent } from './pages/search/path/path.component';
 import { EditPathComponent } from './pages/search/path/edit-path.component';
-import { TagComponent } from './pages/search/tag/tag.component';
+import { CreateTagComponent } from './pages/cteatetag/create-tag.component';
+
+
+import { ChannelSearchComponent } from './pages/search/components/channel-search.component';
+import { MediaSearchComponent } from './pages/search/components/media-search.component';
+import { PathSearchComponent } from './pages/search/components/path-search.component';
+import { PersonSearchComponent } from './pages/search/components/person-search.component';
+import { SectionSearchComponent } from './pages/search/components/section-search.component';
+import { SeriesSearchComponent } from './pages/search/components/series-search.component';
+import { TagSearchComponent } from './pages/search/components/tag-search.component';
+import { ThemeSearchComponent } from './pages/search/components/theme-search.component';
+import { SearchFormComponent } from './shared/search-form.component';
+import { SearchTableComponent } from './shared/search-table.component';
 
 import { AuthenticationService } from './services/auth.service';
-import { PathService } from './services/path.service';
+//import { PathService } from './services/path.service';
 import { AuthGuard } from './guards/auth.guard';
 
 @NgModule({
@@ -35,8 +47,19 @@ import { AuthGuard } from './guards/auth.guard';
     NavigationComponent,
     PathComponent,
     EditPathComponent,
-    TagComponent,
-    ObjectComponent
+    CreateTagComponent,
+
+    ChannelSearchComponent,
+    MediaSearchComponent,
+    PathSearchComponent,
+    PersonSearchComponent,
+    SectionSearchComponent,
+    SeriesSearchComponent,
+    TagSearchComponent,
+    ThemeSearchComponent,
+    ObjectComponent,
+    SearchFormComponent,
+    SearchTableComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +75,7 @@ import { AuthGuard } from './guards/auth.guard';
     AuthGuard,
     AuthenticationService,
     CookieService,
-    PathService
+    //PathService
   ],
   bootstrap: [AppComponent]
 })

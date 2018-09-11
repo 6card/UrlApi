@@ -35,7 +35,10 @@
                     </ul>
                 </div>
                 <div class="card-footer">
-                    <a [routerLink]="['/object', item.ObjectTypeId, item.ObjectId]" class="btn btn-primary">Edit</a>
+                    <div class="btn-group btn-primary">
+                        <a [routerLink]="['/object', item.ObjectTypeId, item.ObjectId]" class="btn btn-primary">Edit</a>
+                        <button class="btn btn-danger" (click)="deleteObject()">Delete</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -72,7 +75,7 @@
                     <clr-dg-cell>{{path.Id}}</clr-dg-cell>
                     <clr-dg-cell>{{path.Item ? path.Item.ObjectTypeName : ''}}</clr-dg-cell>
                     <clr-dg-cell>{{path.Item ? path.Item.PathLatin : ''}}</clr-dg-cell>
-                    <clr-dg-cell>{{path.CreateTime}}</clr-dg-cell>
+                    <clr-dg-cell>{{path.CreateTime | date: 'dd.MM.yyyy HH:mm:ss'}}</clr-dg-cell>
                     <clr-dg-cell>
                         <a *ngIf="path.Item && path.Item.ObjectTypeId == 11" [routerLink]="['/search/editpath', path.Item.Id]">Edit</a>
                         <a *ngIf="path.Item && path.Item.ObjectTypeId != 11" [routerLink]="['/object', path.Item.ObjectTypeId, path.Item.ObjectId]">Edit</a>
@@ -97,7 +100,7 @@
                     <clr-dg-cell>{{obj.Id}}</clr-dg-cell>
                     <clr-dg-cell>{{obj.Item ? obj.Item.ObjectTypeName : ''}}</clr-dg-cell>
                     <clr-dg-cell>{{obj.Item ? obj.Item.PathLatin : ''}}</clr-dg-cell>
-                    <clr-dg-cell>{{obj.CreateTime}}</clr-dg-cell>
+                    <clr-dg-cell>{{obj.CreateTime | date: 'dd.MM.yyyy HH:mm:ss'}}</clr-dg-cell>
                     <clr-dg-cell>
                         <a *ngIf="obj.Item && obj.Item.ObjectTypeId == 11" [routerLink]="['/search/editpath', obj.Item.Id]">Edit</a>
                         <a *ngIf="obj.Item && obj.Item.ObjectTypeId != 11" [routerLink]="['/object', obj.Item.ObjectTypeId, obj.Item.ObjectId]">Edit</a>

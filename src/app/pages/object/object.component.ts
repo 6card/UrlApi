@@ -4,7 +4,7 @@ import {FormGroup, FormControl, Validators} from "@angular/forms";
 
 import { AuthenticationService } from '../../services/auth.service';
 import { PathService } from '../../services/path.service';
-import { ChannelService } from '../../services/channel.service';
+import { SearchService } from '../../services/search.service';
 
 import { ObjectBase } from '../../models/object-base';
 
@@ -36,12 +36,12 @@ export class ObjectComponent implements OnInit {
       Description: new FormControl(''),
       SeoNoIndex: new FormControl(''),
       SeoStatusId: new FormControl(''),
-      //SeoTitle: new FormControl(''),
-      //SeoDescription: new FormControl(''),
-      //SeoKeywords: new FormControl(''),
-      ParentPathId: new FormControl(''),
+      SeoTitle: new FormControl(''),
+      SeoDescription: new FormControl(''),
+      SeoKeywords: new FormControl(''),      
       PathLatin: new FormControl(''),
       PathSuffix: new FormControl(''),
+      ParentPathId: new FormControl(''),
       ParentPathLatin: new FormControl(''),
       ParentPathSuffix: new FormControl(''),
   });
@@ -49,7 +49,7 @@ export class ObjectComponent implements OnInit {
     
     constructor(
         private pathService: PathService,
-        private channelService: ChannelService,
+        private searchService: SearchService,
         private authenticationService: AuthenticationService,
         private activeRoute: ActivatedRoute
       ) {}
@@ -79,13 +79,13 @@ export class ObjectComponent implements OnInit {
           }
       };
 
-      this.channelService.mediaSearchCount(this.authenticationService.sessionId, arr)
+      this.searchService.mediaSearchCount(this.authenticationService.sessionId, arr)
           .subscribe(data => {
             this.totalMediasItems = data;
           });
 
       
-      this.channelService.mediaSearch(this.authenticationService.sessionId, data)
+      this.searchService.mediaSearch(this.authenticationService.sessionId, data)
           .subscribe(data => {
             this.medias = data;
           });

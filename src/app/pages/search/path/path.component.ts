@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 
 import { AuthenticationService } from '../../../services/auth.service';
 import { PathService } from '../../../services/path.service';
-import { ChannelService } from '../../../services/channel.service';
+import { SearchService } from '../../../services/search.service';
 
 import { first } from 'rxjs/operators';
 
@@ -20,7 +20,7 @@ export class PathComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private pathService: PathService,
-    private channelService: ChannelService,
+    private searchService: SearchService,
     private authenticationService: AuthenticationService
   ) { }
 
@@ -28,22 +28,6 @@ export class PathComponent implements OnInit {
     this.pathByUrlForm = this.formBuilder.group({
       url: [' https://www.newstube.ru/obrashchenie-putina', Validators.required],
     });
-  }
-
-
-  onSearch() {
-    this.channelService.search(this.authenticationService.sessionId, [])
-    .pipe(first())
-        .subscribe(
-            data => {
-              console.log(data);
-            },
-            error => {
-                //console.log(error);
-                //this.alertService.error(error);                
-            },
-            () => {
-            });
   }
 
   onSubmit() {
@@ -54,7 +38,6 @@ export class PathComponent implements OnInit {
     }
 
     this.pathService.getByUrl(this.authenticationService.sessionId, this.pathByUrlForm.controls.url.value)
-        .pipe(first())
         .subscribe(
             data => {
               this.item = data;
