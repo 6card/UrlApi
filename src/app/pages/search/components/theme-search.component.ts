@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Router, ActivatedRoute } from "@angular/router";
 
 import { AuthenticationService } from '../../../services/auth.service';
-import { PathService } from '../../../services/path.service';
 import { SearchService } from '../../../services/search.service';
+
+import { CommonSearchComponent }  from '../../../shared/common-search.component';
 
 import { finalize } from 'rxjs/operators';
 
@@ -10,38 +12,15 @@ import { finalize } from 'rxjs/operators';
   selector: 'app-theme-search',
   templateUrl: './_search.component.html'
 })
-export class ThemeSearchComponent implements OnInit {
-  submitLoading: boolean = false;
-
-  searchResult: Array<any>;
-  searchItemsResult: number = 0;
-  searchQuery: any;
-  searchPage: any = {
-    Start: 1,        
-    Length: 10,        
-    Sort: [        
-        {        
-            Column: 1,        
-            Desc: true        
-        }        
-    ]        
-  };
-
+export class ThemeSearchComponent extends CommonSearchComponent {
+  
   constructor(
-    private searchService: SearchService,
-    private authenticationService: AuthenticationService
-  ) { }
-
-  ngOnInit() { }
-
-  public onPageChange(page) {
-    this.searchPage = page;
-    this.getResults();
-  }
-
-  onQuery(searchQuery) {
-    this.searchQuery = searchQuery;
-    this.getResults();
+    protected router: Router,
+    protected activatedRoute: ActivatedRoute,
+    protected searchService: SearchService,
+    protected authenticationService: AuthenticationService
+  ) { 
+      super(router, activatedRoute, searchService, authenticationService);
   }
 
   getResults() {
