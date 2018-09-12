@@ -23,11 +23,11 @@ export class SearchFormComponent implements OnInit {
         });
 
         if (this.firstQuery) {
-            console.log(this.firstQuery);
+            //console.log(this.firstQuery);
             let arr = [];
             this.firstQuery.forEach( item => {
-                console.log(item);
-                this.addItem(item.Operation, item.Columns[0]);
+                //console.log(item);
+                this.addItem(Number(item.Operation), item.Columns[0]);
             })
         }
         else {
@@ -69,6 +69,7 @@ export class SearchFormComponent implements OnInit {
             case 0 : return "ИЛИ";
             case 1 : return "И";
             case 2 : return "НЕ";
+            default: return "undefined"
         }
     }
 
