@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@ang
 export class SearchFormComponent implements OnInit {
     searchForm: FormGroup;
 
+    @Input() firstQuery: any;
     @Input() loading: boolean = false;
     @Output() pushQuery = new EventEmitter<any>();
 
@@ -18,16 +19,36 @@ export class SearchFormComponent implements OnInit {
 
     ngOnInit() {
         this.searchForm = this.formBuilder.group({
-          items: this.formBuilder.array([ this.createTagSearchItem() ])
+            items: this.formBuilder.array([])
         });
+
+        if (this.firstQuery) {
+            console.log(this.firstQuery);
+            let arr = [];
+            this.firstQuery.forEach( item => {
+                console.log(item);
+                this.addItem(item.Operation, item.Columns[0]);
+            })
+        }
+        else {
+            this.addItem(0);
+        }
+
+        /*
+        this.searchForm = this.formBuilder.group({
+            items: this.formBuilder.array([ this.createTagSearchItem() ])
+        });
+        */
+
+        
     }
 
-    createTagSearchItem(qop: number = 0) {
+    createTagSearchItem(qop: number = 0, obj?: any) {
         return this.formBuilder.group({
           queryOperation: [qop, Validators.required],
-          column: [null, Validators.required],
-          operation: [null, Validators.required],
-          value: ['', Validators.required]
+          column: [obj? obj.Column: null, Validators.required],
+          operation: [obj? obj.Operation : null, Validators.required],
+          value: [obj? obj.Value : '', Validators.required]
         });
     }
 
@@ -37,10 +58,10 @@ export class SearchFormComponent implements OnInit {
         searchItems.removeAt(index);
       }
     
-    addItem(qop? : number): void {
+    addItem(qop? : number, obj?: any): void {
         let searchItems: FormArray;
         searchItems = this.searchForm.get('items') as FormArray;
-        searchItems.push(this.createTagSearchItem(qop));
+        searchItems.push(this.createTagSearchItem(qop, obj));
     }
 
     getCondition(qop: number) {

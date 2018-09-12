@@ -1,4 +1,8 @@
-<search-form (pushQuery)="onQuery($event)" [(loading)]="submitLoading"></search-form>
+<search-form 
+(pushQuery)="onQuery($event)" 
+[(loading)]="submitLoading"
+[(firstQuery)]="searchQuery"
+></search-form>
 
 <search-table 
     (pushPage)="onPageChange($event)" 

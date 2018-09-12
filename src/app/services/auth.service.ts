@@ -23,14 +23,13 @@ export class AuthenticationService {
         this.sessionId = lcstg ? JSON.parse(lcstg).token : null;
         this.username = lcstg ? JSON.parse(lcstg).username : null;
 
-        this.check();
+        //this.check();
     }
 
     private check() {
         const params = new HttpParams()
         .set('sessionId', this.sessionId);
         return this.http.get(`https://api.newstube.ru/v2/Auth/Check`, {params})
-        .pipe(first())
         .subscribe(
             data => {
                 if (data === false)
@@ -44,7 +43,6 @@ export class AuthenticationService {
     login(username: string, password: string) {
         return this.http.post<any>(`https://api.newstube.ru/v2/Auth/Login`, { UserName: username, Password: password })
             .pipe(
-                first(),
                 map(response => {
 
                 let token = response && response.Data.SessionId;
