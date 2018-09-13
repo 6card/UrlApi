@@ -11,6 +11,7 @@ export class SearchTableComponent implements OnInit {
     pageSize: number = 10;
     currentPage: number = 0;
 
+    @Input() typeId: number;
     @Input() loading: boolean = false;
     @Input() items: Array<any>;
     @Input() totalItems: number = 0;

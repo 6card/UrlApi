@@ -14,6 +14,8 @@ import { finalize } from 'rxjs/operators';
 })
 export class TagSearchComponent extends CommonSearchComponent {
 
+  public typeId = 6;
+
   constructor(
     protected router: Router,
     protected activatedRoute: ActivatedRoute,

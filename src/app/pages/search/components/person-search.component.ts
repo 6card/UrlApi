@@ -13,6 +13,8 @@ import { finalize } from 'rxjs/operators';
   templateUrl: './_search.component.html'
 })
 export class PersonSearchComponent extends CommonSearchComponent {
+
+  public typeId = 5;
   
   constructor(
     protected router: Router,

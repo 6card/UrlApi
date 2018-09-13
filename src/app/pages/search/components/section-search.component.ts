@@ -14,6 +14,8 @@ import { finalize } from 'rxjs/operators';
 })
 export class SectionSearchComponent extends CommonSearchComponent {
   
+  public typeId = 7;
+
   constructor(
     protected router: Router,
     protected activatedRoute: ActivatedRoute,

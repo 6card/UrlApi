@@ -39,22 +39,15 @@ export class EditPathComponent implements OnInit {
 
     }
 
-    public deleteObject () {
-      const obj = {
-        ObjectTypeId: 0,
-        ObjectId: 0
-      };
-      
-      this.pathService.setObject(this.authenticationService.sessionId, this.item.Id, obj)
+    public deleteObject () {      
+      this.pathService.deleteObject(this.authenticationService.sessionId, this.item.Id)
         .subscribe(
             data => {
-              //this.setValuesToForm(data);
-              //console.log(data);
               this.loadItem(this.item.Id);
-              //this.objectForm = this.toFormGroup(this.item);
-            });
+            });    
     }
-      ngOnInit() {
+
+    ngOnInit() {
         this.activeRoute.params.subscribe(routeParams => {
           this.loadItem(routeParams.id);
         });

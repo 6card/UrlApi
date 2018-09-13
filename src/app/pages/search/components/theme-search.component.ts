@@ -14,6 +14,8 @@ import { finalize } from 'rxjs/operators';
 })
 export class ThemeSearchComponent extends CommonSearchComponent {
   
+  public typeId = 4;
+  
   constructor(
     protected router: Router,
     protected activatedRoute: ActivatedRoute,

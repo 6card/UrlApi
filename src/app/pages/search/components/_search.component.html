@@ -7,6 +7,7 @@
 <search-table 
     (pushPage)="onPageChange($event)" 
 
+    [(typeId)]="typeId"
     [(loading)]="submitLoading"
     [(items)]="searchResult"
     [(totalItems)]="searchItemsResult"

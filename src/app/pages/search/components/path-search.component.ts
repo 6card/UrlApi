@@ -13,6 +13,7 @@ import { finalize } from 'rxjs/operators';
   templateUrl: './_search.component.html'
 })
 export class PathSearchComponent extends CommonSearchComponent {
+
   constructor(
     protected router: Router,
     protected activatedRoute: ActivatedRoute,

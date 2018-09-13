@@ -13,6 +13,8 @@ import { finalize } from 'rxjs/operators';
   templateUrl: './_search.component.html'
 })
 export class SeriesSearchComponent extends CommonSearchComponent {
+
+  public typeId = 8;
   
   constructor(
     protected router: Router,

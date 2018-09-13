@@ -14,6 +14,8 @@ import { finalize } from 'rxjs/operators';
 })
 export class ChannelSearchComponent extends CommonSearchComponent {
 
+  public typeId = 1;
+
   constructor(
     protected router: Router,
     protected activatedRoute: ActivatedRoute,

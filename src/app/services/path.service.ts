@@ -52,5 +52,13 @@ export class PathService {
       return this.http.post<any>(`https://api.newstube.ru/urldev/Path/SetObject`, object, {params});
   }
 
+  //http://localhost:4200/search/editpath/281499
+  deleteObject(sessionId: string, id: any) {
+    const params = new HttpParams()
+      .set('sessionId', sessionId)
+      .set('id', id);
+      return this.http.post<any>(`https://api.newstube.ru/urldev/Path/Delete`, [], {params});
+  }
+
 
 }

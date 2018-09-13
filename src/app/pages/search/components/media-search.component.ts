@@ -14,6 +14,7 @@ import { finalize } from 'rxjs/operators';
 })
 export class MediaSearchComponent extends CommonSearchComponent {
 
+  public typeId = 3;
 
   constructor(
     protected router: Router,
