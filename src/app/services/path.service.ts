@@ -57,7 +57,7 @@ export class PathService {
     const params = new HttpParams()
       .set('sessionId', sessionId)
       .set('id', id);
-      return this.http.post<any>(`https://api.newstube.ru/urldev/Path/Delete`, [], {params});
+      return this.http.post<any>(`https://api.newstube.ru/urldev/Path/Delete`, {}, {params});
   }
 
 

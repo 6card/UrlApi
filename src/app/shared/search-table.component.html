@@ -34,9 +34,9 @@
         </clr-dg-row>
     
         <clr-dg-footer *ngIf="totalItems">
-            <clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems]="totalItems" (clrDgPageChange)="pageChange($event)">
+            <app-pagination #pagination [(page)]="currentPage" [itemsPerPage]="10" [totalItems]="totalItems" (goToPage)="pageChange($event)">
                 {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
                 of {{pagination.totalItems}} items
-            </clr-dg-pagination>
+            </app-pagination>
         </clr-dg-footer>
     </clr-datagrid>

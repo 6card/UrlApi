@@ -131,10 +131,10 @@
             </clr-dg-row>
 
             <clr-dg-footer *ngIf="totalMediasItems">
-                <clr-dg-pagination #pagination [clrDgPageSize]="pageMediasSize" [clrDgTotalItems]="totalMediasItems" (clrDgPageChange)="pageChange($event)">
+                <app-pagination #pagination [itemsPerPage]="pageMediasSize" [totalItems]="totalMediasItems" (goToPage)="pageChange($event)">
                     {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
                     of {{pagination.totalItems}} items
-                </clr-dg-pagination>
+                </app-pagination>
             </clr-dg-footer>
         </clr-datagrid>
 

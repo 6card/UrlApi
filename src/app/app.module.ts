@@ -32,6 +32,7 @@ import { TagSearchComponent } from './pages/search/components/tag-search.compone
 import { ThemeSearchComponent } from './pages/search/components/theme-search.component';
 import { SearchFormComponent } from './shared/search-form.component';
 import { SearchTableComponent } from './shared/search-table.component';
+import { PaginationComponent } from './shared/pagination.component';
 
 import { AuthenticationService } from './services/auth.service';
 //import { PathService } from './services/path.service';
@@ -59,7 +60,8 @@ import { AuthGuard } from './guards/auth.guard';
     ThemeSearchComponent,
     ObjectComponent,
     SearchFormComponent,
-    SearchTableComponent
+    SearchTableComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,

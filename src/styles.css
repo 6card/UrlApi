@@ -82,6 +82,14 @@
     width: 100%;
 }
 
+.datagrid-foot-description{
+    justify-content: flex-end;
+    flex: 0 0 auto;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: stretch;
+}
+
 /*
 .search-form .clr-control-container .select, .search-form .clr-control-container input {
     width: 100%;

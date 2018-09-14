@@ -1,11 +1,14 @@
-import { OnInit } from '@angular/core';
+import { OnInit, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from "@angular/router";
 
 import { AuthenticationService } from '../services/auth.service';
 import { SearchService } from '../services/search.service';
 
-export class CommonSearchComponent implements OnInit {
+import { filter, first } from 'rxjs/operators'
+
+export class CommonSearchComponent implements OnInit, AfterViewInit {
     submitLoading: boolean = false;
+    page: number = 1;
 
     searchResult: Array<any>;
     searchItemsResult: number = 0;
@@ -32,45 +35,55 @@ export class CommonSearchComponent implements OnInit {
         let params: Params;
 
         this.activatedRoute.queryParams
+        .pipe(filter( param => param.q || param.p))
         .subscribe( (param: Params) => {
-            params = param;
-            if (params && Object.keys(params).length === 0) { // empty params
+            if (param && Object.keys(param).length === 0) { // empty params
 
             }
             else {
-              let query: any = [];    
-              for (var i = 0; i < Number(params["idx"])+1; i++) {
-                query.splice(i, 0,{
-                  Operation: params[`Operation${i}`],
-                  Columns: [
-                    {
-                      Column: params[`Column0_${i}`],
-                      Operation: params[`Operation0_${i}`],
-                      Value: params[`Value0_${i}`],
-                    }
-                  ]
-                });
-              }
-              this.searchQuery = query;  
+              this.searchQuery = JSON.parse(decodeURIComponent(param.q));
+              this.searchPage = JSON.parse(decodeURIComponent(param.p));
               this.getResults();
             }
-    
         });
-    
+        this.page = this.getPageNumber();  
     }
-    public onPageChange(page) {
+
+    ngAfterViewInit() {
+      //this.page = this.getPageNumber();
+    }
+
+    private getPageNumber(): number {
+      return (this.searchPage.Start - 1) / 10 + 1;
+    }
+
+    public onPageChange(pageNumber: number) {
+      //this.page = pageNumber;
+      const page = {
+            Start: (pageNumber - 1) * 10 + 1,        
+            Length: 10,        
+            Sort: [        
+                {        
+                    Column: 1,        
+                    Desc: true        
+                }        
+            ]        
+        };
+
         this.searchPage = page;
-        this.getResults();
-      }
+        //this.getResults();
+        this.navigate();
+    }
     
     public onQuery(searchQuery) {
+        //this.page = 1;
         this.searchQuery = searchQuery;
         //this.getResults();
         this.navigate();
     }
 
 
-    public serialize(obj, arr?: Array<any>, idx?: number){   
+    /*public serialize(obj, arr?: Array<any>, idx?: number){   
 
         let res: Array<any> = [];
     
@@ -95,9 +108,16 @@ export class CommonSearchComponent implements OnInit {
         //console.log(res);
         return res;
     }
+    */
+
+    public serialize(query, page) {
+      const q: string = encodeURIComponent(JSON.stringify(query));
+      const p: string = encodeURIComponent(JSON.stringify(page));
+      return {q: q, p: p};
+    }
     
     public navigate(replaceUrl?: boolean) {
-        this.router.navigate([], { replaceUrl: replaceUrl || false, queryParams: this.serialize(this.searchQuery) });
+        this.router.navigate([], { replaceUrl: replaceUrl || false, queryParams: this.serialize(this.searchQuery, this.searchPage) });
     }
     
     getResults() {}

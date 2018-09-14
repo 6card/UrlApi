@@ -1,0 +1,28 @@
+<div class="pagination-description">
+    <ng-content></ng-content>
+</div>
+
+<ul class="pagination-list" *ngIf="pages.length > 1">
+
+    <li *ngIf="directionLinks && !noPrevious()">
+        <button class="pagination-previous"(click)="selectPage(page - 1, $event)" type="button"></button> 
+    </li> 
+
+    <li *ngIf="boundaryLinks" [class.pagination-current]="page == 1">
+        <button [disabled]="noPrevious()" (click)="selectPage(1, $event)">1</button>
+    </li>
+
+    <li *ngFor="let pg of pages" [class.pagination-current]="pg.active" [style.display]="(pg.number > 1 && pg.number < totalPages) ? 'block' : 'none'">
+        <button (click)="selectPage(pg.number, $event)" type="button">{{pg.text}}</button>
+    </li>
+
+    <li class="pagination-last page-item" *ngIf="boundaryLinks" [class.pagination-current]="page == totalPages">
+        <button [disabled]="noNext()" (click)="selectPage(totalPages, $event)">{{totalPages}}</button>
+    </li>
+    
+    <li *ngIf="directionLinks && !noNext()"> 
+        <button class="pagination-next"(click)="selectPage(page + 1, $event)" type="button"></button> 
+    </li>
+
+    
+</ul>
