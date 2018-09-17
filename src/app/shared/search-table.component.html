@@ -13,8 +13,9 @@
         <clr-dg-column>ParentPathId</clr-dg-column>
         <clr-dg-column>ParentPathLatin</clr-dg-column>
         <clr-dg-column>ParentPathSuffix</clr-dg-column>
-        <clr-dg-column>Edit Path</clr-dg-column>
-        <clr-dg-column>Edit Object</clr-dg-column>
+        <clr-dg-column *ngIf="!path">Edit Path</clr-dg-column>
+        <clr-dg-column *ngIf="!path">Edit Object</clr-dg-column>
+        <clr-dg-column *ngIf="path">Set Object</clr-dg-column>
     
         <clr-dg-placeholder>Ничего не найдено</clr-dg-placeholder>
     
@@ -29,8 +30,9 @@
             <clr-dg-cell>{{res.ParentPathId}}</clr-dg-cell>
             <clr-dg-cell>{{res.ParentPathLatin}}</clr-dg-cell>
             <clr-dg-cell>{{res.ParentPathSuffix}}</clr-dg-cell>
-            <clr-dg-cell><a *ngIf="res.PathId" [routerLink]="['/path', res.PathId]">Path</a></clr-dg-cell>
-            <clr-dg-cell><a [routerLink]="['/object', typeId ? typeId : res.ObjectTypeId, typeId ? res.Id : res.ObjectId]">Object</a></clr-dg-cell>
+            <clr-dg-cell *ngIf="!path"><a *ngIf="res.PathId" [routerLink]="['/path', res.PathId]">Path</a></clr-dg-cell>
+            <clr-dg-cell *ngIf="!path"><a [routerLink]="['/object', typeId ? typeId : res.ObjectTypeId, typeId ? res.Id : res.ObjectId]">Object</a></clr-dg-cell>
+            <clr-dg-cell *ngIf="path"><button class="btn btn-primary" (click)="setObject(res)">Set</button></clr-dg-cell>
         </clr-dg-row>
     
         <clr-dg-footer *ngIf="totalItems">

@@ -5,13 +5,15 @@
 ></search-form>
 
 <search-table 
-    (pushPage)="onPageChange($event)" 
+    (pushPage)="onPageChange($event)"
+    (setObj)="onSetObject($event)" 
 
-    [(typeId)]="typeId"
-    [(loading)]="submitLoading"
-    [(items)]="searchResult"
-    [(totalItems)]="searchItemsResult"
-    [(currentPage)]="page"
+    [typeId]="typeId"
+    [loading]="submitLoading"
+    [items]="searchResult"
+    [totalItems]="searchItemsResult"
+    [currentPage]="page"
+    [path]="pathId"
     
 ></search-table>
 

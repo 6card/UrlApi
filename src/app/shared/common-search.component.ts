@@ -1,4 +1,4 @@
-import { OnInit, AfterViewInit } from '@angular/core';
+import { OnInit, Output, EventEmitter  } from '@angular/core';
 import { Router, ActivatedRoute, Params } from "@angular/router";
 
 import { AuthenticationService } from '../services/auth.service';
@@ -6,7 +6,7 @@ import { SearchService } from '../services/search.service';
 
 import { filter, first } from 'rxjs/operators'
 
-export class CommonSearchComponent implements OnInit, AfterViewInit {
+export class CommonSearchComponent implements OnInit {
     submitLoading: boolean = false;
     page: number = 1;
 
@@ -25,6 +25,8 @@ export class CommonSearchComponent implements OnInit, AfterViewInit {
         ]        
     };
 
+    @Output() setObj = new EventEmitter<any>();
+
     constructor(
         protected router: Router,
         protected activatedRoute: ActivatedRoute,
@@ -37,6 +39,7 @@ export class CommonSearchComponent implements OnInit, AfterViewInit {
 
         this.activatedRoute.parent.params.subscribe(routeParams => {
             this.pathId = routeParams.id;
+            //console.log(this.pathId);
         });
 
         this.activatedRoute.queryParams
@@ -52,10 +55,6 @@ export class CommonSearchComponent implements OnInit, AfterViewInit {
             }
         });
         this.page = this.getPageNumber();  
-    }
-
-    ngAfterViewInit() {
-      //this.page = this.getPageNumber();
     }
 
     private getPageNumber(): number {
@@ -77,14 +76,14 @@ export class CommonSearchComponent implements OnInit, AfterViewInit {
 
         this.searchPage = page;
         //this.getResults();
-        this.navigate();
+        this.navigate(true);
     }
     
     public onQuery(searchQuery) {
         //this.page = 1;
         this.searchQuery = searchQuery;
         //this.getResults();
-        this.navigate();
+        this.navigate(true);
     }
 
 
@@ -126,4 +125,8 @@ export class CommonSearchComponent implements OnInit, AfterViewInit {
     }
     
     getResults() {}
+
+    onSetObject(obj: any) {
+        console.log(`Set object to ${this.pathId}`);
+    }
 }
