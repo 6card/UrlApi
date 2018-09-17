@@ -10,6 +10,7 @@ export class CommonSearchComponent implements OnInit, AfterViewInit {
     submitLoading: boolean = false;
     page: number = 1;
 
+    pathId: number;
     searchResult: Array<any>;
     searchItemsResult: number = 0;
     searchQuery: any;
@@ -33,6 +34,10 @@ export class CommonSearchComponent implements OnInit, AfterViewInit {
 
     ngOnInit() { 
         let params: Params;
+
+        this.activatedRoute.parent.params.subscribe(routeParams => {
+            this.pathId = routeParams.id;
+        });
 
         this.activatedRoute.queryParams
         .pipe(filter( param => param.q || param.p))

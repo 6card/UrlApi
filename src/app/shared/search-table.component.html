@@ -29,7 +29,7 @@
             <clr-dg-cell>{{res.ParentPathId}}</clr-dg-cell>
             <clr-dg-cell>{{res.ParentPathLatin}}</clr-dg-cell>
             <clr-dg-cell>{{res.ParentPathSuffix}}</clr-dg-cell>
-            <clr-dg-cell><a *ngIf="res.PathId" [routerLink]="['/search/editpath', res.PathId]">Path</a></clr-dg-cell>
+            <clr-dg-cell><a *ngIf="res.PathId" [routerLink]="['/path', res.PathId]">Path</a></clr-dg-cell>
             <clr-dg-cell><a [routerLink]="['/object', typeId ? typeId : res.ObjectTypeId, typeId ? res.Id : res.ObjectId]">Object</a></clr-dg-cell>
         </clr-dg-row>
     

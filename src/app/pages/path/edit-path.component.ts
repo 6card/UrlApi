@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { AuthenticationService } from '../../../services/auth.service';
-import { PathService } from '../../../services/path.service';
+import { AuthenticationService } from '../../services/auth.service';
+import { PathService } from '../../services/path.service';
 
 import { finalize } from 'rxjs/operators';
 

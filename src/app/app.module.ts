@@ -12,15 +12,14 @@ import { ClarityModule, ClrFormsNextModule } from '@clr/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NavigationComponent } from "./pages/navigation/navigation.component"
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { LoginComponent } from './pages/login/login.component';
 import { SidenavComponent } from './pages/sidenav/sidenav.component';
 import { ObjectComponent } from './pages/object/object.component';
 import { SearchComponent } from './pages/search/search.component';
 import { PathComponent } from './pages/search/path/path.component';
-import { EditPathComponent } from './pages/search/path/edit-path.component';
+import { EditPathComponent } from './pages/path/edit-path.component';
 import { CreateTagComponent } from './pages/cteatetag/create-tag.component';
-
+import { SetObjectComponent } from './pages/set-object/set-object.component';
 
 import { ChannelSearchComponent } from './pages/search/components/channel-search.component';
 import { MediaSearchComponent } from './pages/search/components/media-search.component';
@@ -41,7 +40,6 @@ import { AuthGuard } from './guards/auth.guard';
 @NgModule({
   declarations: [
     AppComponent,
-    DashboardComponent,
     LoginComponent,
     SidenavComponent,
     SearchComponent,
@@ -49,6 +47,7 @@ import { AuthGuard } from './guards/auth.guard';
     PathComponent,
     EditPathComponent,
     CreateTagComponent,
+    SetObjectComponent,
 
     ChannelSearchComponent,
     MediaSearchComponent,
