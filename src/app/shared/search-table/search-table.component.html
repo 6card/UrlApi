@@ -32,7 +32,7 @@
             <clr-dg-cell>{{res.ParentPathSuffix}}</clr-dg-cell>
             <clr-dg-cell *ngIf="!path"><a *ngIf="res.PathId" [routerLink]="['/path', res.PathId]">Path</a></clr-dg-cell>
             <clr-dg-cell *ngIf="!path"><a [routerLink]="['/object', typeId ? typeId : res.ObjectTypeId, typeId ? res.Id : res.ObjectId]">Object</a></clr-dg-cell>
-            <clr-dg-cell *ngIf="path"><button class="btn btn-primary" (click)="setObject(res)">Set</button></clr-dg-cell>
+            <clr-dg-cell *ngIf="path"><button class="btn btn-primary" (click)="setObject(res)">Выбрать</button></clr-dg-cell>
         </clr-dg-row>
     
         <clr-dg-footer *ngIf="totalItems">

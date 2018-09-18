@@ -123,10 +123,14 @@
                 </div>
             </clr-dg-action-bar>
             <clr-dg-column>Id</clr-dg-column>
-            <clr-dg-column>PathLatin</clr-dg-column>
+            <clr-dg-column>Url</clr-dg-column>
+            <clr-dg-column>Edit</clr-dg-column>
             <clr-dg-row *ngFor="let red of item.Redirects">      
                 <clr-dg-cell>{{red.Id}}</clr-dg-cell>
-                <clr-dg-cell>{{red.PathLatin}}</clr-dg-cell>
+                <clr-dg-cell>{{red.Url}}</clr-dg-cell>
+                <clr-dg-cell>
+                    <a [routerLink]="['/path', red.PathId]">Edit</a>
+                </clr-dg-cell>
             </clr-dg-row>
         </clr-datagrid>
         </div>

@@ -3,10 +3,13 @@ import { Router, ActivatedRoute, Params } from "@angular/router";
 
 import { AuthenticationService } from '../services/auth.service';
 import { SearchService } from '../services/search.service';
+import { PathService } from '../services/path.service';
 
-import { filter, first } from 'rxjs/operators'
+import { filter, finalize } from 'rxjs/operators'
 
 export class CommonSearchComponent implements OnInit {
+    public typeId;
+    
     submitLoading: boolean = false;
     page: number = 1;
 
@@ -25,13 +28,15 @@ export class CommonSearchComponent implements OnInit {
         ]        
     };
 
-    @Output() setObj = new EventEmitter<any>();
+    modalDialog: boolean;
+    selectedObject: any;
 
     constructor(
         protected router: Router,
         protected activatedRoute: ActivatedRoute,
         protected searchService: SearchService,
-        protected authenticationService: AuthenticationService
+        protected authenticationService: AuthenticationService,
+        protected pathService: PathService
     ) { }
 
     ngOnInit() { 
@@ -76,14 +81,14 @@ export class CommonSearchComponent implements OnInit {
 
         this.searchPage = page;
         //this.getResults();
-        this.navigate(true);
+        this.navigate();
     }
     
     public onQuery(searchQuery) {
         //this.page = 1;
         this.searchQuery = searchQuery;
         //this.getResults();
-        this.navigate(true);
+        this.navigate();
     }
 
 
@@ -126,7 +131,35 @@ export class CommonSearchComponent implements OnInit {
     
     getResults() {}
 
+    openDialog() {
+        this.modalDialog = true;
+    }
+
+    closeDialog(select: boolean = false) {
+        if (select) {
+            this.pathService.setObject(this.authenticationService.sessionId, this.pathId, {ObjectTypeId: this.typeId, ObjectId: this.selectedObject.Id})
+            .pipe( 
+                finalize( () => this.modalDialog = false)
+            )
+            .subscribe(
+                  data => {
+                    //console.log(data);
+                    this.router.navigate(['/path', this.pathId]);
+                  },
+                  error => {
+                      //console.log(error);
+                      //this.alertService.error(error);                
+                  });
+        }
+        else {
+            this.modalDialog = false;
+        }
+    }
+
     onSetObject(obj: any) {
+        this.selectedObject = obj;
+        this.openDialog();
+
         console.log(`Set object to ${this.pathId}`);
     }
 }

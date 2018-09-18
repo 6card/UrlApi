@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
 
+import { AlertService } from './alert.service'
+
 import {Observable, throwError, of} from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
@@ -9,7 +11,10 @@ import { catchError, map, tap } from 'rxjs/operators';
 })
 export class SearchService {
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private alertService: AlertService
+    ) { }
 
   mediaSearch(sessionId: string, data: any) {
     return this.search('Media', sessionId, data);
@@ -76,43 +81,40 @@ export class SearchService {
   }
 
 
-  search(url: string, sessionId: string, data: any) {
+  search(method: string, sessionId: string, data: any) {
+    const url = `https://api.newstube.ru/urldev/${method}/Search`
     const params = new HttpParams()
     .set('sessionId', sessionId);
 
-    return this.http.post<any>(`https://api.newstube.ru/urldev/${url}/Search`, data, {params})
+    return this.http.post<any>(url, data, {params})
     .pipe(
-      catchError(this.handleError)
+      catchError(this.handleError(url))
     );
   }
 
-  searchCount(url: string, sessionId: string, data: any) {
+  searchCount(method: string, sessionId: string, data: any) {
+      const url = `https://api.newstube.ru/urldev/${method}/SearchCount`
       const params = new HttpParams()
       .set('sessionId', sessionId);
   
-      return this.http.post<any>(`https://api.newstube.ru/urldev/${url}/SearchCount`, data, {params})
+      return this.http.post<any>(url, data, {params})
       .pipe(
-        catchError(this.handleError)
+        catchError(this.handleError(url))
       );
   }
 
-  private handleError(error: HttpErrorResponse) {
-    if (error.error instanceof ErrorEvent) {
-      // A client-side or network error occurred. Handle it accordingly.
-      console.error('An error occurred:', error.error.message);
-    } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong,
-      console.error(
-        `Backend returned code ${error.status}, ` +
-        `body was: ${error.error}`);
-      //this.log(`${operation} failed: ${error.message}`);
-    }
-    // return an observable with a user-facing error message
-    
-    return throwError(
-      'Something bad happened; please try again later.');
-    //return of(error);
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+
+      // TODO: send the error to remote logging infrastructure
+      //console.error(error); // log to console instead
+  
+      // TODO: better job of transforming error for user consumption
+      this.alertService.error(`Response ${operation} failed. ${error.message}`);
+  
+      // Let the app keep running by returning an empty result.
+      return of(result as T);
+    };
   };
 
 }

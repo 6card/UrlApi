@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 
 import { AuthenticationService } from '../../../services/auth.service';
 import { SearchService } from '../../../services/search.service';
+import { PathService } from '../../../services/path.service';
 
 import { CommonSearchComponent }  from '../../../shared/common-search.component';
 
@@ -20,9 +21,10 @@ export class SeriesSearchComponent extends CommonSearchComponent {
     protected router: Router,
     protected activatedRoute: ActivatedRoute,
     protected searchService: SearchService,
-    protected authenticationService: AuthenticationService
+    protected authenticationService: AuthenticationService,
+    protected pathService: PathService
   ) { 
-      super(router, activatedRoute, searchService, authenticationService);
+      super(router, activatedRoute, searchService, authenticationService, pathService);
   }
 
   getResults() {
