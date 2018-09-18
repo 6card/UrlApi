@@ -87,9 +87,7 @@ export class SearchService {
     .set('sessionId', sessionId);
 
     return this.http.post<any>(url, data, {params})
-    .pipe(
-      catchError(this.handleError(url))
-    );
+    .pipe( catchError(this.handleError(url)));
   }
 
   searchCount(method: string, sessionId: string, data: any) {
@@ -98,9 +96,7 @@ export class SearchService {
       .set('sessionId', sessionId);
   
       return this.http.post<any>(url, data, {params})
-      .pipe(
-        catchError(this.handleError(url))
-      );
+      .pipe( catchError(this.handleError(url)) );
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
