@@ -31,7 +31,7 @@
                         <li>ObjectTypeId = {{item.ObjectTypeId}}</li>
                         <li>ObjectTypeName = {{item.ObjectTypeName}}</li>
                         <li>Name = {{item.Name}}</li>
-                        <li>Descripiton = {{item.Descripiton}}</li>
+                        <li>Description = {{item.Description}}</li>
                     </ul>
                 </div>
                 <div class="card-footer">
@@ -69,13 +69,13 @@
             <clr-datagrid>
                 <clr-dg-column>Id</clr-dg-column>
                 <clr-dg-column>ObjectTypeName</clr-dg-column>
-                <clr-dg-column>PathLatin</clr-dg-column>
+                <clr-dg-column>Url</clr-dg-column>
                 <clr-dg-column>Date</clr-dg-column>
                 <clr-dg-column>Edit</clr-dg-column>
                 <clr-dg-row *ngFor="let path of item.HistoryPath">      
                     <clr-dg-cell>{{path.Id}}</clr-dg-cell>
                     <clr-dg-cell>{{path.Item ? path.Item.ObjectTypeName : ''}}</clr-dg-cell>
-                    <clr-dg-cell>{{path.Item ? path.Item.PathLatin : ''}}</clr-dg-cell>
+                    <clr-dg-cell>{{path.Item ? path.Item.Url : ''}}</clr-dg-cell>
                     <clr-dg-cell>{{path.CreateTime | date: 'dd.MM.yyyy HH:mm:ss'}}</clr-dg-cell>
                     <clr-dg-cell>
                         <a *ngIf="path.Item && path.Item.ObjectTypeId == 11" [routerLink]="['/path', path.Item.Id]">Edit</a>
@@ -94,13 +94,13 @@
             <clr-datagrid>
                 <clr-dg-column>Id</clr-dg-column>
                 <clr-dg-column>ObjectTypeName</clr-dg-column>
-                <clr-dg-column>PathLatin</clr-dg-column>
+                <clr-dg-column>Url</clr-dg-column>
                 <clr-dg-column>Date</clr-dg-column>
                 <clr-dg-column>Edit</clr-dg-column>
                 <clr-dg-row *ngFor="let obj of item.HistoryObject">      
                     <clr-dg-cell>{{obj.Id}}</clr-dg-cell>
                     <clr-dg-cell>{{obj.Item ? obj.Item.ObjectTypeName : ''}}</clr-dg-cell>
-                    <clr-dg-cell>{{obj.Item ? obj.Item.PathLatin : ''}}</clr-dg-cell>
+                    <clr-dg-cell>{{obj.Item ? obj.Item.Url : ''}}</clr-dg-cell>
                     <clr-dg-cell>{{obj.CreateTime | date: 'dd.MM.yyyy HH:mm:ss'}}</clr-dg-cell>
                     <clr-dg-cell>
                         <a *ngIf="obj.Item && obj.Item.ObjectTypeId == 11" [routerLink]="['/path', obj.Item.Id]">Edit</a>
@@ -138,9 +138,9 @@
 
 </div>
 
-<clr-modal [(clrModalOpen)]="openedDialog" [clrModalSize]="'lg'">
+<clr-modal [(clrModalOpen)]="openedDialog" [clrModalSize]="'xl'">
     <h3 class="modal-title">Выберите объект</h3>
     <div class="modal-body">
-        <app-search></app-search>
+        <app-search [pathId]="item?.Id"></app-search>
     </div>
 </clr-modal>

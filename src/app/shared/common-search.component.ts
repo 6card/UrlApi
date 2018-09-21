@@ -29,9 +29,6 @@ export class CommonSearchComponent implements OnInit {
     searchQuery: any = START_SQ;
     searchPage: any = START_SP;
 
-    modalDialog: boolean;
-    selectedObject: any;
-
     constructor(
         protected router: Router,
         protected activatedRoute: ActivatedRoute,
@@ -161,36 +158,26 @@ export class CommonSearchComponent implements OnInit {
     }
     
 
-    openDialog() {
-        this.modalDialog = true;
-    }
 
-    closeDialog(select: boolean = false) {
-        if (select) {
-            this.pathService.setObject(this.authenticationService.sessionId, this.pathId, {ObjectTypeId: this.typeId, ObjectId: this.selectedObject.Id})
-            .pipe( 
-                finalize( () => this.modalDialog = false)
-            )
-            .subscribe(
-                  data => {
-                    //console.log(data);
-                    this.router.navigate(['/path', this.pathId]);
-                  },
-                  error => {
-                      //console.log(error);
-                      //this.alertService.error(error);                
-                  });
-        }
-        else {
-            this.modalDialog = false;
-        }
+
+    setObject(obj: any) {
+        this.pathService.setObject(this.authenticationService.sessionId, this.pathId, {ObjectTypeId: this.typeId, ObjectId: obj.Id})
+        .subscribe(
+                data => {
+                //console.log(data);
+                    this.router.navigate([]);
+                },
+                error => {
+                    //console.log(error);
+                    //this.alertService.error(error);                
+                });
     }
 
     onSetObject(obj: any) {
-        this.selectedObject = obj;
-        this.openDialog();
-
-        console.log(`Set object to ${this.pathId}`);
+        if(confirm(`Вы уверены, что хотите установить этот объект?`)) {
+            //console.log(`Set object to ${this.pathId}`);
+            this.setObject(obj);
+        }
     }
 
     getSerachType(index: number): string{

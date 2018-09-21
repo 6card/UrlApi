@@ -7,7 +7,6 @@ import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@ang
   })
 
 export class SearchFormComponent implements OnInit, OnChanges  {
- 
 
     @Input() firstQuery: any;
     private _firstQuery: any;
@@ -20,67 +19,32 @@ export class SearchFormComponent implements OnInit, OnChanges  {
 
     constructor(
         private formBuilder: FormBuilder,
-    ) {
+    ) { }
 
+    ngOnInit() {
+        //this.generateForm();      
     }
 
     
     ngOnChanges(changes: SimpleChanges) {
-	  
-        for (let propName in changes) {  
-            let change = changes[propName];
-            
-            let curVal  = change.currentValue;
-            let prevVal = change.previousValue;
-            if (propName === 'firstQuery') {                
-               this._firstQuery = curVal;
-               this.generateForm();
-            }
-        }
-    }
-
-    /*
-    ngOnChanges(changes: SimpleChanges) {
-        
-        const fq: SimpleChange = changes.firstQuery;
-        console.log(fq)
-        //if (!firstQuery.isFirstChange()) {
-            this._firstQuery = fq.currentValue;
-
-            this.searchForm = this.formBuilder.group({
-                items: this.formBuilder.array([])
-            });
-
+        if(changes.firstQuery && changes.firstQuery.isFirstChange()) {
+            this._firstQuery = changes.firstQuery.currentValue;
             this.generateForm();
-        //}
+        }  
     }
-    */
 
     generateForm() {
         this.clearSearchForm();
-        //console.log(this._firstQuery.length);
-        if (this._firstQuery) {
-            //console.log(this.firstQuery);
-            let arr = [];
+        //console.log(this.firstQuery);
+        if (this._firstQuery[0].Columns.length > 0) {
             this._firstQuery.forEach( item => {
                 //console.log(item);
                 this.addItem(Number(item.Operation), item.Columns[0]);
             })
         }
         else {
-            this.addItem(0);
+            //this.addItem(0);
         }
-    }
-
-
-    ngOnInit() {
-        //this.generateForm();
-
-        /*
-        this.searchForm = this.formBuilder.group({
-            items: this.formBuilder.array([ this.createTagSearchItem() ])
-        });
-        */        
     }
 
     clearSearchForm() {

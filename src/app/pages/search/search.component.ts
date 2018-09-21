@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute, Params } from "@angular/router";
 
 import { filter, finalize } from 'rxjs/operators'
@@ -10,7 +10,7 @@ import { filter, finalize } from 'rxjs/operators'
 export class SearchComponent implements OnInit {
 
   typeId: number = 0;
-  pathId: number;
+  @Input("pathId") pathId: number;
 
   constructor(
     protected router: Router,
@@ -19,10 +19,7 @@ export class SearchComponent implements OnInit {
 
   ngOnInit() {
 
-    this.activatedRoute.parent.params.subscribe(routeParams => {
-      this.pathId = routeParams.id;
-      //console.log(this.pathId);
-    });
+    //console.log(this.pathId);
     
     this.activatedRoute.queryParams
         .pipe(filter( param => param.typeId))
