@@ -15,6 +15,7 @@ import { finalize } from 'rxjs/operators';
 
 export class EditPathComponent implements OnInit {
   item: any;
+  openedDialog: boolean = false;
     
     constructor(
         private pathService: PathService,
@@ -45,6 +46,10 @@ export class EditPathComponent implements OnInit {
             data => {
               this.loadItem(this.item.Id);
             });    
+    }
+
+    public openDialog() {
+      this.openedDialog = true;
     }
 
     ngOnInit() {

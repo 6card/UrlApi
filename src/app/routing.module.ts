@@ -64,7 +64,7 @@ const appRoutes: Routes = [
       //data: { title: 'Search' },
       canActivate: [AuthGuard],
       children:[
-        { path: '', pathMatch: 'full', redirectTo: 'path-url' },
+        //{ path: '', pathMatch: 'full', redirectTo: 'path-url' },
         { path : 'path-url', component: PathComponent },
 
         { path : 'channel', component: ChannelSearchComponent },

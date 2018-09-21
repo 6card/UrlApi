@@ -1,2 +1,36 @@
-<nav></nav>
-<router-outlet></router-outlet>
+<ul class="nav">
+    <li class="nav-item"><a href="javascript:void(0)" (click)="setType(0)" [class.active]="isActive(0)" class="nav-link">Путь</a></li>    
+    <li class="nav-item"><a href="javascript:void(0)" (click)="setType(1)" [class.active]="isActive(1)" class="nav-link">Канал</a></li>
+    <li class="nav-item"><a href="javascript:void(0)" (click)="setType(3)" [class.active]="isActive(3)" class="nav-link">Ролик</a></li>  
+    <li class="nav-item"><a href="javascript:void(0)" (click)="setType(4)" [class.active]="isActive(4)" class="nav-link">Тема</a></li>
+    <li class="nav-item"><a href="javascript:void(0)" (click)="setType(5)" [class.active]="isActive(5)" class="nav-link">Персона</a></li> 
+    <li class="nav-item"><a href="javascript:void(0)" (click)="setType(6)" [class.active]="isActive(6)" class="nav-link">Тег</a></li> 
+    <li class="nav-item"><a href="javascript:void(0)" (click)="setType(7)" [class.active]="isActive(7)" class="nav-link">Раздел</a></li>
+    <li class="nav-item"><a href="javascript:void(0)" (click)="setType(8)" [class.active]="isActive(8)" class="nav-link">Передача</a></li>
+</ul>
+<common-search *ngIf="typeId" [pathId]="pathId"></common-search>
+<app-path *ngIf="!typeId"></app-path>
+<!--
+<clr-tabs>
+    <clr-tab>
+        <button clrTabLink (click)="setType(1)">Канал</button>
+        <clr-tab-content *clrIfActive="isActive(1)">
+            <app-channel-search></app-channel-search>
+        </clr-tab-content>
+    </clr-tab>
+
+    <clr-tab>
+        <button clrTabLink (click)="setType(3)">Ролик</button>
+        <clr-tab-content *clrIfActive="isActive(3)">
+            <app-media-search></app-media-search>
+        </clr-tab-content>
+    </clr-tab>
+
+    <clr-tab>
+        <button clrTabLink (click)="setType(4)">Тема</button>
+        <clr-tab-content *clrIfActive="isActive(4)">
+            <app-theme-search></app-theme-search>
+        </clr-tab-content>
+    </clr-tab>
+</clr-tabs>
+-->

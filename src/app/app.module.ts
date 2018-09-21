@@ -27,10 +27,13 @@ import { SectionSearchComponent } from './pages/search/components/section-search
 import { SeriesSearchComponent } from './pages/search/components/series-search.component';
 import { TagSearchComponent } from './pages/search/components/tag-search.component';
 import { ThemeSearchComponent } from './pages/search/components/theme-search.component';
+import { CommonSearchComponent } from './shared/common-search.component';
+
 import { SearchFormComponent } from './shared/search-form/search-form.component';
 import { SearchTableComponent } from './shared/search-table/search-table.component';
 import { PaginationComponent } from './shared/pagination/pagination.component';
 import { AlertComponent } from './shared/alert/alert.component'
+import { DialogComponent } from './shared/dialog/dialog.component'
 
 import { CookieService } from 'ngx-cookie-service';
 import { AuthenticationService } from './services/auth.service';
@@ -49,6 +52,7 @@ import { AuthGuard } from './guards/auth.guard';
     CreateTagComponent,
     SetObjectComponent,
 
+    
     ChannelSearchComponent,
     MediaSearchComponent,
     PathSearchComponent,
@@ -57,11 +61,14 @@ import { AuthGuard } from './guards/auth.guard';
     SeriesSearchComponent,
     TagSearchComponent,
     ThemeSearchComponent,
+    
+    CommonSearchComponent,
     ObjectComponent,
     SearchFormComponent,
     SearchTableComponent,
     PaginationComponent,
-    AlertComponent
+    AlertComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, Params } from "@angular/router";
+
+import { filter, finalize } from 'rxjs/operators'
 
 @Component({
   selector: 'app-search',
@@ -6,9 +9,47 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SearchComponent implements OnInit {
 
-  constructor() { }
+  typeId: number = 0;
+  pathId: number;
+
+  constructor(
+    protected router: Router,
+    protected activatedRoute: ActivatedRoute,
+  ) { }
 
   ngOnInit() {
+
+    this.activatedRoute.parent.params.subscribe(routeParams => {
+      this.pathId = routeParams.id;
+      //console.log(this.pathId);
+    });
+    
+    this.activatedRoute.queryParams
+        .pipe(filter( param => param.typeId))
+        .subscribe( (param: Params) => {
+            if (param && Object.keys(param).length === 0) { // empty params
+
+            }
+            else {
+              this.typeId = Number(param.typeId);
+            }
+      });
+  }
+
+  public setType(id: number): void {
+    this.typeId = id;
+    if (id)
+      this.navigate();
+    else  
+      this.router.navigate([]);
+  }
+
+  public isActive(id: number): boolean{
+    return this.typeId == id;
+  }
+
+  public navigate(replaceUrl?: boolean) {
+    this.router.navigate([], { replaceUrl: replaceUrl || false, queryParams: {typeId: this.typeId} });
   }
 
 }

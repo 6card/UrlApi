@@ -37,7 +37,7 @@
                 <div class="card-footer">
                     <div class="btn-group btn-primary">
                         <a [routerLink]="['/object', item.ObjectTypeId, item.ObjectId]" class="btn btn-primary">Edit</a>
-                        <a [routerLink]="['/path/set-object', item.Id]" class="btn btn-success">Set Object</a>
+                        <button class="btn btn-success" (click)="openDialog()">Set Object</button>
                         <button class="btn btn-danger" (click)="deleteObject()">Delete</button>
                     </div>
                 </div>
@@ -137,3 +137,10 @@
     </div>  
 
 </div>
+
+<clr-modal [(clrModalOpen)]="openedDialog" [clrModalSize]="'lg'">
+    <h3 class="modal-title">Выберите объект</h3>
+    <div class="modal-body">
+        <app-search></app-search>
+    </div>
+</clr-modal>
