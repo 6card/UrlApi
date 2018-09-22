@@ -63,16 +63,19 @@ export class SearchFormComponent implements OnInit, OnChanges  {
     }
     
     ngOnChanges(changes: SimpleChanges) {
-        if(changes.firstQuery && changes.firstQuery.isFirstChange()) {
+        //if(changes.firstQuery && changes.firstQuery.isFirstChange()) {
+        if(changes.firstQuery) {
             this._firstQuery = changes.firstQuery.currentValue;
+            //console.log(changes.firstQuery);
             this.generateForm();
         }  
     }
 
+
     generateForm() {
         this.clearSearchForm();
-        if (this._firstQuery[0].Columns.length > 0) {
-            this._firstQuery.forEach( item => {
+        if (this.firstQuery[0].Columns.length > 0) {
+            this.firstQuery.forEach( item => {
                 this.addItem(Number(item.Operation), item.Columns[0]);
             })
         }

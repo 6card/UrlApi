@@ -9,306 +9,33 @@ import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@ang
 export class SearchSubFormComponent implements OnInit  {
 
     @Input() subForm: FormGroup;
-
-    public meta = {
-        "Id": 6,
-        "Columns": [
-          {
-            "Operations": [
-              1,
-              7,
-              8,
-              11,
-              12,
-              13,
-              14
-            ],
-            "Id": 8,
-            "GroupName": "Объект",
-            "PropertyName": "Name",
-            "DisplayName": "Название",
-            "MaxLength": 1000,
-            "Unique": false,
-            "Type": "String",
-            "Sort": true,
-            "Filter": true,
-            "ValueObjectType": 0
-          },
-          {
-            "Operations": [
-              1,
-              7,
-              8,
-              11,
-              12,
-              13,
-              14
-            ],
-            "Id": 2147483648,
-            "GroupName": "SEO",
-            "PropertyName": "SeoTitle",
-            "DisplayName": "Title",
-            "MaxLength": 1000,
-            "Unique": false,
-            "Type": "String",
-            "Sort": true,
-            "Filter": true,
-            "ValueObjectType": 0
-          },
-          {
-            "Operations": [
-              1,
-              7,
-              8,
-              11,
-              12,
-              13,
-              14
-            ],
-            "Id": 4294967296,
-            "GroupName": "SEO",
-            "PropertyName": "SeoDescription",
-            "DisplayName": "Description",
-            "MaxLength": 4000,
-            "Unique": false,
-            "Type": "String",
-            "Sort": true,
-            "Filter": true,
-            "ValueObjectType": 0
-          },
-          {
-            "Operations": [
-              1,
-              7,
-              8,
-              11,
-              12,
-              13,
-              14
-            ],
-            "Id": 8589934592,
-            "GroupName": "SEO",
-            "PropertyName": "SeoKeywords",
-            "DisplayName": "Keywords",
-            "MaxLength": 4000,
-            "Unique": false,
-            "Type": "String",
-            "Sort": true,
-            "Filter": true,
-            "ValueObjectType": 0
-          },
-          {
-            "Operations": [
-              1
-            ],
-            "Id": 137438953472,
-            "GroupName": "SEO",
-            "PropertyName": "SeoNoIndex",
-            "DisplayName": "Не индекcировать",
-            "Unique": false,
-            "Type": "Boolean",
-            "Sort": true,
-            "Filter": true,
-            "ValueObjectType": 0
-          },
-          {
-            "Operations": [
-              1
-            ],
-            "Id": 274877906944,
-            "GroupName": "SEO",
-            "PropertyName": "SeoEnable",
-            "DisplayName": "Опубликован",
-            "Unique": false,
-            "Type": "Boolean",
-            "Sort": true,
-            "Filter": true,
-            "ValueObjectType": 0
-          },
-          {
-            "Operations": [
-              1,
-              7,
-              8,
-              11,
-              12,
-              13,
-              14
-            ],
-            "Id": 32,
-            "GroupName": "Объект",
-            "PropertyName": "Description",
-            "DisplayName": "Описание",
-            "MaxLength": 4000,
-            "Unique": false,
-            "Type": "String",
-            "Sort": true,
-            "Filter": true,
-            "ValueObjectType": 0
-          },
-          {
-            "Operations": [
-              1,
-              6,
-              9,
-              10
-            ],
-            "Id": 1,
-            "PropertyName": "Id",
-            "Unique": false,
-            "Type": "Array",
-            "Sort": false,
-            "Filter": true,
-            "ValueObjectType": 6
-          },
-          {
-            "Operations": [
-              1,
-              6,
-              9,
-              10
-            ],
-            "Id": 8388608,
-            "PropertyName": "PathId",
-            "Unique": false,
-            "Type": "Array",
-            "Sort": false,
-            "Filter": true,
-            "ValueObjectType": 11
-          },
-          {
-            "Operations": [
-              1,
-              7,
-              8,
-              11,
-              12,
-              13,
-              14
-            ],
-            "Id": 16777216,
-            "PropertyName": "PathLatin",
-            "DisplayName": "Латиница",
-            "MaxLength": 200,
-            "Unique": false,
-            "Type": "String",
-            "Sort": true,
-            "Filter": true,
-            "ValueObjectType": 0
-          },
-          {
-            "Operations": [
-              1,
-              2,
-              3,
-              4,
-              5,
-              6
-            ],
-            "Id": 33554432,
-            "PropertyName": "PathSuffix",
-            "DisplayName": "Суффикс",
-            "Unique": false,
-            "Type": "Int32",
-            "Sort": true,
-            "Filter": true,
-            "ValueObjectType": 0
-          },
-          {
-            "Operations": [
-              1,
-              6,
-              9,
-              10
-            ],
-            "Id": 67108864,
-            "PropertyName": "ParentPathId",
-            "Unique": false,
-            "Type": "Array",
-            "Sort": false,
-            "Filter": true,
-            "ValueObjectType": 11
-          },
-          {
-            "Operations": [
-              1,
-              7,
-              8,
-              11,
-              12,
-              13,
-              14
-            ],
-            "Id": 134217728,
-            "PropertyName": "ParentPathLatin",
-            "Unique": false,
-            "Type": "String",
-            "Sort": false,
-            "Filter": true,
-            "ValueObjectType": 0
-          },
-          {
-            "Operations": [
-              1,
-              2,
-              3,
-              4,
-              5,
-              6
-            ],
-            "Id": 268435456,
-            "PropertyName": "ParentPathSuffix",
-            "Unique": false,
-            "Type": "Int32",
-            "Sort": false,
-            "Filter": true,
-            "ValueObjectType": 0
-          },
-          {
-            "Id": 0,
-            "PropertyName": "Url",
-            "DisplayName": "Url",
-            "Unique": false,
-            "Type": "String",
-            "Sort": false,
-            "Filter": false,
-            "ValueObjectType": 0
-          },
-          {
-            "Id": 0,
-            "PropertyName": "ParentPath",
-            "DisplayName": "Родительский сегмент",
-            "Unique": false,
-            "Type": "String",
-            "Sort": false,
-            "Filter": false,
-            "ValueObjectType": 0
-          },
-          {
-            "Id": 0,
-            "PropertyName": "Path",
-            "DisplayName": "Сегмент",
-            "Unique": false,
-            "Type": "String",
-            "Sort": false,
-            "Filter": false,
-            "ValueObjectType": 0
-          }
-        ],
-        "Tables": [
-          3
-        ]
-    };
+    @Input() meta;
+    private _meta;
 
     public selectedColumn: number;
+    public selectedOperation: number;
+
+    ngOnChanges(changes: SimpleChanges) {
+      //if(changes.firstQuery && changes.firstQuery.isFirstChange()) {
+      if(changes.meta) {
+          this._meta = changes.meta.currentValue;
+          //console.log(changes.firstQuery);
+          //this.selectedColumn = null;
+          //this.selectedOperation = null;
+      }  
+  }
 
     ngOnInit() {
-        //this.generateForm();
-        //console.log(this.myForm);
+      this.selectedColumn = this.subForm.get('column').value || null;
+      this.selectedOperation = this.subForm.get('operation').value || null;
     }
 
-    onChange(id: number) {
+    onChangeColumn(id: number) {
         this.selectedColumn = id;
+    }
+
+    onChangeOperation(id: number) {
+      this.selectedOperation = id;
     }
 
     getCondition(qop: number) {
@@ -321,7 +48,14 @@ export class SearchSubFormComponent implements OnInit  {
     }
 
     getColumns(){
-        const col = this.meta.Columns.map(item =>  { return {id: item.Id, name: item.DisplayName || item.PropertyName} });
+        const col = this._meta.Columns
+        .sort(function(a, b) {
+          if (a.Id > b.Id) return 1;
+          if (a.Id < b.Id) return -1;
+          return 0;
+        })
+        .filter(item => item.Filter == true)
+        .map(item =>  { return {id: item.Id, name: item.DisplayName || item.PropertyName} });
         //console.log(col);
         return col;
     }
@@ -344,7 +78,7 @@ export class SearchSubFormComponent implements OnInit  {
             {id: 14, name: "не с конца текста"},
         ];
 
-        const op = this.meta.Columns.filter(item => item.Id == columnId)[0].Operations;
+        const op = this._meta.Columns.filter(item => item.Id == columnId)[0].Operations;
 
         return operations.filter(item => {
             return op.includes(item.id);

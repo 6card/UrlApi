@@ -1,11 +1,16 @@
 <form class="clr-form clr-form-horizontal search-form" [formGroup]="searchForm" (ngSubmit)="onSubmit()">
     <div formArrayName="items" *ngFor="let controls of getGroupControls(); let i = index;">
         <div [formGroupName]="i">
-            <search-sub-form [subForm]="controls"></search-sub-form>
+                <div class="clr-form-control clr-row" *ngIf="i > 0">
+                    <div class="clr-control-container clr-col-lg-12 text-center">
+                        <span class="label label-info" (click)="deleteSearchItem(i)">{{getCondition(controls.get('queryOperation').value)}}</span>
+                    </div>
+                </div>
+            <search-sub-form [subForm]="controls" [meta]="meta"></search-sub-form>
         </div>
     </div>
     <div class="clr-form-control clr-row">
-        <div class="clr-control-container clr-col-xs-12 clr-col-md-1 text-center">
+        <div class="clr-control-container clr-col-xs-12 clr-col-md-12 text-center">
             <clr-dropdown>
                 <button type="button" class="btn btn-primary" clrDropdownTrigger>                  
                     <clr-icon shape="plus"></clr-icon>
