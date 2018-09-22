@@ -30,6 +30,7 @@ import { ThemeSearchComponent } from './pages/search/components/theme-search.com
 import { CommonSearchComponent } from './shared/common-search.component';
 
 import { SearchFormComponent } from './shared/search-form/search-form.component';
+import { SearchSubFormComponent } from './shared/search-sub-from/search-sub-from.component';
 import { SearchTableComponent } from './shared/search-table/search-table.component';
 import { PaginationComponent } from './shared/pagination/pagination.component';
 import { AlertComponent } from './shared/alert/alert.component'
@@ -65,6 +66,7 @@ import { AuthGuard } from './guards/auth.guard';
     CommonSearchComponent,
     ObjectComponent,
     SearchFormComponent,
+    SearchSubFormComponent,
     SearchTableComponent,
     PaginationComponent,
     AlertComponent,

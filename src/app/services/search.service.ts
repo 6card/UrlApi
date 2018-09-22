@@ -16,6 +16,7 @@ export class SearchService {
     private alertService: AlertService
     ) { }
 
+  
   mediaSearch(sessionId: string, data: any) {
     return this.search('Media', sessionId, data);
   }
@@ -79,7 +80,15 @@ export class SearchService {
   themeSearchCount(sessionId: string, data: any) {
     return this.searchCount('Theme', sessionId, data);
   }
+  
 
+  getMeta(typeId: number){
+    const url = `https://api.newstube.ru/urldev/Meta/GetMeta`
+    const params = new HttpParams().set('typeId', String(typeId));
+
+    return this.http.get(url, {params})
+      .pipe( catchError(this.handleError(url)));
+  }
 
   search(method: string, sessionId: string, data: any) {
     const url = `https://api.newstube.ru/urldev/${method}/Search`

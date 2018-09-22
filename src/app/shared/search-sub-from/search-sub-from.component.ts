@@ -1,24 +1,15 @@
-import { Component, OnInit, Input, Output, EventEmitter  } from '@angular/core';
-import { Router, ActivatedRoute, Params } from "@angular/router";
-
-import { AuthenticationService } from '../services/auth.service';
-import { SearchService } from '../services/search.service';
-import { PathService } from '../services/path.service';
-
-import { filter, finalize } from 'rxjs/operators'
-
-const START_SQ = [{Operation:0,Columns:[]}];
-const START_SP = { Start: 1, Length: 10, Sort: [{ Column: 1, Desc: true }]};
+import { Component, OnInit, OnChanges, Input, Output, EventEmitter, SimpleChanges, SimpleChange } from '@angular/core';
+import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 
 @Component({
-    selector: 'common-search',
-    templateUrl: '../pages/search/components/_search.component.html'
+    selector: 'search-sub-form',
+    templateUrl: './search-sub-form.component.html'
   })
-  
-export class CommonSearchComponent implements OnInit {
-    
 
-    public typeId;
+export class SearchSubFormComponent implements OnInit  {
+
+    @Input() subForm: FormGroup;
+
     public meta = {
         "Id": 6,
         "Columns": [
@@ -307,230 +298,60 @@ export class CommonSearchComponent implements OnInit {
         "Tables": [
           3
         ]
-      };
-    
-    submitLoading: boolean = false;
-    page: number = 1;
+    };
 
-    @Input() pathId: number;
-    searchResult: Array<any>;
-    searchItemsResult: number = 0;
-    searchQuery: any = START_SQ;
-    searchPage: any = START_SP;
+    public selectedColumn: number;
 
-    constructor(
-        protected router: Router,
-        protected activatedRoute: ActivatedRoute,
-        protected searchService: SearchService,
-        protected authenticationService: AuthenticationService,
-        protected pathService: PathService
-    ) { }
-
-    ngOnInit() { 
-        let params: Params;
-        
-        /*
-        this.activatedRoute.parent.params.subscribe(routeParams => {
-            this.pathId = routeParams.id;
-            //console.log(this.pathId);
-        });
-
-        */
-
-        this.activatedRoute.queryParams
-        .pipe(filter( param => param.q || param.p || param.typeId))
-        .subscribe( (param: Params) => {
-            if (param && Object.keys(param).length === 0) { // empty params
-
-            }
-            else {
-                this.setSearchParams(Number(param.typeId), this.parseParam(param.q), this.parseParam(param.p))
-                //this.searchQuery = this.parseParam(param.q);
-                //this.searchPage = this.parseParam(param.p);
-                //this.typeId = Number(param.typeId);
-                this.getResults();
-                this.getMeta();
-            }
-        });
-        this.page = this.getPageNumber();  
+    ngOnInit() {
+        //this.generateForm();
+        //console.log(this.myForm);
     }
 
-    getMeta(){
-        this.searchService.getMeta(this.typeId)
-        .subscribe(
-            data => {
-            //console.log(data);
-                //this.meta = data;
-            },
-            error => {
-                //console.log(error);
-                //this.alertService.error(error);                
-        });
+    onChange(id: number) {
+        this.selectedColumn = id;
     }
 
-    setSearchParams(t: number, q: string, p: string) {
-        if (q) 
-            this.searchQuery = q;
-        else
-            this.searchQuery = START_SQ;
-        if (p) 
-            this.searchPage = p;
-        else
-            this.searchPage = START_SP;
-        this.typeId = t;
-    }
-
-    private parseParam(param: string) {
-        if (typeof param === "undefined") return;
-        return JSON.parse(decodeURIComponent(param))
-    }
-
-    private getPageNumber(): number {
-        if (typeof this.searchPage === "undefined") return 1;
-        return (this.searchPage.Start - 1) / 10 + 1 || 1;
-    }
-
-    public onPageChange(pageNumber: number) {
-      //this.page = pageNumber;
-      const page = {
-            Start: (pageNumber - 1) * 10 + 1,        
-            Length: 10,        
-            Sort: [        
-                {        
-                    Column: 1,        
-                    Desc: true        
-                }        
-            ]        
-        };
-
-        this.searchPage = page;
-        //this.getResults();
-        this.navigate();
-    }
-    
-    public onQuery(searchQuery) {
-        //this.page = 1;
-        this.searchQuery = searchQuery;
-        //this.getResults();
-        this.navigate();
-    }
-
-
-    /*public serialize(obj, arr?: Array<any>, idx?: number){   
-
-        let res: Array<any> = [];
-    
-        if (typeof arr !== "undefined")
-          res = arr;
-    
-        obj.forEach((item, index) => {
-          for (let key in item) {
-            if (!Array.isArray(item[key])) {
-              let k = `${key}${index}`;
-              if (typeof idx !== "undefined")
-                k += `_${idx}`;
-              res[k] = item[key];
-            }
-            else {
-              res = this.serialize(item[key], res, index);
-            }
-          }
-          res["idx"] = index;
-        });
-        
-        //console.log(res);
-        return res;
-    }
-    */
-
-    public serialize(query, page) {
-      const q: string = encodeURIComponent(JSON.stringify(query));
-      const p: string = encodeURIComponent(JSON.stringify(page));
-      return {q: q, p: p};
-    }
-    
-    public navigate(replaceUrl?: boolean) {
-        const srl = this.serialize(this.searchQuery, this.searchPage);
-        const params = {
-            q: srl.q,
-            p: srl.q,
-            typeId: this.typeId
-        }
-        
-        this.router.navigate([], { replaceUrl: replaceUrl || false, queryParams: params });
-    }
-    
-
-
-
-    setObject(obj: any) {
-        this.pathService.setObject(this.authenticationService.sessionId, this.pathId, {ObjectTypeId: this.typeId, ObjectId: obj.Id})
-        .subscribe(
-                data => {
-                //console.log(data);
-                    this.router.navigate([]);
-                },
-                error => {
-                    //console.log(error);
-                    //this.alertService.error(error);                
-                });
-    }
-
-    onSetObject(obj: any) {
-        if(confirm(`Вы уверены, что хотите установить этот объект?`)) {
-            //console.log(`Set object to ${this.pathId}`);
-            this.setObject(obj);
+    getCondition(qop: number) {
+        switch (qop) {
+            case 0 : return "ИЛИ";
+            case 1 : return "И";
+            case 2 : return "НЕ";
+            default: return "undefined"
         }
     }
 
-    getSerachType(index: number): string{
-
-        const types = {
-            1: "Channel",
-            3: "Media",
-            4: "Theme",
-            5: "Person",
-            6: "Tag",
-            7: "Section",
-            8: "Series",
-        };
-
-        return types[index] || null;
+    getColumns(){
+        const col = this.meta.Columns.map(item =>  { return {id: item.Id, name: item.DisplayName || item.PropertyName} });
+        //console.log(col);
+        return col;
     }
 
-    getResults() {
-        this.submitLoading = true;
-    
-          //console.log(arr);
-          this.searchService.search(this.getSerachType(this.typeId), this.authenticationService.sessionId, {Query: this.searchQuery, Page: this.searchPage})
-          .pipe(
-            finalize(() => this.submitLoading = false)
-          )
-          .subscribe(
-              data => {
-                //console.log(data);
-                this.searchResult = data;
-              },
-              error => {
-                  //console.log(error);
-                  //this.alertService.error(error);                
-              });
-    
-          this.searchService.searchCount(this.getSerachType(this.typeId),this.authenticationService.sessionId, this.searchQuery)
-          .pipe(
-            finalize(() => this.submitLoading = false)
-          )
-          .subscribe(
-              data => {
-                //console.log(data);
-                this.searchItemsResult = data;
-              },
-              error => {
-                  //console.log(error);
-                  //this.alertService.error(error);                
-              },
-              () => {
-                //this.submitLoading = false;
-            });
-      }
+    getOperations(columnId: number){
+        const operations = [
+            {id: 1, name: "равно"},
+            {id: 2, name: "больше"},
+            {id: 3, name: "меньше"},
+            {id: 4, name: "больше или равно"},
+            {id: 5, name: "меньше или равно"},
+            {id: 6, name: "не равно"},
+            {id: 7, name: "вхождение текста"},
+            {id: 8, name: "текст не должен входить"},
+            {id: 9, name: "список значенией"},
+            {id: 10, name: "исключить список значений"},
+            {id: 11, name: "в начале текста"},
+            {id: 12, name: "в конце текста"},
+            {id: 13, name: "не сначала текста"},
+            {id: 14, name: "не с конца текста"},
+        ];
+
+        const op = this.meta.Columns.filter(item => item.Id == columnId)[0].Operations;
+
+        return operations.filter(item => {
+            return op.includes(item.id);
+        });
+    }
+
+    public controlIsInvalid(control) {
+        return control.invalid && control.touched;
+    }
 }
