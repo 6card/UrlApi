@@ -85,6 +85,11 @@ export class SearchSubFormComponent implements OnInit  {
         });
     }
 
+    getValues(columnId: number) {
+        let values = this._meta.Columns.filter(item => item.Id == columnId)[0].Values;
+        return values || null;
+    }
+
     public controlIsInvalid(control) {
         return control.invalid && control.touched;
     }

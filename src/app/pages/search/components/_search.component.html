@@ -1,7 +1,8 @@
 <search-form 
 (pushQuery)="onQuery($event)" 
 [(loading)]="submitLoading"
-[(firstQuery)]="searchQuery"
+[firstQuery]="searchQuery"
+[typeId]="typeId"
 [meta]="meta"
 ></search-form>
 

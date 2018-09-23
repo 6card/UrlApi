@@ -10,6 +10,7 @@ import { SearchService } from '../../services/search.service';
 
 export class SearchFormComponent implements OnInit, OnChanges  {
 
+    @Input() typeId: any;
     @Input() firstQuery: any;
     private _firstQuery: any;
     @Input() loading: boolean = false;
@@ -64,8 +65,8 @@ export class SearchFormComponent implements OnInit, OnChanges  {
     
     ngOnChanges(changes: SimpleChanges) {
         //if(changes.firstQuery && changes.firstQuery.isFirstChange()) {
-        if(changes.firstQuery) {
-            this._firstQuery = changes.firstQuery.currentValue;
+        if(changes.firstQuery || changes.typeId) {
+            //this._firstQuery = changes.firstQuery.currentValue;
             //console.log(changes.firstQuery);
             this.generateForm();
         }  

@@ -169,7 +169,7 @@ export class CommonSearchComponent implements OnInit {
         const srl = this.serialize(this.searchQuery, this.searchPage);
         const params = {
             q: srl.q,
-            p: srl.q,
+            p: srl.p,
             typeId: this.typeId
         }
         

@@ -4,11 +4,23 @@
             <input formControlName="url" type="text">
         </div>
         <div class="clr-control-container clr-col-xs-12 clr-col-md-1">
-            <button [clrLoading]="submitLoading" type="submit" class="btn">Search</button>
+            <button [clrLoading]="submitLoading" type="submit" class="btn">Перейти</button>
         </div>
     </div>
 </form>
 
+<div *ngIf="error" class="alert alert-danger">
+    <div class="alert-items">
+        <div class="alert-item static">
+            <div class="alert-icon-wrapper">
+                <clr-icon class="alert-icon" shape="exclamation-circle"></clr-icon>
+            </div>
+            <span class="alert-text">
+                {{error}}
+            </span>
+        </div>
+    </div>
+</div>
 
 <div *ngIf="item">
     <div class="row">
