@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup, FormControl, FormArray, Validators, ValidatorFn
 
 import { finalize } from 'rxjs/operators';
 
-import { Meta, MetaColumn } from './meta.model';
-import { MetaService } from './meta.service';
+import { Meta, MetaColumn } from '../../models/meta.model';
+import { MetaService } from '../../services/meta.service';
 
 @Component({
     selector: 'search-sub-form',

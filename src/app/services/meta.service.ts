@@ -4,7 +4,7 @@ import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http'
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import { AlertService } from '../../services/alert.service'
+import { AlertService } from './alert.service'
 
 @Injectable({
     providedIn: 'root'

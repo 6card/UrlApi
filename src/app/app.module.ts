@@ -9,32 +9,22 @@ import { AppRoutingModule } from "./routing.module";
 import { ClarityModule, ClrFormsNextModule } from '@clr/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { NavigationComponent } from "./pages/navigation/navigation.component"
 import { LoginComponent } from './pages/login/login.component';
-import { SidenavComponent } from './pages/sidenav/sidenav.component';
 import { ObjectComponent } from './pages/object/object.component';
 import { SearchComponent } from './pages/search/search.component';
-import { PathComponent } from './pages/search/path/path.component';
-import { EditPathComponent } from './pages/path/edit-path.component';
+import { SearchPathComponent } from './components/search-path/search-path.component';
+import { EditPathComponent } from './pages/path/path.component';
 import { CreateTagComponent } from './pages/cteatetag/create-tag.component';
 import { SetObjectComponent } from './pages/set-object/set-object.component';
 
-import { ChannelSearchComponent } from './pages/search/components/channel-search.component';
-import { MediaSearchComponent } from './pages/search/components/media-search.component';
-import { PathSearchComponent } from './pages/search/components/path-search.component';
-import { PersonSearchComponent } from './pages/search/components/person-search.component';
-import { SectionSearchComponent } from './pages/search/components/section-search.component';
-import { SeriesSearchComponent } from './pages/search/components/series-search.component';
-import { TagSearchComponent } from './pages/search/components/tag-search.component';
-import { ThemeSearchComponent } from './pages/search/components/theme-search.component';
-import { CommonSearchComponent } from './shared/common-search.component';
-
-import { SearchFormComponent } from './shared/search-form/search-form.component';
-import { SearchSubFormComponent } from './shared/search-sub-from/search-sub-from.component';
-import { SearchTableComponent } from './shared/search-table/search-table.component';
-import { PaginationComponent } from './shared/pagination/pagination.component';
-import { AlertComponent } from './shared/alert/alert.component'
-import { DialogComponent } from './shared/dialog/dialog.component'
+import { CommonSearchComponent } from './components/common-search/common-search.component';
+import { NavigationComponent } from "./components/navigation/navigation.component";
+import { SearchFormComponent } from './components/search-form/search-form.component';
+import { SearchSubFormComponent } from './components/search-sub-from/search-sub-from.component';
+import { SearchTableComponent } from './components/search-table/search-table.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
+import { AlertComponent } from './components/alert/alert.component'
+import { DialogComponent } from './components/dialog/dialog.component'
 
 import { CookieService } from 'ngx-cookie-service';
 import { AuthenticationService } from './services/auth.service';
@@ -45,23 +35,12 @@ import { AuthGuard } from './guards/auth.guard';
   declarations: [
     AppComponent,
     LoginComponent,
-    SidenavComponent,
     SearchComponent,
     NavigationComponent,
-    PathComponent,
+    SearchPathComponent,
     EditPathComponent,
     CreateTagComponent,
     SetObjectComponent,
-
-    
-    ChannelSearchComponent,
-    MediaSearchComponent,
-    PathSearchComponent,
-    PersonSearchComponent,
-    SectionSearchComponent,
-    SeriesSearchComponent,
-    TagSearchComponent,
-    ThemeSearchComponent,
     
     CommonSearchComponent,
     ObjectComponent,

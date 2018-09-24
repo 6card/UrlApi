@@ -9,8 +9,8 @@ import { finalize } from 'rxjs/operators';
 //https://kamranahmed.info/blog/2018/02/28/dealing-with-route-params-in-angular-5/
 
 @Component({
-    selector: 'app-edit-path',
-    templateUrl: './edit-path.component.html'
+    selector: 'app-path',
+    templateUrl: './path.component.html'
   })
 
 export class EditPathComponent implements OnInit {

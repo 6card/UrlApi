@@ -2,19 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 
 import { Router, ActivatedRoute, Params } from "@angular/router";
-//https://alligator.io/angular/reactive-forms-formarray-dynamic-fields/
 
-import { AuthenticationService } from '../../../services/auth.service';
-import { PathService } from '../../../services/path.service';
-import { SearchService } from '../../../services/search.service';
 
-import { first } from 'rxjs/operators';
+import { AuthenticationService } from '../../services/auth.service';
+import { PathService } from '../../services/path.service';
+import { SearchService } from '../../services/search.service';
+
+import { finalize } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-path',
-  templateUrl: './path.component.html'
+  selector: 'app-search-path',
+  templateUrl: './search-path.component.html'
 })
-export class PathComponent implements OnInit {
+export class SearchPathComponent implements OnInit {
   pathByUrlForm: FormGroup;
   submitLoading: boolean = false;
   item: Object = null;
@@ -43,22 +43,18 @@ export class PathComponent implements OnInit {
     }
 
     this.pathService.getByUrl(this.authenticationService.sessionId, this.pathByUrlForm.controls.url.value)
+      .pipe( finalize(() => this.submitLoading = false))
         .subscribe(
             data => {
               if(data) {
                 this.item = data;
                 this.router.navigate(['/path', data['Id']]);
               }
-              else this.error = "Путь не найден";
-              //console.log(data);
+              else 
+                this.error = "Путь не найден";
             },
-            error => {
-                console.log(error);
-                //this.alertService.error(error);                
-            },
-            () => {
-              this.submitLoading = false;
-            });
+            error => {}
+            );
     }
 
 }

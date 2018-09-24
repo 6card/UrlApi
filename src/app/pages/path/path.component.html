@@ -15,6 +15,11 @@
                         <li>ParentPathSuffix = {{item.ParentPathSuffix}}</li>
                     </ul>
                 </div>
+                <div class="card-footer">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary">Перенаправить на путь</button>
+                    </div>
+                </div>
             </div>
         </div>
     
@@ -36,9 +41,9 @@
                 </div>
                 <div class="card-footer">
                     <div class="btn-group btn-primary">
-                        <a [routerLink]="['/object', item.ObjectTypeId, item.ObjectId]" class="btn btn-primary">Edit</a>
-                        <button class="btn btn-success" (click)="openDialog()">Set Object</button>
-                        <button class="btn btn-danger" (click)="deleteObject()">Delete</button>
+                        <a [routerLink]="['/object', item.ObjectTypeId, item.ObjectId]" class="btn btn-primary">EDIT</a>
+                        <button class="btn btn-success" (click)="openDialog()">Выставить объект</button>
+                        <button class="btn btn-danger" (click)="deleteObject()">Удалить</button>
                     </div>
                 </div>
             </div>
@@ -113,15 +118,8 @@
 
     <div class="row">
         <div class="col-sm-12">
-
-        <h3>Список редиректов на данный путь</h3>
-        
-        <clr-datagrid>
-            <clr-dg-action-bar>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-secondary"><clr-icon shape="plus"></clr-icon> Add new redirect</button>
-                </div>
-            </clr-dg-action-bar>
+        <h3>Список редиректов на данный путь</h3>        
+        <clr-datagrid>            
             <clr-dg-column>Id</clr-dg-column>
             <clr-dg-column>Url</clr-dg-column>
             <clr-dg-column>Edit</clr-dg-column>
