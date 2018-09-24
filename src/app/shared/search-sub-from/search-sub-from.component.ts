@@ -1,54 +1,112 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter, SimpleChanges, SimpleChange } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, FormArray, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
+
+import { finalize } from 'rxjs/operators';
+
+import { Meta, MetaColumn } from './meta.model';
+import { MetaService } from './meta.service';
 
 @Component({
     selector: 'search-sub-form',
-    templateUrl: './search-sub-form.component.html'
+    templateUrl: './search-sub-form.component.html',
+    providers: [ MetaService ]
   })
 
 export class SearchSubFormComponent implements OnInit  {
 
     @Input() subForm: FormGroup;
-    @Input() meta;
-    private _meta;
+    @Input() typeId: number;
+
+    public meta;
+    public metaLoading: boolean = false;
 
     public selectedColumn: number;
     public selectedOperation: number;
 
-    ngOnChanges(changes: SimpleChanges) {
-      //if(changes.firstQuery && changes.firstQuery.isFirstChange()) {
-      if(changes.meta) {
-          this._meta = changes.meta.currentValue;
-          //console.log(changes.firstQuery);
-          //this.selectedColumn = null;
-          //this.selectedOperation = null;
-      }  
-  }
-
+    constructor(
+        private metaService: MetaService,
+    ) { }
+    
     ngOnInit() {
-      this.selectedColumn = this.subForm.get('column').value || null;
-      this.selectedOperation = this.subForm.get('operation').value || null;
+        this.getMeta(this.typeId);
+        this.selectedColumn = this.subForm.get('column').value || null;
+        this.selectedOperation = this.subForm.get('operation').value || null;
+    }
+
+    getMeta(typeId: number) {
+        this.metaLoading = true;
+
+        this.metaService.getMeta(typeId)        
+        .pipe( finalize( () => this.metaLoading = false ) )
+        .subscribe(
+            (data: Meta) => { 
+                this.meta = new Meta(data);
+                this.setValueValidators();
+            },
+            error => {}
+        );
+    }
+
+    setValueValidators() {
+        if (this.selectedColumn) {
+            let validators: Array<ValidatorFn> = [Validators.required];
+
+            if (this.metaColumn.MaxLength)
+                validators.push(Validators.maxLength(this.metaColumn.MaxLength));
+            
+            if (this.metaColumn.Type == 'Int32') {
+                if(this.metaColumn.Operations.includes(9) && this.metaColumn.Operations.includes(10)) 
+                    validators.push(this.digitsArrayValidator());
+                else
+                    validators.push(this.digitsValidator());
+            }
+            
+            this.subForm.get('value').setValidators(validators);       
+        }
+    }
+
+    digitsArrayValidator(): ValidatorFn {
+        const pattern: RegExp = new RegExp(/^([0-9],?\s?)*$/i)
+        return (control: AbstractControl): {[key: string]: any} | null => {
+          const forbidden = control.value.match(pattern);
+          return !forbidden ? {'digitsArray': true} : null;
+        };
+    }
+
+    digitsValidator(): ValidatorFn {
+        const pattern: RegExp = new RegExp(/^[0-9]*$/i)
+        return (control: AbstractControl): {[key: string]: any} | null => {
+          const forbidden = control.value.match(pattern);
+          return !forbidden ? {'digits': true} : null;
+        };
+    }
+
+    public getControlErrorMessage(controlName: string): string {
+        const control = this.subForm.get(controlName);
+        //console.log(control.errors);
+        if (control.errors.required)
+            return 'Поле обязательно для заполнения!'
+        if (control.errors.maxlength) 
+            return `Максимальная длина поля ${control.errors.maxlength.requiredLength} символов`;
+        if (control.errors.digits) 
+            return `Поле должно содержать только цифры`;
+        if (control.errors.digitsArray) 
+            return `Поле должно содержать только цифры или список цифр через запятую`; 
+
+        return null;
+    }
+
+    get metaColumn(): MetaColumn {
+        return this.meta.Columns.filter( c => c.Id == this.selectedColumn)[0] || null;
     }
 
     onChangeColumn(id: number) {
         this.selectedColumn = id;
-    }
-
-    onChangeOperation(id: number) {
-      this.selectedOperation = id;
-    }
-
-    getCondition(qop: number) {
-        switch (qop) {
-            case 0 : return "ИЛИ";
-            case 1 : return "И";
-            case 2 : return "НЕ";
-            default: return "undefined"
-        }
+        this.setValueValidators();
     }
 
     getColumns(){
-        const col = this._meta.Columns
+        return this.meta.Columns
         .sort(function(a, b) {
           if (a.Id > b.Id) return 1;
           if (a.Id < b.Id) return -1;
@@ -56,8 +114,6 @@ export class SearchSubFormComponent implements OnInit  {
         })
         .filter(item => item.Filter == true)
         .map(item =>  { return {id: item.Id, name: item.DisplayName || item.PropertyName} });
-        //console.log(col);
-        return col;
     }
 
     getOperations(columnId: number){
@@ -78,19 +134,20 @@ export class SearchSubFormComponent implements OnInit  {
             {id: 14, name: "не с конца текста"},
         ];
 
-        const op = this._meta.Columns.filter(item => item.Id == columnId)[0].Operations;
+        const op = this.metaColumn.Operations;
 
         return operations.filter(item => {
             return op.includes(item.id);
         });
     }
 
-    getValues(columnId: number) {
-        let values = this._meta.Columns.filter(item => item.Id == columnId)[0].Values;
+    getColumnValues() {
+        let values = this.metaColumn.Values;
         return values || null;
     }
 
-    public controlIsInvalid(control) {
+    public controlIsInvalid(controlName: string): boolean {
+        const control = this.subForm.get(controlName);
         return control.invalid && control.touched;
     }
 }

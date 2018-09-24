@@ -6,7 +6,7 @@
                         <span class="label label-info" (click)="deleteSearchItem(i)">{{getCondition(controls.get('queryOperation').value)}}</span>
                     </div>
                 </div>
-            <search-sub-form [subForm]="controls" [meta]="meta"></search-sub-form>
+            <search-sub-form [subForm]="controls" [typeId]="typeId"></search-sub-form>
         </div>
     </div>
     <div class="clr-form-control clr-row">

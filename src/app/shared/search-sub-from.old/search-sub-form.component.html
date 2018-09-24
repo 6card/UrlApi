@@ -1,0 +1,39 @@
+<div [formGroup]="subForm" *ngIf="meta"> 
+    <input type="hidden" formControlName="queryOperation">
+    
+    <div class="clr-form-control clr-row">
+                
+        <div class="clr-control-container clr-col-xs-12 clr-col-md-4" [ngClass]="{'clr-error' : controlIsInvalid(subForm.get('column'))}">
+            <div class="select">
+                <select formControlName="column" class="clr-input" (change)="onChangeColumn($event.target.value)">
+                <option disabled selected hidden [value]="null">-- select --</option>
+                <option *ngFor="let c of getColumns();" [value]="c.id">{{c.name}}</option>
+                </select>                  
+            </div>
+            <div class="clr-subtext" *ngIf="controlIsInvalid(subForm.get('column'))">This field is required!</div>
+        </div>
+        
+        <div *ngIf="selectedColumn" class="clr-control-container clr-col-xs-12 clr-col-md-4" [ngClass]="{'clr-error' : controlIsInvalid(subForm.get('operation'))}">
+            <div class="select">
+                <select formControlName="operation" class="clr-input" (change)="onChangeOperation($event.target.value)">
+                <option disabled selected hidden [value]="null">-- select --</option>
+                <option *ngFor="let o of getOperations(selectedColumn);" [value]="o.id">{{o.name}}</option>
+                </select>
+            </div>
+            <div class="clr-subtext" *ngIf="controlIsInvalid(subForm.get('operation'))">This field is required!</div>
+        </div>
+        
+        <div *ngIf="selectedOperation" class="clr-control-container clr-col-xs-12 clr-col-md-4" [ngClass]="{'clr-error' : controlIsInvalid(subForm.get('value'))}">
+            <div class="select" *ngIf="getValues(selectedColumn)">
+                <select formControlName="value" class="clr-input">
+                    <option disabled selected hidden [value]="null">-- select --</option>
+                    <option *ngFor="let v of getValues(selectedColumn);" [value]="v.Key">{{v.Value}}</option>
+                </select>
+            </div>
+            <input *ngIf="!getValues(selectedColumn)" type="text" formControlName="value" placeholder="Value" class="clr-input" />
+            <div class="clr-subtext" *ngIf="controlIsInvalid(subForm.get('value'))">This field is required!</div>
+        </div>
+        
+    </div>
+    
+</div>
