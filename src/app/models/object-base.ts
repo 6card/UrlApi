@@ -4,17 +4,19 @@ export class ObjectBase {
     ObjectTypeId: number;
     ObjectTypeName: string;
     Name: string;
+    Description: string;
+    SeoEnable: boolean;
+    SeoNoIndex: boolean;
     SeoTitle: string;
     SeoDescription: string;
-    SeoKeywords: string;
-    SeoNoIndex: boolean;
-    SeoStatusId: number;        
+    SeoKeywords: string;     
     Id: number;
     PathLatin: string;
     PathSuffix: number;
     ParentPathId: number;
     ParentPathLatin: string;
     ParentPathSuffix: number;
+    Url: string;
     HistoryPath: Array<any>;
     HistoryObject: Array<any>;
     Redirects: Array<any>;
@@ -25,17 +27,19 @@ export class ObjectBase {
         ObjectTypeId?: number,
         ObjectTypeName?: string,
         Name?: string,
+        Description?: string,
+        SeoNoIndex?: boolean,
+        SeoEnable?: boolean,
         SeoTitle?: string,
         SeoDescription?: string,
-        SeoKeywords?: string,
-        SeoNoIndex?: boolean,
-        SeoStatusId?: number,
+        SeoKeywords?: string,        
         Id?: number,
         PathLatin?: string,
         PathSuffix?: number,
         ParentPathId?: number,
         ParentPathLatin?: string,
         ParentPathSuffix?: number,
+        Url?: string;
         HistoryPath?: Array<any>,
         HistoryObject?: Array<any>,
         Redirects?: Array<any>
@@ -46,17 +50,19 @@ export class ObjectBase {
         this.ObjectTypeId = obj.ObjectTypeId;
         this.ObjectTypeName = obj.ObjectTypeName || '';
         this.Name = obj.Name || '';
+        this.Description = obj.Description || '';
+        this.SeoNoIndex = obj.SeoNoIndex;
+        this.SeoEnable = obj.SeoEnable;
         this.SeoTitle = obj.SeoTitle  || '';
         this.SeoDescription = obj.SeoDescription  || '';
-        this.SeoKeywords = obj.SeoKeywords || '';
-        this.SeoNoIndex = obj.SeoNoIndex;
-        this.SeoStatusId = obj.SeoStatusId;
+        this.SeoKeywords = obj.SeoKeywords || '';        
         this.Id = obj.Id;
         this.PathLatin = obj.PathLatin || '';
         this.PathSuffix = obj.PathSuffix;
         this.ParentPathId = obj.ParentPathId;
         this.ParentPathLatin = obj.ParentPathLatin || '';
         this.ParentPathSuffix = obj.ParentPathSuffix;
+        this.Url = obj.Url;
         this.HistoryPath = obj.HistoryPath;
         this.HistoryObject = obj.HistoryObject;
         this.Redirects = obj.Redirects;

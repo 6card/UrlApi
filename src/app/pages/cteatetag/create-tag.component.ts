@@ -23,6 +23,10 @@ export class CreateTagComponent implements OnInit {
      
     }
 
+    addProduct(tag: ObjectBase) {
+        console.log(tag);
+    }
+
 
 
 

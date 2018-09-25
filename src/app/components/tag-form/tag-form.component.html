@@ -1,0 +1,16 @@
+<form class="clr-form clr-form-horizontal" [formGroup]="tagForm" (ngSubmit)="submitForm(tagForm)">
+    <div class="clr-form-control" *ngFor="let control of tagForm.tagControls" [ngClass]="{'clr-error' : control.isValid}">
+        <label for="example" class="clr-control-label">{{control.label}}</label>
+        <div class="clr-control-container">
+            <div class="clr-input-wrapper">
+                <input type="text" class="clr-input" formControlName="{{control.modelProperty}}">
+                <div class="clr-subtext" *ngIf="control.isValid">{{control.getValidationLastMessage()}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="clr-form-control clr-row">
+        <div class="clr-control-container clr-col-xs-12 clr-col-md-12 text-center">
+            <button [clrLoading]="formSubmitted" class="btn btn-primary" type="submit" [disabled]="formSubmitted || !tagForm.valid"> Create</button>
+        </div>
+    </div>
+</form>

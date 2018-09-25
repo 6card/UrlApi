@@ -23,8 +23,9 @@ import { SearchFormComponent } from './components/search-form/search-form.compon
 import { SearchSubFormComponent } from './components/search-sub-from/search-sub-from.component';
 import { SearchTableComponent } from './components/search-table/search-table.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
-import { AlertComponent } from './components/alert/alert.component'
-import { DialogComponent } from './components/dialog/dialog.component'
+import { AlertComponent } from './components/alert/alert.component';
+import { DialogComponent } from './components/dialog/dialog.component';
+import { TagFormComponent } from './components/tag-form/tag-from.component';
 
 import { CookieService } from 'ngx-cookie-service';
 import { AuthenticationService } from './services/auth.service';
@@ -49,7 +50,8 @@ import { AuthGuard } from './guards/auth.guard';
     SearchTableComponent,
     PaginationComponent,
     AlertComponent,
-    DialogComponent
+    DialogComponent,
+    TagFormComponent
   ],
   imports: [
     BrowserModule,
