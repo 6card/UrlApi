@@ -14,7 +14,9 @@ import { ObjectBase } from '../../models/object-base';
     templateUrl: './create-tag.component.html'
   })
 
-export class CreateTagComponent implements OnInit {  
+export class CreateTagComponent implements OnInit { 
+
+    tag = new ObjectBase;
     
     constructor() {}
 
@@ -24,7 +26,8 @@ export class CreateTagComponent implements OnInit {
     }
 
     addProduct(tag: ObjectBase) {
-        console.log(tag);
+        let newTag = new ObjectBase(tag);
+        console.log(newTag);
     }
 
 

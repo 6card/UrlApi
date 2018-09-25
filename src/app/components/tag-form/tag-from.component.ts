@@ -23,11 +23,17 @@ export class TagFormComponent {
     }
 
     submitForm(form: any) {
+        this.tagForm.markControlsTouched();
+
+        if (!this.tagForm.valid)
+            return;
+
         this.formSubmitted = true;
         if (form.valid) {
-            this.newTagEvent.emit(this.newTag);
-            this.newTag = new ObjectBase();
-            this.tagForm.reset();            
+            //this.newTag = new ObjectBase(this.tagForm.value);
+            this.newTagEvent.emit(this.tagForm.value);
+            //this.newTag = new ObjectBase();
+            //this.tagForm.reset();            
         }
         this.formSubmitted = false;
     }
@@ -36,11 +42,13 @@ export class TagFormComponent {
 class TagFormControl extends FormControl {
     label: string;
     modelProperty: string;
+    type: number;
 
-    constructor(label:string, property:string, value: any, validator: any) {
+    constructor(label:string, property:string, type: number, value: any, validator?: any) {
         super(value, validator);
         this.label = label;
         this.modelProperty = property;
+        this.type = type;
     }
 
     get isValid() {
@@ -82,28 +90,33 @@ class TagFormControl extends FormControl {
     
 }
 
+const CONTROL_INPUT = 0;
+const CONTROL_TEXTAREA = 1;
+const CONTROL_CHECKBOX = 2;
+const CONTROL_SELECT = 3;
 
 class TagFormGroup extends FormGroup {
+
     constructor() {
         super({
-            Name: new TagFormControl("Name", "Name", "", Validators.required),
-            Description: new TagFormControl("Description", "Description", "",
-                Validators.compose([Validators.required,
-                    Validators.pattern("^[A-Za-z ]+$"),
-                    Validators.minLength(3),
-                    Validators.maxLength(10)]
-                )
+            Name: new TagFormControl("Name", "Name", CONTROL_INPUT, "", Validators.required),
+            Description: new TagFormControl("Description", "Description", CONTROL_TEXTAREA, "",
+                Validators.compose([Validators.required])
             ),
-            price: new TagFormControl("Price", "price", "",
-                Validators.compose([Validators.required,
-                    Validators.pattern("^[0-9\.]+$")]
-                )
-            )
+            SeoEnable: new TagFormControl("SeoEnable", "SeoEnable", CONTROL_CHECKBOX, false),
+            SeoTitle: new TagFormControl("SeoTitle", "SeoTitle", CONTROL_INPUT, ""),
+            SeoDescription: new TagFormControl("SeoDescription", "SeoDescription", CONTROL_TEXTAREA, ""),
+            SeoKeywords: new TagFormControl("SeoKeywords", "SeoKeywords", CONTROL_INPUT, ""),
+            SeoNoIndex: new TagFormControl("SeoNoIndex", "SeoNoIndex", CONTROL_CHECKBOX, false),
         });
     }
 
     get tagControls(): TagFormControl[] {
         return Object.keys(this.controls).map(k => this.controls[k] as TagFormControl);
+    }
+
+    public markControlsTouched() {
+        (Object).values(this.controls).forEach( control => control.markAsTouched() );
     }
 
     /*

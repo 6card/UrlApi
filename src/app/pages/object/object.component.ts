@@ -35,7 +35,7 @@ export class ObjectComponent implements OnInit {
       Name: new FormControl(''),
       Description: new FormControl(''),
       SeoNoIndex: new FormControl(''),
-      SeoStatusId: new FormControl(''),
+      SeoEnable: new FormControl(''),
       SeoTitle: new FormControl(''),
       SeoDescription: new FormControl(''),
       SeoKeywords: new FormControl(''),      

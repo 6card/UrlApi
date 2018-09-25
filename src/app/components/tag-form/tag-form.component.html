@@ -1,16 +1,29 @@
 <form class="clr-form clr-form-horizontal" [formGroup]="tagForm" (ngSubmit)="submitForm(tagForm)">
     <div class="clr-form-control" *ngFor="let control of tagForm.tagControls" [ngClass]="{'clr-error' : control.isValid}">
-        <label for="example" class="clr-control-label">{{control.label}}</label>
-        <div class="clr-control-container">
-            <div class="clr-input-wrapper">
+        <label class="clr-control-label">{{control.label}}</label>
+        <div class="clr-control-container" [ngSwitch]="control.type">
+
+            <div class="clr-input-wrapper" *ngSwitchCase="0">
                 <input type="text" class="clr-input" formControlName="{{control.modelProperty}}">
-                <div class="clr-subtext" *ngIf="control.isValid">{{control.getValidationLastMessage()}}</div>
             </div>
+
+            <div class="clr-textarea-wrapper" *ngSwitchCase="1">
+                <textarea rows="2" class="form-control" formControlName="{{control.modelProperty}}"></textarea>
+            </div>
+
+            <div class="toggle-switch" *ngSwitchCase="2">
+                <input type="checkbox" id="{{control.modelProperty}}" formControlName="{{control.modelProperty}}">
+                <label for="{{control.modelProperty}}"></label>
+            </div>
+
+            <div class="clr-subtext" *ngIf="control.isValid">{{control.getValidationLastMessage()}}</div>
         </div>
     </div>
-    <div class="clr-form-control clr-row">
-        <div class="clr-control-container clr-col-xs-12 clr-col-md-12 text-center">
-            <button [clrLoading]="formSubmitted" class="btn btn-primary" type="submit" [disabled]="formSubmitted || !tagForm.valid"> Create</button>
+
+    
+    <div class="clr-form-control">
+        <div class="clr-control-container">
+            <button [clrLoading]="formSubmitted" class="btn btn-primary" type="submit" [disabled]="formSubmitted"> Create</button>
         </div>
     </div>
 </form>
