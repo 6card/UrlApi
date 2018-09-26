@@ -64,7 +64,6 @@ export class PathService {
         .pipe( catchError(this.handleError(url)));
   }
 
-  //http://localhost:4200/search/editpath/281499
   deleteObject(sessionId: string, id: any) {
     const url = `https://api.newstube.ru/urldev/Path/Delete`;
     const params = new HttpParams()
@@ -72,6 +71,14 @@ export class PathService {
       .set('id', id);
       return this.http.post<any>(url, {}, {params})
         .pipe( catchError(this.handleError(url)));
+  }
+
+  getLatin(text: string) {
+    const url = `https://api.newstube.ru/urldev/Path/Latin`;
+    const params = new HttpParams()
+    .set('text', text);
+    return this.http.get<ObjectBase>(url, {params})
+      .pipe( catchError(this.handleError(url)));
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

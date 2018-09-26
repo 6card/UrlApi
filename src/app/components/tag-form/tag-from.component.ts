@@ -1,5 +1,9 @@
-import { Component, Output, EventEmitter } from "@angular/core";
+import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+
+import { PathService } from '../../services/path.service';
 
 import { ObjectBase } from '../../models/object-base';
 
@@ -8,19 +12,35 @@ import { ObjectBase } from '../../models/object-base';
     templateUrl: "./tag-form.component.html"
 })
 
-export class TagFormComponent {
+export class TagFormComponent implements OnInit {
 
     tagForm = new TagFormGroup();
 
     newTag: ObjectBase = new ObjectBase();
     formSubmitted: boolean = false;
 
+    constructor(
+        private pathService: PathService,
+    ) {}
+
     @Output() newTagEvent = new EventEmitter<ObjectBase>();
 
-
-    get tagControls(): FormControl[] {
-        return Object.keys(this.tagForm.controls).map(k => this.tagForm.controls[k] as FormControl);
+    ngOnInit() {
+        this.tagForm.get('Name').valueChanges
+            .pipe(                
+                debounceTime(500),
+                distinctUntilChanged(),           
+            )
+            .subscribe( val => {
+                //this.setPathLatin(val);
+                console.log(val);
+            });
     }
+
+    setPathLatin(text: string) {
+        this.pathService.getLatin(text)
+        .subscribe( data => this.tagForm.get('PathLatin').setValue(data));
+    }   
 
     submitForm(form: any) {
         this.tagForm.markControlsTouched();

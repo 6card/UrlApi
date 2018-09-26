@@ -19,18 +19,12 @@ export class CreateTagComponent implements OnInit {
     tag = new ObjectBase;
     
     constructor() {}
-
     
-    ngOnInit() {
-     
-    }
+    ngOnInit() { }
 
     addProduct(tag: ObjectBase) {
         let newTag = new ObjectBase(tag);
         console.log(newTag);
     }
-
-
-
-
+    
 }
