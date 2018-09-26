@@ -30,6 +30,11 @@ export class AlertComponent implements OnInit, OnDestroy {
             //добавляем alert в массив
             //if (!this.alerts.filter(item => item.id == alert.id)[0]) {
                 this.alerts.push(alert);
+                if (alert.timeout) {
+                    setTimeout(()=>{
+                        this.alerts.splice(this.alerts.indexOf(alert), 1);
+                   }, alert.timeout);
+                } 
                 document.getElementById("messages").scrollIntoView();
             //}
         });

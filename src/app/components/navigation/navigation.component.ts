@@ -12,11 +12,7 @@ export class NavigationComponent implements OnInit{
 
   constructor(
     public authService:AuthenticationService,
-  ){
+  ){ }
 
-  }
-
-  ngOnInit(){
-
-  }
+  ngOnInit(){ }
 }

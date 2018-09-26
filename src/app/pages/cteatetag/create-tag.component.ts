@@ -3,7 +3,6 @@ import { Router, ActivatedRoute, Params } from "@angular/router";
 
 import { AuthenticationService } from '../../services/auth.service';
 import { PathService } from '../../services/path.service';
-import { SearchService } from '../../services/search.service';
 
 import { ObjectBase } from '../../models/object-base';
 
@@ -30,7 +29,7 @@ export class CreateTagComponent implements OnInit {
         this.pathService.createTag(this.authenticationService.sessionId, newTag)
         .subscribe( data => {
             this.router.navigate(['/object', 6, data]);
-            console.log(data);
+            
         });
     }
     

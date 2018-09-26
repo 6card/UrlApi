@@ -145,8 +145,10 @@ class TagFormGroup extends FormGroup {
             SeoKeywords: new TagFormControl("SeoKeywords", "SeoKeywords", CONTROL_INPUT, ""),
             SeoNoIndex: new TagFormControl("SeoNoIndex", "SeoNoIndex", CONTROL_CHECKBOX, false),
             PathLatin: new TagFormControl("PathLatin", "PathLatin", CONTROL_INPUT, ""),
+            /*
             PathParentId: new TagFormControl("PathParentId", "PathParentId", CONTROL_INPUT, ""),
             PathId: new TagFormControl("PathId", "PathId", CONTROL_INPUT, ""),
+            */
         });
     }
 

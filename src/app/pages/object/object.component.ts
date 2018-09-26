@@ -5,6 +5,7 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { AuthenticationService } from '../../services/auth.service';
 import { PathService } from '../../services/path.service';
 import { SearchService } from '../../services/search.service';
+import { AlertService } from '../../services/alert.service';
 
 import { ObjectBase } from '../../models/object-base';
 
@@ -51,7 +52,8 @@ export class ObjectComponent implements OnInit {
         private pathService: PathService,
         private searchService: SearchService,
         private authenticationService: AuthenticationService,
-        private activeRoute: ActivatedRoute
+        private activeRoute: ActivatedRoute,
+        private alertService: AlertService,
       ) {}
 
     public pageChange(page: number) {    
@@ -104,13 +106,12 @@ export class ObjectComponent implements OnInit {
             });
     }
 
-    public updateItem(item: ObjectBase) {
+    public updateItem(obj: ObjectBase) {
+      const item = Object.assign(this.item, obj);
       this.pathService.updatePath(this.authenticationService.sessionId, item)
         .subscribe(
             data => {
-              //this.setValuesToForm(data);
-              //console.log(data);
-              //this.objectForm = this.toFormGroup(this.item);
+              this.alertService.success('Данные сохранены', 2000);
             });
     }
 

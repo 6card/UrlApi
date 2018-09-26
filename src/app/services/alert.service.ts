@@ -29,25 +29,25 @@ export class AlertService {
         return this.subject.asObservable();
     }
 
-    success(message: string, keepAfterRouteChange = false) {
-        this.alert(AlertType.Success, message, keepAfterRouteChange);
+    success(message: string, timeout: number = 0, keepAfterRouteChange = false) {
+        this.alert(AlertType.Success, message, timeout, keepAfterRouteChange);
     }
 
-    error(message: string, keepAfterRouteChange = false) {
-        this.alert(AlertType.Error, message, keepAfterRouteChange);
+    error(message: string, timeout: number = 0, keepAfterRouteChange = false) {
+        this.alert(AlertType.Error, message, timeout, keepAfterRouteChange);
     }
 
-    info(message: string, keepAfterRouteChange = false) {
-        this.alert(AlertType.Info, message, keepAfterRouteChange);
+    info(message: string, timeout: number = 0, keepAfterRouteChange = false) {
+        this.alert(AlertType.Info, message, timeout, keepAfterRouteChange);
     }
 
-    warn(message: string, keepAfterRouteChange = false) {
-        this.alert(AlertType.Warning, message, keepAfterRouteChange);
+    warn(message: string, timeout: number = 0, keepAfterRouteChange = false) {
+        this.alert(AlertType.Warning, message, timeout, keepAfterRouteChange);
     }
 
-    alert(type: AlertType, message: string, keepAfterRouteChange = false) {
+    alert(type: AlertType, message: string, timeout: number = 0, keepAfterRouteChange = false) {
         this.keepAfterRouteChange = keepAfterRouteChange;
-        this.subject.next(<Alert>{ type: type, message: message });
+        this.subject.next(<Alert>{ type: type, message: message, timeout: timeout });    
     }
 
     clear() {

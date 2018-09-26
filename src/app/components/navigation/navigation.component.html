@@ -1,3 +1,4 @@
+
 <header class="header-6">
     <div class="branding">
         <a href="javascript://" class="nav-link">
@@ -13,4 +14,6 @@
         <a *ngIf="!authService.isAuthenticated()" class="nav-link nav-text" routerLink="/login" routerLinkActive="active">Вход</a>  
         <a *ngIf="authService.isAuthenticated()" class="nav-link nav-text" routerLink="/login" routerLinkActive="active">{{ authService.username }} Выход</a>  
     </div>
+    
 </header>
+<app-alert></app-alert>

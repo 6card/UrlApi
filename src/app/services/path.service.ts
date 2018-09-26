@@ -5,7 +5,7 @@ import { AlertService } from './alert.service'
 
 import { ObjectBase } from '../models/object-base';
 
-import {Observable, of} from 'rxjs';
+import {Observable, of, throwError} from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 @Injectable({
@@ -90,6 +90,7 @@ export class PathService {
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
+
     return (error: any): Observable<T> => {
 
       // TODO: send the error to remote logging infrastructure
@@ -99,8 +100,9 @@ export class PathService {
       this.alertService.error(`Response ${operation} failed. ${error.message}`);
   
       // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
+      return throwError(
+        `Response ${operation} failed. ${error.message}`);
+    }
   };
 
 
