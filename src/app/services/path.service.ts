@@ -81,6 +81,14 @@ export class PathService {
       .pipe( catchError(this.handleError(url)));
   }
 
+  createTag(sessionId: string, tag: any) {
+    const url = `https://api.newstube.ru/urldev/Tag/Create`;
+    const params = new HttpParams()
+      .set('sessionId', sessionId);
+    return this.http.post<any>(url, tag, {params})
+      .pipe( catchError(this.handleError(url)));
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
 

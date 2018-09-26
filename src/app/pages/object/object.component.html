@@ -1,5 +1,7 @@
 
         <h2>Данные объекта</h2>
+        <app-tag-form *ngIf="item" (newTagEvent)="updateItem($event)" [currentObject]="item"></app-tag-form>
+        <!--
         <div *ngIf="item">
             <form clrForm clrLayout="horizontal" [formGroup]="objectForm" (ngSubmit)="onSubmit()">
                 <clr-input-container>
@@ -108,6 +110,7 @@
 
             </form>
         </div>
+        -->
 
         <h2>Список роликов</h2>
 

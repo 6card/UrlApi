@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import {FormGroup, FormControl, Validators} from "@angular/forms";
+import { Router, ActivatedRoute, Params } from "@angular/router";
 
 import { AuthenticationService } from '../../services/auth.service';
 import { PathService } from '../../services/path.service';
@@ -18,13 +17,21 @@ export class CreateTagComponent implements OnInit {
 
     tag = new ObjectBase;
     
-    constructor() {}
+    constructor(
+        private router: Router,
+        private authenticationService: AuthenticationService,
+        private pathService: PathService,
+    ) {}
     
     ngOnInit() { }
 
     addProduct(tag: ObjectBase) {
         let newTag = new ObjectBase(tag);
-        console.log(newTag);
+        this.pathService.createTag(this.authenticationService.sessionId, newTag)
+        .subscribe( data => {
+            this.router.navigate(['/object', 6, data]);
+            console.log(data);
+        });
     }
     
 }

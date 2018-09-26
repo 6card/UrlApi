@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {FormGroup, FormControl, Validators} from "@angular/forms";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
 
 import { AuthenticationService } from '../../services/auth.service';
 import { PathService } from '../../services/path.service';
@@ -79,13 +79,13 @@ export class ObjectComponent implements OnInit {
           }
       };
 
-      this.searchService.mediaSearchCount(this.authenticationService.sessionId, arr)
+      this.searchService.searchCount('Media', this.authenticationService.sessionId, arr)
           .subscribe(data => {
             this.totalMediasItems = data;
           });
 
       
-      this.searchService.mediaSearch(this.authenticationService.sessionId, data)
+      this.searchService.search('Media', this.authenticationService.sessionId, data)
           .subscribe(data => {
             this.medias = data;
           });

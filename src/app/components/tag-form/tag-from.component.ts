@@ -1,7 +1,9 @@
-import { Component, OnInit, Output, EventEmitter } from "@angular/core";
+import { Component, OnInit, OnDestroy, Output, EventEmitter, Input } from "@angular/core";
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Subject } from 'rxjs/index';
+
+import { debounceTime, distinctUntilChanged, takeUntil, first } from 'rxjs/operators';
 
 import { PathService } from '../../services/path.service';
 
@@ -12,12 +14,16 @@ import { ObjectBase } from '../../models/object-base';
     templateUrl: "./tag-form.component.html"
 })
 
-export class TagFormComponent implements OnInit {
+export class TagFormComponent implements OnInit, OnDestroy {
 
     tagForm = new TagFormGroup();
 
     newTag: ObjectBase = new ObjectBase();
     formSubmitted: boolean = false;
+
+    private unsubscribe: Subject<void> = new Subject();
+
+    @Input() currentObject: ObjectBase;
 
     constructor(
         private pathService: PathService,
@@ -26,19 +32,31 @@ export class TagFormComponent implements OnInit {
     @Output() newTagEvent = new EventEmitter<ObjectBase>();
 
     ngOnInit() {
+        if (this.currentObject)
+            this.tagForm.patchValue(this.currentObject);
+
         this.tagForm.get('Name').valueChanges
-            .pipe(                
+            .pipe( 
+                takeUntil(this.unsubscribe),             
                 debounceTime(500),
                 distinctUntilChanged(),           
             )
             .subscribe( val => {
-                //this.setPathLatin(val);
-                console.log(val);
+                this.setPathLatin(val);
+                //console.log(val);
             });
+    }
+
+    ngOnDestroy() {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 
     setPathLatin(text: string) {
         this.pathService.getLatin(text)
+        .pipe(
+            first(),
+        )
         .subscribe( data => this.tagForm.get('PathLatin').setValue(data));
     }   
 
@@ -119,15 +137,16 @@ class TagFormGroup extends FormGroup {
 
     constructor() {
         super({
-            Name: new TagFormControl("Name", "Name", CONTROL_INPUT, "", Validators.required),
-            Description: new TagFormControl("Description", "Description", CONTROL_TEXTAREA, "",
-                Validators.compose([Validators.required])
-            ),
+            Name: new TagFormControl("Name", "Name", CONTROL_INPUT, "", Validators.compose([Validators.required])),
+            Description: new TagFormControl("Description", "Description", CONTROL_TEXTAREA, ""),
             SeoEnable: new TagFormControl("SeoEnable", "SeoEnable", CONTROL_CHECKBOX, false),
             SeoTitle: new TagFormControl("SeoTitle", "SeoTitle", CONTROL_INPUT, ""),
             SeoDescription: new TagFormControl("SeoDescription", "SeoDescription", CONTROL_TEXTAREA, ""),
             SeoKeywords: new TagFormControl("SeoKeywords", "SeoKeywords", CONTROL_INPUT, ""),
             SeoNoIndex: new TagFormControl("SeoNoIndex", "SeoNoIndex", CONTROL_CHECKBOX, false),
+            PathLatin: new TagFormControl("PathLatin", "PathLatin", CONTROL_INPUT, ""),
+            PathParentId: new TagFormControl("PathParentId", "PathParentId", CONTROL_INPUT, ""),
+            PathId: new TagFormControl("PathId", "PathId", CONTROL_INPUT, ""),
         });
     }
 

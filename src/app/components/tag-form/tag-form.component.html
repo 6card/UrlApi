@@ -72,6 +72,36 @@
         </div>
     </div>
 
+    <div class="clr-form-control" [ngClass]="{'clr-error' : tagForm.get('PathLatin').isValid}">
+        <label class="clr-control-label">{{tagForm.get('PathLatin').label}}</label>
+        <div class="clr-control-container">
+            <div class="clr-input-wrapper">
+                <input type="text" class="clr-input" formControlName="PathLatin">
+            </div>
+            <div class="clr-subtext" *ngIf="tagForm.get('PathLatin').isValid">{{tagForm.get('PathLatin').getValidationLastMessage()}}</div>
+        </div>
+    </div>
+
+    <div class="clr-form-control" [ngClass]="{'clr-error' : tagForm.get('PathParentId').isValid}">
+        <label class="clr-control-label">{{tagForm.get('PathParentId').label}}</label>
+        <div class="clr-control-container">
+            <div class="clr-input-wrapper">
+                <input type="text" class="clr-input" formControlName="PathParentId">
+            </div>
+            <div class="clr-subtext" *ngIf="tagForm.get('PathParentId').isValid">{{tagForm.get('PathParentId').getValidationLastMessage()}}</div>
+        </div>
+    </div>
+
+    <div class="clr-form-control" [ngClass]="{'clr-error' : tagForm.get('PathId').isValid}">
+        <label class="clr-control-label">{{tagForm.get('PathId').label}}</label>
+        <div class="clr-control-container">
+            <div class="clr-input-wrapper">
+                <input type="text" class="clr-input" formControlName="PathId">
+            </div>
+            <div class="clr-subtext" *ngIf="tagForm.get('PathId').isValid">{{tagForm.get('PathId').getValidationLastMessage()}}</div>
+        </div>
+    </div>
+
 
 <!--
     <div class="clr-form-control" *ngFor="let control of tagForm.tagControls" [ngClass]="{'clr-error' : control.isValid}">
@@ -100,7 +130,7 @@
     
     <div class="clr-form-control">
         <div class="clr-control-container">
-            <button [clrLoading]="formSubmitted" class="btn btn-primary" type="submit" [disabled]="formSubmitted"> Create</button>
+            <button [clrLoading]="formSubmitted" class="btn btn-primary" type="submit" [disabled]="formSubmitted">{{currentObject ? 'Update' : 'Create'}}</button>
         </div>
     </div>
 </form>
