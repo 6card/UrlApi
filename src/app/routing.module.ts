@@ -7,6 +7,7 @@ import { SearchComponent } from './pages/search/search.component';
 import { ObjectComponent } from './pages/object/object.component';
 import { CreateTagComponent } from './pages/cteatetag/create-tag.component';
 import { SetObjectComponent } from './pages/set-object/set-object.component';
+import { TestComponent } from './components/test/test.component';
 
 import { AuthGuard } from './guards/auth.guard';
 
@@ -41,8 +42,12 @@ const appRoutes: Routes = [
       //data: { title: 'Search' },
       canActivate: [AuthGuard],
     },
+    {
+      path: 'test',
+      component: TestComponent,
+    },
     { path: '', redirectTo: 'search', pathMatch: 'full' },
-    { path: '**', redirectTo: '' }
+    { path: '**', redirectTo: '' },
   ];
 
 @NgModule({

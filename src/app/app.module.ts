@@ -26,6 +26,8 @@ import { PaginationComponent } from './components/pagination/pagination.componen
 import { AlertComponent } from './components/alert/alert.component';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { TagFormComponent } from './components/tag-form/tag-from.component';
+import { TestComponent } from './components/test/test.component';
+import { AutocompleteDirective } from "./components/test/autocomplete.directive";
 
 import { CookieService } from 'ngx-cookie-service';
 import { AuthenticationService } from './services/auth.service';
@@ -51,7 +53,10 @@ import { AuthGuard } from './guards/auth.guard';
     PaginationComponent,
     AlertComponent,
     DialogComponent,
-    TagFormComponent
+    TagFormComponent,
+    
+    TestComponent,
+    AutocompleteDirective
   ],
   imports: [
     BrowserModule,
