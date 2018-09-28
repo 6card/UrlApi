@@ -20,6 +20,7 @@ export class TestComponent implements OnInit, OnDestroy, AfterViewInit {
     searchResults: Tag[];
 
     @Input() initValue: string;
+    @Input() multiValue: boolean;
 
     @Output() pushInput = new EventEmitter<any>();
 
@@ -37,8 +38,8 @@ export class TestComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnInit() {
 
             //this.setTagsToInput();
-
-            this.setInputToTags(this.initValue);
+            if (this.initValue)
+                this.setInputToTags(this.initValue);
 
             this.typeText
             .pipe(
@@ -83,12 +84,16 @@ export class TestComponent implements OnInit, OnDestroy, AfterViewInit {
             );
     }
 
-    setInputToTags(value: string) {
-        const tagsIds = value.split(',');
+    setInputToTags(value) {
+        let tagsIds: any[] = [];
+        if (Array.isArray(value))
+            tagsIds = value;
+        else
+            tagsIds = value.split(', ');
 
         this.searchService.search('Channel', this.authenticationService.sessionId, {
             Query: [{Operation:0,Columns:[
-                {Column: 1, Operation: 1, Value: tagsIds[0]}
+                {Column: 1, Operation: 9, Value: tagsIds}
             ]}], 
             Page: { Start: 1, Length: 50, Sort: [{ Column: 1, Desc: false }]}
         })
@@ -106,7 +111,7 @@ export class TestComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     setTagsToInput() {
-        const values = this.tags.map( i => i.id).join(',');
+        const values = this.tags.map( i => i.id).join(', ');
         //this.tagsInput.nativeElement.value = this.tags.map( i => i.id).join(", ");
         this.pushInput.emit(values);
     }
@@ -114,12 +119,13 @@ export class TestComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnDestroy() {}
 
     addTag(tag: Tag) {
-      
-        this.tags.push(tag);
-        this.setTagsToInput();
+        if (this.multiValue)
+            this.tags.push(tag);
+        else
+            this.tags = [tag];
 
-        this.input.nativeElement.value = ""; 
-        
+        this.setTagsToInput();
+        this.input.nativeElement.value = "";         
         this.aContainerVisible = false;
     }
 

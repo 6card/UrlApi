@@ -55,13 +55,18 @@ export class SearchSubFormComponent implements OnInit  {
                 validators.push(Validators.maxLength(this.metaColumn.MaxLength));
             
             if (this.metaColumn.Type == 'Int32') {
-                if(this.metaColumn.Operations.includes(9) && this.metaColumn.Operations.includes(10)) 
+                if(this.selectedOperation == 9|| this.selectedOperation == 10) {
                     validators.push(this.digitsArrayValidator());
-                else
+                    console.log("array");
+                }
+                else {
                     validators.push(this.digitsValidator());
+                    console.log("string");
+                }
             }
             
-            this.subForm.get('value').setValidators(validators);       
+            this.subForm.get('value').setValidators(validators);    
+            this.subForm.get('value').updateValueAndValidity();   
         }
     }
 
@@ -107,6 +112,7 @@ export class SearchSubFormComponent implements OnInit  {
 
     onChangeOperation(id: number) {
         this.selectedOperation = id;
+        this.setValueValidators();
     }
 
     getColumns(){

@@ -68,9 +68,13 @@ export class SearchFormComponent implements OnInit, OnChanges  {
           queryOperation: [qop, Validators.required],
           column: [obj? obj.Column: null, Validators.required],
           operation: [obj? obj.Operation : null, Validators.required],
-          value: [obj? obj.Value : '', Validators.required]
+          value: [obj? this.arrayToString(obj.Value) : '', Validators.required]
         });
-    }    
+    }
+
+    arrayToString(value) {
+        return Array.isArray(value) ? value.join(', ') : value;
+    }
 
     deleteSearchItem(index: number) {
         let searchItems: FormArray;    
@@ -98,6 +102,11 @@ export class SearchFormComponent implements OnInit, OnChanges  {
         });
     }
 
+    getInputValue(op: number, val: string) {
+        if (op == 9 || op == 10)            
+            return val.split(', ');
+        return val;
+    }
 
     onSubmit() {
         this.markFormGroupTouched(this.searchForm);
@@ -113,7 +122,7 @@ export class SearchFormComponent implements OnInit, OnChanges  {
                     {
                     Column: item.column, 
                     Operation: item.operation, 
-                    Value: item.value
+                    Value: this.getInputValue(item.operation, item.value)
                     }
                 ]          
             };

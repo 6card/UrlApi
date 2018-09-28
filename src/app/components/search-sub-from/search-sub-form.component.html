@@ -30,7 +30,7 @@
                     <option *ngFor="let v of getColumnValues();" [value]="v.Key">{{v.Value}}</option>
                 </select>
             </div>
-            <app-test *ngIf="isMultiselect()" (pushInput)="onPushInput($event)" [initValue]="getValue('value')"></app-test>
+            <app-test *ngIf="isMultiselect()" (pushInput)="onPushInput($event)" [multiValue]="selectedOperation == 9 || selectedOperation == 10" [initValue]="getValue('value')"></app-test>
             <input [type]="getColumnValues() || isMultiselect() ? 'hidden' : 'text'" formControlName="value" placeholder="Value" class="clr-input" />
             <div class="clr-subtext" *ngIf="controlIsInvalid('value')">
                 {{getControlErrorMessage('value')}}
