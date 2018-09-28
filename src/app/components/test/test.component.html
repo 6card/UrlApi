@@ -1,0 +1,12 @@
+<div class="autocomplete-wrapper" (click)="input.focus()">
+    <span class="label label-blue label-nopadding clickable" *ngFor="let tag of tags; let i = index;">
+        {{tag.title}}
+        <clr-icon shape="window-close" (click)="removeTag(i)"></clr-icon>
+    </span>
+    <input #input type="text" class="no-style" (keyup)="eventHandler($event)" (keydown.backspace)="removeLastTag($event)">
+    <input #tagsInput type="hidden">
+    <div class="autocomplete-container" *ngIf="aContainerVisible">
+        <div *ngIf="searchResults && searchResults.length == 0">Нет результатов</div>
+        <div class="autocomplete-item" (click)="addTag(item)" *ngFor="let item of searchResults">{{item.title}}</div> 
+    </div>
+</div>

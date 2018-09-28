@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input, Output, EventEmitter, SimpleChanges, SimpleChange } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, Output, ViewChild, ElementRef, EventEmitter, SimpleChanges, SimpleChange } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 
 import { finalize } from 'rxjs/operators';
@@ -105,6 +105,10 @@ export class SearchSubFormComponent implements OnInit  {
         this.setValueValidators();
     }
 
+    onChangeOperation(id: number) {
+        this.selectedOperation = id;
+    }
+
     getColumns(){
         return this.meta.Columns
         .sort(function(a, b) {
@@ -146,8 +150,22 @@ export class SearchSubFormComponent implements OnInit  {
         return values || null;
     }
 
+    getValue(controlName: string): string {
+        const control = this.subForm.get(controlName);
+        return control.value;
+    }
+
+    isMultiselect() {
+        return true;
+        //return this.selectedOperation == 9 || this.selectedOperation == 10;
+    }
+
     public controlIsInvalid(controlName: string): boolean {
         const control = this.subForm.get(controlName);
         return control.invalid && control.touched;
+    }
+
+    onPushInput(value: string) {
+        this.subForm.get('value').setValue(value);
     }
 }

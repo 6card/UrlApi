@@ -15,7 +15,7 @@
         
         <div *ngIf="selectedColumn" class="clr-control-container clr-col-xs-12 clr-col-md-4" [ngClass]="{'clr-error' : controlIsInvalid('operation')}">
             <div class="select">
-                <select formControlName="operation" class="clr-input">
+                <select formControlName="operation" class="clr-input" (change)="onChangeOperation($event.target.value)">
                 <option disabled selected hidden [value]="null">-- select --</option>
                 <option *ngFor="let o of getOperations(selectedColumn);" [value]="o.id">{{o.name}}</option>
                 </select>
@@ -30,7 +30,8 @@
                     <option *ngFor="let v of getColumnValues();" [value]="v.Key">{{v.Value}}</option>
                 </select>
             </div>
-            <input *ngIf="!getColumnValues()" type="text" formControlName="value" placeholder="Value" class="clr-input" />
+            <app-test *ngIf="isMultiselect()" (pushInput)="onPushInput($event)" [initValue]="getValue('value')"></app-test>
+            <input [type]="getColumnValues() || isMultiselect() ? 'hidden' : 'text'" formControlName="value" placeholder="Value" class="clr-input" />
             <div class="clr-subtext" *ngIf="controlIsInvalid('value')">
                 {{getControlErrorMessage('value')}}
             </div>

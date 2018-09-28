@@ -1,55 +1,121 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter, Input, ViewChild, ElementRef } from "@angular/core";
+import { Component, OnInit, OnDestroy, AfterViewInit, Output, EventEmitter, Input, ViewChild, ElementRef } from "@angular/core";
+import { FormBuilder, FormGroup, FormControl, FormArray, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
+
+import { finalize, debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+
+import { SearchService } from '../../services/search.service';
+import { AuthenticationService } from '../../services/auth.service';
 
 @Component({
     selector: "app-test",
-    template: `
-    <div class="autocomplete-wrapper">
-        <span class="label label-blue label-nopadding clickable" *ngFor="let tag of tags; let i = index;">
-            {{tag}}
-            <clr-icon shape="window-close" (click)="removeTag(i)"></clr-icon>
-        </span>
-        <input #input type="text" class="no-style" (keyup)="eventHandler($event)" (keydown.backspace)="removeLastTag($event)">
-        <input #tagsInput type="hidden">
-        <div class="autocomplete-container" *ngIf="aContainerVisible">
-            <div class="autocomplete-item" (click)="addTag($event)">First Action</div>
-            <div class="autocomplete-item">Second Action</div>        
-        </div>
-    </div>
-    `
+    templateUrl: './test.component.html'
 })
 
-export class TestComponent implements OnInit, OnDestroy {
+export class TestComponent implements OnInit, OnDestroy, AfterViewInit {
 
     aContainerVisible: boolean = false;
-    tags: any[] = ['123', '456'];
+    tags: Tag[] = [];
 
+    searchResults: Tag[];
+
+    @Input() initValue: string;
+
+    @Output() pushInput = new EventEmitter<any>();
+
+    private typeText: Subject<string> = new Subject();
     @ViewChild("tagsInput") tagsInput: ElementRef;
     @ViewChild("input") input: ElementRef;
 
+    constructor(
+        private searchService: SearchService,
+        private authenticationService: AuthenticationService,
+    ) {}
+
+    ngAfterViewInit() { }
+
     ngOnInit() {
-        this.setTagsToInput();
+
+            //this.setTagsToInput();
+
+            this.setInputToTags(this.initValue);
+
+            this.typeText
+            .pipe(
+                filter(text => text.length > 1),
+                debounceTime(500),
+                //distinctUntilChanged(),
+            )
+            .subscribe(textValue => {
+                this.loadSearchResults(textValue);
+            });
+        
     }
 
     eventHandler($event) {
-        if ($event.keyCode != 8)
-            this.aContainerVisible = true;
+        //if ($event.keyCode != 8)
+        this.typeText.next($event.target.value);
+        /*
         if ($event.keyCode == 13) {
             this.addTag($event);            
         }
+        */
         
-     } 
+    } 
+
+    loadSearchResults(str: string) {
+        this.aContainerVisible = true;
+
+        this.searchService.search('Channel', this.authenticationService.sessionId, {
+            Query: [{Operation:0,Columns:[
+                {Column: 8, Operation: 7, Value: str}
+            ]}], 
+            Page: { Start: 1, Length: 50, Sort: [{ Column: 8, Desc: false }]}
+        })
+            .pipe(
+                //finalize(() => this.aContainerVisible = false)
+            )
+            .subscribe(
+                data => { 
+                    this.searchResults = data.map( item => new Tag(item));
+                },
+                error => {}
+            );
+    }
+
+    setInputToTags(value: string) {
+        const tagsIds = value.split(',');
+
+        this.searchService.search('Channel', this.authenticationService.sessionId, {
+            Query: [{Operation:0,Columns:[
+                {Column: 1, Operation: 1, Value: tagsIds[0]}
+            ]}], 
+            Page: { Start: 1, Length: 50, Sort: [{ Column: 1, Desc: false }]}
+        })
+            .pipe(
+                //finalize(() => this.aContainerVisible = false)
+            )
+            .subscribe(
+                data => { 
+                    this.tags = data.map( item => new Tag(item));
+                },
+                error => {}
+            );
+
+
+    }
 
     setTagsToInput() {
-        this.tagsInput.nativeElement.value = this.tags.join(", ");
+        const values = this.tags.map( i => i.id).join(',');
+        //this.tagsInput.nativeElement.value = this.tags.map( i => i.id).join(", ");
+        this.pushInput.emit(values);
     }
 
     ngOnDestroy() {}
 
-    addTag($event) {
-        let value = $event.target.value;
-        if (!$event.target.value)
-            value = $event.target.innerHTML;
-        this.tags.push(value);
+    addTag(tag: Tag) {
+      
+        this.tags.push(tag);
         this.setTagsToInput();
 
         this.input.nativeElement.value = ""; 
@@ -68,4 +134,14 @@ export class TestComponent implements OnInit, OnDestroy {
         this.setTagsToInput();
     }
 
+}
+
+class Tag {
+    id: number;
+    title: string;
+
+    constructor(obj: any) {
+        this.id = obj.Id;
+        this.title = obj.Name;
+    }
 }

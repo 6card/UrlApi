@@ -119,6 +119,7 @@
     border-bottom: 1px solid #9a9a9a;
     padding-bottom: 2px;
     position: relative;
+    cursor: text;
 }
 
 .autocomplete-wrapper:focus-within{
@@ -129,10 +130,11 @@
 .autocomplete-container {
     width: 100%;
     position: absolute;
-    height: 200px;
+    min-height: 50px;
+    max-height: 200px;
     margin-top: 5px;
     z-index: 100;
-
+    
     display: flex;
     flex-direction: column;
     background: #fff;
@@ -140,6 +142,7 @@
     border-radius: .125rem;
     box-shadow: 0 1px 0.125rem rgba(115,115,115,.25);
     padding: .5rem 0;
+    overflow-y: scroll;
 }
 
 .autocomplete-item {
