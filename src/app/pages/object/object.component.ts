@@ -81,13 +81,13 @@ export class ObjectComponent implements OnInit {
           }
       };
 
-      this.searchService.searchCount('Media', this.authenticationService.sessionId, arr)
+      this.searchService.searchCount(3, this.authenticationService.sessionId, arr) //Media
           .subscribe(data => {
             this.totalMediasItems = data;
           });
 
       
-      this.searchService.search('Media', this.authenticationService.sessionId, data)
+      this.searchService.search(3, this.authenticationService.sessionId, data) //Media
           .subscribe(data => {
             this.medias = data;
           });

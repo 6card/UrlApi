@@ -18,6 +18,10 @@ export class SearchComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(this.pathId);
+
+    if (this.pathId)
+      this.typeId = 1;
 
     //console.log(this.pathId);
     

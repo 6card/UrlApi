@@ -16,7 +16,22 @@ export class SearchService {
     private alertService: AlertService
     ) { }
 
-  search(method: string, sessionId: string, data: any) {
+  private getSerachType(index: number): string{
+    const types = {
+        1: "Channel",
+        3: "Media",
+        4: "Theme",
+        5: "Person",
+        6: "Tag",
+        7: "Section",
+        8: "Series",
+        11: "Path"
+    };
+    return types[index] || null;
+  }
+
+  search(typeId: number, sessionId: string, data: any) {
+    const method = this.getSerachType(typeId);
     const url = `https://api.newstube.ru/urldev/${method}/Search`
     const params = new HttpParams()
     .set('sessionId', sessionId);
@@ -25,7 +40,8 @@ export class SearchService {
     .pipe( catchError(this.handleError(url)));
   }
 
-  searchCount(method: string, sessionId: string, data: any) {
+  searchCount(typeId: number, sessionId: string, data: any) {
+      const method = this.getSerachType(typeId);
       const url = `https://api.newstube.ru/urldev/${method}/SearchCount`
       const params = new HttpParams()
       .set('sessionId', sessionId);

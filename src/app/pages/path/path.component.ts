@@ -31,7 +31,7 @@ export class EditPathComponent implements OnInit {
               //console.log(data);
             },
             error => {
-                console.log(error);
+                //console.log(error);
                 //this.alertService.error(error);                
             },
             () => {

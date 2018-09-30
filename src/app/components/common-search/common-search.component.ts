@@ -128,25 +128,10 @@ export class CommonSearchComponent implements OnInit {
         }
     }
 
-    getSerachType(index: number): string{
-
-        const types = {
-            1: "Channel",
-            3: "Media",
-            4: "Theme",
-            5: "Person",
-            6: "Tag",
-            7: "Section",
-            8: "Series",
-        };
-
-        return types[index] || null;
-    }
-
     getResults() {
         this.submitLoading = true;
 
-            this.searchService.search(this.getSerachType(this.typeId), this.authenticationService.sessionId, {Query: this.searchQuery, Page: this.searchPage})
+            this.searchService.search(this.typeId, this.authenticationService.sessionId, {Query: this.searchQuery, Page: this.searchPage})
             .pipe(
                 finalize(() => this.submitLoading = false)
             )
@@ -155,7 +140,7 @@ export class CommonSearchComponent implements OnInit {
               error => {}
             );
     
-            this.searchService.searchCount(this.getSerachType(this.typeId),this.authenticationService.sessionId, this.searchQuery)
+            this.searchService.searchCount(this.typeId,this.authenticationService.sessionId, this.searchQuery)
             .pipe(
                 finalize(() => this.submitLoading = false)
             )

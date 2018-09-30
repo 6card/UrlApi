@@ -36,7 +36,7 @@ export class AuthenticationService {
                     this.logout();
             },
             error => {
-                console.log(error);               
+                //console.log(error);               
             });
     }
  

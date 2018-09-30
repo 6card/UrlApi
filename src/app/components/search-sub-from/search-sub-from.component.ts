@@ -57,11 +57,11 @@ export class SearchSubFormComponent implements OnInit  {
             if (this.metaColumn.Type == 'Int32') {
                 if(this.selectedOperation == 9|| this.selectedOperation == 10) {
                     validators.push(this.digitsArrayValidator());
-                    console.log("array");
+                    //console.log("array");
                 }
                 else {
                     validators.push(this.digitsValidator());
-                    console.log("string");
+                    //console.log("string");
                 }
             }
             
@@ -102,10 +102,10 @@ export class SearchSubFormComponent implements OnInit  {
     }
 
     get metaColumn(): MetaColumn {
-        return this.meta.Columns.filter( c => c.Id == this.selectedColumn)[0] || null;
+        return this.meta.Columns.find( c => c.Id == this.selectedColumn) || null;
     }
 
-    onChangeColumn(id: number) {
+    onChangeColumn(id: number) {        
         this.selectedColumn = id;
         this.setValueValidators();
     }
@@ -161,9 +161,10 @@ export class SearchSubFormComponent implements OnInit  {
         return control.value;
     }
 
-    isMultiselect() {
-        return true;
-        //return this.selectedOperation == 9 || this.selectedOperation == 10;
+    isAutocomplete() {
+        //return (this.selectedOperation == 9 || this.selectedOperation == 10);
+        //console.log(this.metaColumn.ValueObjectType);
+        return this.metaColumn.ValueObjectType;
     }
 
     public controlIsInvalid(controlName: string): boolean {

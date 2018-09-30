@@ -21,6 +21,7 @@ export class TestComponent implements OnInit, OnDestroy, AfterViewInit {
 
     @Input() initValue: string;
     @Input() multiValue: boolean;
+    @Input() typeId: number;
 
     @Output() pushInput = new EventEmitter<any>();
 
@@ -67,7 +68,7 @@ export class TestComponent implements OnInit, OnDestroy, AfterViewInit {
     loadSearchResults(str: string) {
         this.aContainerVisible = true;
 
-        this.searchService.search('Channel', this.authenticationService.sessionId, {
+        this.searchService.search(this.typeId, this.authenticationService.sessionId, {
             Query: [{Operation:0,Columns:[
                 {Column: 8, Operation: 7, Value: str}
             ]}], 
@@ -91,7 +92,7 @@ export class TestComponent implements OnInit, OnDestroy, AfterViewInit {
         else
             tagsIds = value.split(', ');
 
-        this.searchService.search('Channel', this.authenticationService.sessionId, {
+        this.searchService.search(this.typeId, this.authenticationService.sessionId, {
             Query: [{Operation:0,Columns:[
                 {Column: 1, Operation: 9, Value: tagsIds}
             ]}], 
