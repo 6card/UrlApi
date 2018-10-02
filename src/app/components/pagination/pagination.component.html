@@ -1,28 +1,37 @@
-<div class="pagination-description">
-    <ng-content></ng-content>
+
+<div class="row">
+    <div class="col col-xs-4"><ng-content></ng-content></div>
+    <div class="col col-xs-8">
+
+        <ul class="pagination float-right" *ngIf="pages.length > 1">
+
+            <li class="page-item" *ngIf="directionLinks && !noPrevious()">
+                <a class="page-link" (click)="selectPage(page - 1, $event)" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a> 
+            </li> 
+
+            <li class="page-item" *ngIf="boundaryLinks" [class.active]="page == 1">
+                <a class="page-link" [attr.disabled]="noPrevious()" (click)="selectPage(1, $event)">1</a>
+            </li>
+
+            <li class="page-item" *ngFor="let pg of pages" [class.active]="pg.active" [style.display]="(pg.number > 1 && pg.number < totalPages) ? 'block' : 'none'">
+                <a class="page-link" (click)="selectPage(pg.number, $event)">{{pg.text}}</a>
+            </li>
+
+            <li class="page-item" *ngIf="boundaryLinks" [class.active]="page == totalPages">
+                <a class="page-link" [attr.disabled]="noNext()" (click)="selectPage(totalPages, $event)">{{totalPages}}</a>
+            </li>
+            
+            <li class="page-item" *ngIf="directionLinks && !noNext()"> 
+                <a class="page-link" (click)="selectPage(page + 1, $event)" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a> 
+            </li>
+
+            
+        </ul>
+    </div>
 </div>
-
-<ul class="pagination-list" *ngIf="pages.length > 1">
-
-    <li *ngIf="directionLinks && !noPrevious()">
-        <button class="pagination-previous"(click)="selectPage(page - 1, $event)" type="button"></button> 
-    </li> 
-
-    <li *ngIf="boundaryLinks" [class.pagination-current]="page == 1">
-        <button [disabled]="noPrevious()" (click)="selectPage(1, $event)">1</button>
-    </li>
-
-    <li *ngFor="let pg of pages" [class.pagination-current]="pg.active" [style.display]="(pg.number > 1 && pg.number < totalPages) ? 'block' : 'none'">
-        <button (click)="selectPage(pg.number, $event)" type="button">{{pg.text}}</button>
-    </li>
-
-    <li class="pagination-last page-item" *ngIf="boundaryLinks" [class.pagination-current]="page == totalPages">
-        <button [disabled]="noNext()" (click)="selectPage(totalPages, $event)">{{totalPages}}</button>
-    </li>
-    
-    <li *ngIf="directionLinks && !noNext()"> 
-        <button class="pagination-next"(click)="selectPage(page + 1, $event)" type="button"></button> 
-    </li>
-
-    
-</ul>

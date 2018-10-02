@@ -18,7 +18,7 @@ export class SearchComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log(this.pathId);
+    //console.log(this.pathId);
 
     if (this.pathId)
       this.typeId = 1;

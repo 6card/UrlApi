@@ -3,7 +3,7 @@ import { Component, Input, Output, OnInit, EventEmitter, OnChanges  } from '@ang
 @Component({
     selector: 'app-pagination',
     templateUrl: './pagination.component.html',
-    host: { '[class.pagination]': 'true' },
+    //host: { '[class.pagination]': 'true' },
 })
 
 export class PaginationComponent {

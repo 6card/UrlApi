@@ -3,6 +3,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
 import { AppComponent } from './app.component';
 
 import { AppRoutingModule } from "./routing.module";
@@ -28,6 +30,7 @@ import { DialogComponent } from './components/dialog/dialog.component';
 import { TagFormComponent } from './components/tag-form/tag-from.component';
 import { TestComponent } from './components/test/test.component';
 import { AutocompleteDirective } from "./components/test/autocomplete.directive";
+import { SortableColumnComponent } from './components/search-table/sortable-column.component'
 
 import { CookieService } from 'ngx-cookie-service';
 import { AuthenticationService } from './services/auth.service';
@@ -56,9 +59,11 @@ import { AuthGuard } from './guards/auth.guard';
     TagFormComponent,
     
     TestComponent,
-    AutocompleteDirective
+    AutocompleteDirective,
+    SortableColumnComponent
   ],
   imports: [
+    NgbModule.forRoot(),
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,

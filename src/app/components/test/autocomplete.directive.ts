@@ -72,7 +72,7 @@ export class AutocompleteDirective {
     }
 
     public removeLabel(label) {
-        console.log(label);
+        //console.log(label);
         this.renderer.destroyNode(label);
         //const parent = this.el.nativeElement.parentNode;
         //this.renderer.removeChild(parent, label);

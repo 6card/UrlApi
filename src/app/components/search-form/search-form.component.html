@@ -1,9 +1,9 @@
-<form class="clr-form clr-form-horizontal search-form" [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+<form class="form-inline" [formGroup]="searchForm" (ngSubmit)="onSubmit()">
     <div formArrayName="items" *ngFor="let controls of getGroupControls(); let i = index;">
         <div [formGroupName]="i">
                 <div class="clr-form-control clr-row" *ngIf="i > 0">
                     <div class="clr-control-container clr-col-lg-12 text-center">
-                        <span class="label label-info" (click)="deleteSearchItem(i)">{{getCondition(controls.get('queryOperation').value)}}</span>
+                        <span class="badge badge-primary" (click)="deleteSearchItem(i)">{{getCondition(controls.get('queryOperation').value)}}</span>
                     </div>
                 </div>
             <search-sub-form [subForm]="controls" [typeId]="typeId"></search-sub-form>
@@ -11,17 +11,14 @@
     </div>
     <div class="clr-form-control clr-row">
         <div class="clr-control-container clr-col-xs-12 clr-col-md-12 text-center">
-            <clr-dropdown>
-                <button type="button" class="btn btn-primary" clrDropdownTrigger>                  
-                    <clr-icon shape="plus"></clr-icon>
-                    <clr-icon shape="caret down"></clr-icon>
-                </button>
-                <clr-dropdown-menu *clrIfOpen>
-                    <button type="button" clrDropdownItem (click)="addItem(0)">ИЛИ</button>
-                    <button type="button" clrDropdownItem (click)="addItem(1)">И</button>
-                    <button type="button" clrDropdownItem (click)="addItem(2)">НЕ</button>
-                </clr-dropdown-menu>
-            </clr-dropdown>
+            <div ngbDropdown>
+                <button class="btn btn-outline-primary" id="dropdownAddForm" ngbDropdownToggle type="button"><i class="fa fa-plus"></i></button>
+                <div ngbDropdownMenu aria-labelledby="dropdownAddForm">
+                    <button class="dropdown-item" type="button" (click)="addItem(0)">ИЛИ</button>
+                    <button class="dropdown-item" type="button" (click)="addItem(1)">И</button>
+                    <button class="dropdown-item" type="button" (click)="addItem(2)">НЕ</button>
+                </div>
+            </div>
         </div>
     </div>
     <div class="clr-form-control clr-row">

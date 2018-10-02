@@ -1,4 +1,4 @@
-<ul class="nav">
+<ul class="nav nav-tabs">
     <li class="nav-item"><a href="javascript:void(0)" (click)="setType(0)" [class.active]="isActive(0)" class="nav-link">Путь</a></li>    
     <li class="nav-item"><a href="javascript:void(0)" (click)="setType(1)" [class.active]="isActive(1)" class="nav-link">Канал</a></li>
     <li class="nav-item"><a href="javascript:void(0)" (click)="setType(3)" [class.active]="isActive(3)" class="nav-link">Ролик</a></li>  
@@ -8,8 +8,10 @@
     <li class="nav-item"><a href="javascript:void(0)" (click)="setType(7)" [class.active]="isActive(7)" class="nav-link">Раздел</a></li>
     <li class="nav-item"><a href="javascript:void(0)" (click)="setType(8)" [class.active]="isActive(8)" class="nav-link">Передача</a></li>
 </ul>
-<common-search *ngIf="typeId" [pathId]="pathId"></common-search>
-<app-search-path *ngIf="!typeId"></app-search-path>
+<div class="tabs-body">
+    <common-search *ngIf="typeId" [pathId]="pathId"></common-search>
+    <app-search-path *ngIf="!typeId"></app-search-path>
+</div>
 <!--
 <clr-tabs>
     <clr-tab>

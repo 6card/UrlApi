@@ -1,8 +1,8 @@
 <div class="autocomplete-wrapper" (click)="input.focus()">
-    <span class="label label-blue label-nopadding clickable" *ngFor="let tag of tags; let i = index;">
+    <a class="badge badge-primary" *ngFor="let tag of tags; let i = index;" href="javascript:void(0)">
         {{tag.title}}
-        <clr-icon shape="window-close" (click)="removeTag(i)"></clr-icon>
-    </span>
+        <i class="fa fa-times"(click)="removeTag(i)"></i>
+    </a>
     <input #input type="text" class="no-style" (keyup)="eventHandler($event)" (keydown.backspace)="removeLastTag($event)">
     <input #tagsInput type="hidden">
     <div class="autocomplete-container" *ngIf="aContainerVisible">

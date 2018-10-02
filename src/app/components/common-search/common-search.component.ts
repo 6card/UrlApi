@@ -90,6 +90,22 @@ export class CommonSearchComponent implements OnInit {
         this.searchPage = page;
         this.navigate();
     }
+
+    public onSortChange(columns) {
+        
+
+        const sort = columns.filter( i => i.sortDirection).map(i => {return {Column: i.Column, Desc: i.Desc}});
+
+        const page = {
+            Start: 1,        
+            Length: 10,        
+            Sort: sort      
+        };
+
+
+        this.searchPage = page;
+        this.navigate();
+    }
     
     public onQuery(searchQuery) {
         this.searchQuery = searchQuery;

@@ -1,19 +1,17 @@
 
-<header class="header-6">
-    <div class="branding">
-        <a href="javascript://" class="nav-link">
-        <clr-icon shape="vm-bug"></clr-icon>
-        <span class="title">UrlApi</span>
-        </a>
+<nav class="navbar navbar-dark bg-dark mb-5">
+    <a class="navbar-brand" routerLink="/">UrlApi</a>
+    <div class="navbar-expand mr-auto">
+      <div class="navbar-nav">
+        <a routerLink="/search" routerLinkActive="active" class="nav-item nav-link">Поиск</a>
+        <a routerLink="/createtag" routerLinkActive="active" class="nav-item nav-link ">Создать тег</a> 
+      </div>
     </div>
-    <div class="header-nav">
-        <a routerLink="/search" routerLinkActive="active" class="nav-link nav-text">Поиск</a>
-        <a routerLink="/createtag" routerLinkActive="active" class="nav-link nav-text">Создать тег</a>        
+    <div class="navbar-expand ml-auto navbar-nav">
+      <div class="navbar-nav">
+        <a *ngIf="!authService.isAuthenticated()" class="nav-item nav-link" routerLink="/login" routerLinkActive="active">Вход</a>  
+        <a *ngIf="authService.isAuthenticated()" class="nav-item nav-link" routerLink="/login" routerLinkActive="active">{{ authService.username }} Выход</a> 
+      </div>
     </div>
-    <div class="header-actions">
-        <a *ngIf="!authService.isAuthenticated()" class="nav-link nav-text" routerLink="/login" routerLinkActive="active">Вход</a>  
-        <a *ngIf="authService.isAuthenticated()" class="nav-link nav-text" routerLink="/login" routerLinkActive="active">{{ authService.username }} Выход</a>  
-    </div>
-    
-</header>
+  </nav>
 <app-alert></app-alert>

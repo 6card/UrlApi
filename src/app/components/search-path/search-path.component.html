@@ -1,10 +1,8 @@
-<form class="clr-form clr-form-horizontal path-search-form" [formGroup]="pathByUrlForm" (ngSubmit)="onSubmit()">
-    <div class="clr-form-control clr-row">
-        <div class="clr-control-container clr-col-xs-12 clr-col-md-11">
-            <input formControlName="url" type="text">
-        </div>
-        <div class="clr-control-container clr-col-xs-12 clr-col-md-1">
-            <button [clrLoading]="submitLoading" type="submit" class="btn">Перейти</button>
+<form  [formGroup]="pathByUrlForm" (ngSubmit)="onSubmit()">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Введите URL для поиска" aria-label="Введите URL для поиска" aria-describedby="basic-addon2" formControlName="url">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="submit">Перейти</button>
         </div>
     </div>
 </form>
