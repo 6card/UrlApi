@@ -1,35 +1,32 @@
 <div [formGroup]="subForm" *ngIf="meta" [clrLoading]="metaLoading"> 
     <input type="hidden" formControlName="queryOperation">
     
-    <div class="clr-form-control clr-row">
+    <div class="form-row">
                 
-        <div class="clr-control-container clr-col-xs-12 clr-col-md-4" [ngClass]="{'clr-error' : controlIsInvalid('column')}">
-            <div class="select">
-                <select formControlName="column" class="clr-input" (change)="onChangeColumn($event.target.value)">
-                <option disabled selected hidden [value]="null">-- select --</option>
-                <option *ngFor="let c of getColumns();" [value]="c.id">{{c.name}}</option>
+        <div class="col-md-4" [ngClass]="{'clr-error' : controlIsInvalid('column')}">
+                <select formControlName="column" class="form-control" (change)="onChangeColumn($event.target.value)">
+                    <option disabled selected hidden [value]="null">-- select --</option>
+                    <option *ngFor="let c of getColumns();" [value]="c.id">{{c.name}}</option>
                 </select>                  
-            </div>
             <div class="clr-subtext" *ngIf="controlIsInvalid('column')">{{getControlErrorMessage('column')}}</div>
         </div>
         
-        <div *ngIf="selectedColumn" class="clr-control-container clr-col-xs-12 clr-col-md-4" [ngClass]="{'clr-error' : controlIsInvalid('operation')}">
-            <div class="select">
-                <select formControlName="operation" class="clr-input" (change)="onChangeOperation($event.target.value)">
-                <option disabled selected hidden [value]="null">-- select --</option>
-                <option *ngFor="let o of getOperations(selectedColumn);" [value]="o.id">{{o.name}}</option>
+        <div *ngIf="selectedColumn" class="col-md-4" [ngClass]="{'clr-error' : controlIsInvalid('operation')}">
+
+                <select formControlName="operation" class="form-control" (change)="onChangeOperation($event.target.value)">
+                    <option disabled selected hidden [value]="null">-- select --</option>
+                    <option *ngFor="let o of getOperations(selectedColumn);" [value]="o.id">{{o.name}}</option>
                 </select>
-            </div>
             <div class="clr-subtext" *ngIf="controlIsInvalid('operation')">{{getControlErrorMessage('operation')}}</div>
         </div>
         
-        <div *ngIf="selectedColumn" class="clr-control-container clr-col-xs-12 clr-col-md-4" [ngClass]="{'clr-error' : controlIsInvalid('value')}">
-            <div class="select" *ngIf="getColumnValues()">
-                <select formControlName="value" class="clr-input">
+        <div *ngIf="selectedColumn" class="col-md-4" [ngClass]="{'clr-error' : controlIsInvalid('value')}">
+
+                <select formControlName="value" class="form-control" *ngIf="getColumnValues()">
                     <option disabled selected hidden [value]="null">-- select --</option>
                     <option *ngFor="let v of getColumnValues();" [value]="v.Key">{{v.Value}}</option>
                 </select>
-            </div>
+
             <app-test *ngIf="isAutocomplete()" 
                 (pushInput)="onPushInput($event)" 
                 [multiValue]="selectedOperation == 9 || selectedOperation == 10" 

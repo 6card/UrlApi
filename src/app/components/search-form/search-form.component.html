@@ -1,12 +1,10 @@
-<form class="form-inline" [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
     <div formArrayName="items" *ngFor="let controls of getGroupControls(); let i = index;">
-        <div [formGroupName]="i">
-                <div class="clr-form-control clr-row" *ngIf="i > 0">
-                    <div class="clr-control-container clr-col-lg-12 text-center">
-                        <span class="badge badge-primary" (click)="deleteSearchItem(i)">{{getCondition(controls.get('queryOperation').value)}}</span>
-                    </div>
+        <div [formGroupName]="i" class="form-row">
+                <div class="col-md-1">
+                    <span *ngIf="i > 0" class="badge badge-primary" (click)="deleteSearchItem(i)">{{getCondition(controls.get('queryOperation').value)}}</span>
                 </div>
-            <search-sub-form [subForm]="controls" [typeId]="typeId"></search-sub-form>
+            <search-sub-form class="col-md-11" [subForm]="controls" [typeId]="typeId"></search-sub-form>
         </div>
     </div>
     <div class="clr-form-control clr-row">
