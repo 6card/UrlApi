@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 import { AuthenticationService } from '../../services/auth.service';
 import { PathService } from '../../services/path.service';
@@ -15,12 +17,14 @@ import { finalize } from 'rxjs/operators';
 
 export class EditPathComponent implements OnInit {
   item: any;
-  openedDialog: boolean = false;
+
+  //@ViewChild("modal-content") modalContent: ElementRef;
     
     constructor(
         private pathService: PathService,
         private authenticationService: AuthenticationService,
-        private activeRoute: ActivatedRoute
+        private activeRoute: ActivatedRoute,
+        private modalService: NgbModal
       ) {}
     
     public loadItem(id: number) {
@@ -48,8 +52,8 @@ export class EditPathComponent implements OnInit {
             });    
     }
 
-    public openDialog() {
-      this.openedDialog = true;
+    public openDialog(content) {
+      this.modalService.open(content, {size: 'lg'});
     }
 
     ngOnInit() {

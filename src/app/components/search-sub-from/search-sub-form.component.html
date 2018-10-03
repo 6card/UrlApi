@@ -1,4 +1,4 @@
-<div [formGroup]="subForm" *ngIf="meta" [clrLoading]="metaLoading"> 
+<div [formGroup]="subForm" *ngIf="meta"> 
     <input type="hidden" formControlName="queryOperation">
     
     <div class="row">
@@ -27,7 +27,7 @@
                     <option *ngFor="let v of getColumnValues();" [value]="v.Key">{{v.Value}}</option>
                 </select>
 
-            <app-test *ngIf="isAutocomplete()" 
+            <app-test *ngIf="isAutocomplete()" class="autocomplete form-control" [ngClass]="{'is-invalid' : controlIsInvalid('value')}"
                 (pushInput)="onPushInput($event)" 
                 [multiValue]="selectedOperation == 9 || selectedOperation == 10" 
                 [initValue]="getValue('value')"

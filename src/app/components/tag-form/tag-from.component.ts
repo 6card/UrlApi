@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@ang
 
 import { Subject } from 'rxjs/index';
 
-import { debounceTime, distinctUntilChanged, takeUntil, first } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, takeUntil, first, filter } from 'rxjs/operators';
 
 import { PathService } from '../../services/path.service';
 
@@ -53,6 +53,10 @@ export class TagFormComponent implements OnInit, OnDestroy {
     }
 
     setPathLatin(text: string) {
+        if (text.length == 0) {
+            this.tagForm.get('PathLatin').setValue('')
+            return;
+        }
         this.pathService.getLatin(text)
         .pipe(
             first(),

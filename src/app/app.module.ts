@@ -3,12 +3,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 
 import { AppRoutingModule } from "./routing.module";
-import { ClarityModule, ClrFormsNextModule } from '@clr/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { LoginComponent } from './pages/login/login.component';
@@ -26,10 +25,8 @@ import { SearchSubFormComponent } from './components/search-sub-from/search-sub-
 import { SearchTableComponent } from './components/search-table/search-table.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { AlertComponent } from './components/alert/alert.component';
-import { DialogComponent } from './components/dialog/dialog.component';
 import { TagFormComponent } from './components/tag-form/tag-from.component';
 import { TestComponent } from './components/test/test.component';
-import { AutocompleteDirective } from "./components/test/autocomplete.directive";
 import { SortableColumnComponent } from './components/search-table/sortable-column.component'
 
 import { CookieService } from 'ngx-cookie-service';
@@ -55,11 +52,9 @@ import { AuthGuard } from './guards/auth.guard';
     SearchTableComponent,
     PaginationComponent,
     AlertComponent,
-    DialogComponent,
     TagFormComponent,
     
     TestComponent,
-    AutocompleteDirective,
     SortableColumnComponent
   ],
   imports: [
@@ -68,8 +63,6 @@ import { AuthGuard } from './guards/auth.guard';
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    ClarityModule,
-    ClrFormsNextModule,
     BrowserAnimationsModule,
     HttpClientModule
   ],

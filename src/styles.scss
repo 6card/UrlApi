@@ -1,0 +1,93 @@
+
+$fa-font-path: "~font-awesome/fonts";
+@import "~node_modules/font-awesome/scss/font-awesome.scss";
+
+$font-size-base: .9rem;
+$font-weight-bold: 700;
+
+$dark: #002538; 
+$primary: #0079b8;
+
+$input-btn-padding-y: .25rem;
+$input-btn-padding-x: .55rem;
+
+$dropdown-item-padding-y: .2rem;
+$dropdown-item-padding-x: .9rem;
+
+$table-cell-padding: .4rem;
+$table-dark-bg: #fafafa;
+$table-dark-color: #565656;
+$table-dark-border-color: #ccc;
+$table-border-color: #ccc;
+
+$badge-padding-y: .4em;
+$badge-padding-x: .4em;
+@import "~bootstrap/scss/bootstrap.scss";
+
+.tabs-body{
+    padding: 1.5rem;
+}
+
+.card-table .card-body {
+    padding: 0;
+}
+
+.card-table .card-body table{
+    margin-bottom: 0;
+}
+
+.card-table .pagination {
+    margin-bottom: 0;
+}
+
+.autocomplete {
+    height: auto;
+    cursor: text;
+    &:focus-within{
+        @extend .form-control:focus;
+    }
+    input[type=text] {
+        border: none;
+    }
+    input[type=text]:focus {
+        outline: none;
+    }
+    .badge {
+        margin-right: .5rem;
+    }
+    .dropdown-menu {
+        left: 14px;
+    }
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.login-form-wrapper {
+    -ms-flex-pack:center;
+    -webkit-box-pack:center;
+    justify-content:center;
+    margin: auto;
+    width: 21rem;
+    
+    .form-signin{
+        -ms-flex-pack:center;
+        -webkit-box-pack: center;
+        justify-content: center;
+        text-align: center;
+        padding: 1rem 2.5rem;
+
+        .form-control {
+            position: relative;
+            box-sizing: border-box;
+            height: auto;
+            padding: 10px;
+            font-size: 16px;
+        }
+    }
+}

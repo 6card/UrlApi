@@ -1,5 +1,5 @@
 <div *ngIf="item">
-    <div class="row">
+    <div class="row mb-4">
         <div class="col-md-4 col-sm-12">
             <div class="card">
                 <div class="card-header">
@@ -42,7 +42,7 @@
                 <div class="card-footer">
                     <div class="btn-group btn-primary">
                         <a [routerLink]="['/object', item.ObjectTypeId, item.ObjectId]" class="btn btn-primary">EDIT</a>
-                        <button class="btn btn-success" (click)="openDialog()">Выставить объект</button>
+                        <button class="btn btn-success" (click)="openDialog(modalContent)">Выставить объект</button>
                         <button class="btn btn-danger" (click)="deleteObject()">Удалить</button>
                     </div>
                 </div>
@@ -68,77 +68,121 @@
 
     </div>
 
-    <div class="row">
-        <div class="col-sm-12">
-            <h3>История изменения пути у объекта HistoryPath</h3>
-            <clr-datagrid>
-                <clr-dg-column>Id</clr-dg-column>
-                <clr-dg-column>ObjectTypeName</clr-dg-column>
-                <clr-dg-column>Url</clr-dg-column>
-                <clr-dg-column>Date</clr-dg-column>
-                <clr-dg-column>Edit</clr-dg-column>
-                <clr-dg-row *ngFor="let path of item.HistoryPath">      
-                    <clr-dg-cell>{{path.Id}}</clr-dg-cell>
-                    <clr-dg-cell>{{path.Item ? path.Item.ObjectTypeName : ''}}</clr-dg-cell>
-                    <clr-dg-cell>{{path.Item ? path.Item.Url : ''}}</clr-dg-cell>
-                    <clr-dg-cell>{{path.CreateTime | date: 'dd.MM.yyyy HH:mm:ss'}}</clr-dg-cell>
-                    <clr-dg-cell>
-                        <a *ngIf="path.Item && path.Item.ObjectTypeId == 11" [routerLink]="['/path', path.Item.Id]">Edit</a>
-                        <a *ngIf="path.Item && path.Item.ObjectTypeId != 11" [routerLink]="['/object', path.Item.ObjectTypeId, path.Item.ObjectId]">Edit</a>
-                    </clr-dg-cell>
-                </clr-dg-row>
-            </clr-datagrid>            
+    <div class="row mb-4">
+        <div class="col-sm-12">        
+            <div class="card card-table">
+                <div class="card-header">
+                    <h3>История изменения пути у объекта HistoryPath</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Id</th>
+                                <th>ObjectTypeName</th>
+                                <th>Url</th>
+                                <th>Date</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let path of item.HistoryPath">      
+                                <td>{{path.Id}}</td>
+                                <td>{{path.Item ? path.Item.ObjectTypeName : ''}}</td>
+                                <td>{{path.Item ? path.Item.Url : ''}}</td>
+                                <td>{{path.CreateTime | date: 'dd.MM.yyyy HH:mm:ss'}}</td>
+                                <td>
+                                    <a *ngIf="path.Item && path.Item.ObjectTypeId == 11" [routerLink]="['/path', path.Item.Id]">Edit</a>
+                                    <a *ngIf="path.Item && path.Item.ObjectTypeId != 11" [routerLink]="['/object', path.Item.ObjectTypeId, path.Item.ObjectId]">Edit</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+         
         </div>
     </div>
 
-    <div class="row">
+    <div class="row mb-4">
         <div class="col-sm-12">
 
-            <h3>История изменения объектов на пути HistoryObject</h3>
-
-            <clr-datagrid>
-                <clr-dg-column>Id</clr-dg-column>
-                <clr-dg-column>ObjectTypeName</clr-dg-column>
-                <clr-dg-column>Url</clr-dg-column>
-                <clr-dg-column>Date</clr-dg-column>
-                <clr-dg-column>Edit</clr-dg-column>
-                <clr-dg-row *ngFor="let obj of item.HistoryObject">      
-                    <clr-dg-cell>{{obj.Id}}</clr-dg-cell>
-                    <clr-dg-cell>{{obj.Item ? obj.Item.ObjectTypeName : ''}}</clr-dg-cell>
-                    <clr-dg-cell>{{obj.Item ? obj.Item.Url : ''}}</clr-dg-cell>
-                    <clr-dg-cell>{{obj.CreateTime | date: 'dd.MM.yyyy HH:mm:ss'}}</clr-dg-cell>
-                    <clr-dg-cell>
-                        <a *ngIf="obj.Item && obj.Item.ObjectTypeId == 11" [routerLink]="['/path', obj.Item.Id]">Edit</a>
-                        <a *ngIf="obj.Item && obj.Item.ObjectTypeId != 11" [routerLink]="['/object', obj.Item.ObjectTypeId, obj.Item.ObjectId]">Edit</a>
-                    </clr-dg-cell>
-                </clr-dg-row>
-                </clr-datagrid>
+            <div class="card card-table">
+                <div class="card-header">
+                    <h3>История изменения объектов на пути HistoryObject</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Id</th>
+                                <th>ObjectTypeName</th>
+                                <th>Url</th>
+                                <th>Date</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let obj of item.HistoryObject">      
+                                <td>{{obj.Id}}</td>
+                                <td>{{obj.Item ? obj.Item.ObjectTypeName : ''}}</td>
+                                <td>{{obj.Item ? obj.Item.Url : ''}}</td>
+                                <td>{{obj.CreateTime | date: 'dd.MM.yyyy HH:mm:ss'}}</td>
+                                <td>
+                                    <a *ngIf="obj.Item && obj.Item.ObjectTypeId == 11" [routerLink]="['/path', obj.Item.Id]">Edit</a>
+                                    <a *ngIf="obj.Item && obj.Item.ObjectTypeId != 11" [routerLink]="['/object', obj.Item.ObjectTypeId, obj.Item.ObjectId]">Edit</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="row">
+    <div class="row mb-4">
         <div class="col-sm-12">
-        <h3>Список редиректов на данный путь</h3>        
-        <clr-datagrid>            
-            <clr-dg-column>Id</clr-dg-column>
-            <clr-dg-column>Url</clr-dg-column>
-            <clr-dg-column>Edit</clr-dg-column>
-            <clr-dg-row *ngFor="let red of item.Redirects">      
-                <clr-dg-cell>{{red.Id}}</clr-dg-cell>
-                <clr-dg-cell>{{red.Url}}</clr-dg-cell>
-                <clr-dg-cell>
-                    <a [routerLink]="['/path', red.PathId]">Edit</a>
-                </clr-dg-cell>
-            </clr-dg-row>
-        </clr-datagrid>
+                <div class="card card-table">
+                        <div class="card-header">
+                            <h3>Список редиректов на данный путь</h3> 
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Url</th>
+                                        <th>Edit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let red of item.Redirects">      
+                                        <td>{{red.Id}}</td>
+                                        <td>{{red.Url}}</td>
+                                        <td>
+                                            <a [routerLink]="['/path', red.PathId]">Edit</a>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+               
         </div>
     </div>  
 
 </div>
 
-<clr-modal [(clrModalOpen)]="openedDialog" [clrModalSize]="'xl'">
-    <h3 class="modal-title">Выберите объект</h3>
+
+<ng-template #modalContent let-modal>
+    <div class="modal-header">
+        <h4 id="modal-basic-title">Выберите объект</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <div class="modal-body">
         <app-search [pathId]="item?.Id"></app-search>
     </div>
-</clr-modal>
+</ng-template>

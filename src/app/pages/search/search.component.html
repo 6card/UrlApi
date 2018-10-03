@@ -12,27 +12,3 @@
     <common-search *ngIf="typeId" [pathId]="pathId"></common-search>
     <app-search-path *ngIf="!typeId"></app-search-path>
 </div>
-<!--
-<clr-tabs>
-    <clr-tab>
-        <button clrTabLink (click)="setType(1)">Канал</button>
-        <clr-tab-content *clrIfActive="isActive(1)">
-            <app-channel-search></app-channel-search>
-        </clr-tab-content>
-    </clr-tab>
-
-    <clr-tab>
-        <button clrTabLink (click)="setType(3)">Ролик</button>
-        <clr-tab-content *clrIfActive="isActive(3)">
-            <app-media-search></app-media-search>
-        </clr-tab-content>
-    </clr-tab>
-
-    <clr-tab>
-        <button clrTabLink (click)="setType(4)">Тема</button>
-        <clr-tab-content *clrIfActive="isActive(4)">
-            <app-theme-search></app-theme-search>
-        </clr-tab-content>
-    </clr-tab>
-</clr-tabs>
--->

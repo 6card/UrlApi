@@ -18,12 +18,6 @@ export class SearchComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    //console.log(this.pathId);
-
-    if (this.pathId)
-      this.typeId = 1;
-
-    //console.log(this.pathId);
     
     this.activatedRoute.queryParams
         .pipe(filter( param => param.typeId))

@@ -1,141 +1,52 @@
-
+<div class="row mb-4">
+    <div class="col-sm-12">
         <h2>Данные объекта</h2>
         <app-tag-form *ngIf="item" (newTagEvent)="updateItem($event)" [currentObject]="item"></app-tag-form>
-        <!--
-        <div *ngIf="item">
-            <form clrForm clrLayout="horizontal" [formGroup]="objectForm" (ngSubmit)="onSubmit()">
-                <clr-input-container>
-                    <label>Id</label>
-                    <input clrInput type="text" formControlName="Id" />
-                    <clr-control-error>This field is required!</clr-control-error>
-                </clr-input-container>
+    </div>
+</div>
 
-                <clr-input-container>
-                    <label>GlobalId</label>
-                    <input clrInput type="text" formControlName="GlobalId" />
-                    <clr-control-error>This field is required!</clr-control-error>
-                </clr-input-container>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card card-table">
+            <div class="card-header">
+                <h2>Список роликов</h2> 
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>ChannelName</th>
+                            <th>SectionName</th>
+                            <th>StateName</th>
+                            <th>ShootDate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                <clr-input-container>
-                    <label>ObjectId</label>
-                    <input clrInput type="text" formControlName="ObjectId" />
-                    <clr-control-error>This field is required!</clr-control-error>
-                </clr-input-container>
+                        <tr *ngFor="let media of medias">
+                            <td>{{media.Id}}</td>
+                            <td>{{media.Name}}</td>
+                            <td>{{media.ChannelName}}</td>
+                            <td>{{media.SectionName}}</td>
+                            <td>{{media.StateName}}</td>
+                            <td>{{media.ShootDate | date: 'dd.MM.yyyy HH:mm:ss'}}</td>
+                        </tr>
 
-                <clr-input-container>
-                    <label>ObjectTypeId</label>
-                    <input clrInput type="text" formControlName="ObjectTypeId" />
-                    <clr-control-error>This field is required!</clr-control-error>
-                </clr-input-container>
+                    </tbody>
+                </table>
+            </div>
 
-                <clr-input-container>
-                    <label>ObjectTypeName</label>
-                    <input clrInput type="text" formControlName="ObjectTypeName" />
-                    <clr-control-error>This field is required!</clr-control-error>
-                </clr-input-container>
-
-                <clr-input-container>
-                    <label>Name</label>
-                    <input clrInput type="text" formControlName="Name" />
-                    <clr-control-error>This field is required!</clr-control-error>
-                </clr-input-container>
-
-                <clr-input-container>
-                    <label>Description</label>
-                    <input clrInput type="text" formControlName="Description" />
-                    <clr-control-error>This field is required!</clr-control-error>
-                </clr-input-container>
-
-                <clr-input-container>
-                    <label>SeoNoIndex</label>
-                    <input clrInput type="text" formControlName="SeoNoIndex" />
-                    <clr-control-error>This field is required!</clr-control-error>
-                </clr-input-container>
-
-                <clr-input-container>
-                    <label>SeoEnable</label>
-                    <input clrInput type="text" formControlName="SeoEnable" />
-                    <clr-control-error>This field is required!</clr-control-error>
-                </clr-input-container>
-            
-                <clr-input-container>
-                    <label>SeoTitle</label>
-                    <input clrInput type="text" formControlName="SeoTitle" />
-                    <clr-control-error>This field is required!</clr-control-error>
-                </clr-input-container>
-
-                <clr-input-container>
-                    <label>SeoDescription</label>
-                    <input clrInput type="text" formControlName="SeoDescription" />
-                    <clr-control-error>This field is required!</clr-control-error>
-                </clr-input-container>            
-            
-                <clr-input-container>
-                    <label>SeoKeywords</label>
-                    <input clrInput type="text" formControlName="SeoKeywords" />
-                    <clr-control-error>This field is required!</clr-control-error>
-                </clr-input-container>                
-            
-                <clr-input-container>
-                    <label>PathLatin</label>
-                    <input clrInput type="text" formControlName="PathLatin" />
-                    <clr-control-error>This field is required!</clr-control-error>
-                </clr-input-container>
-
-                <clr-input-container>
-                    <label>PathSuffix</label>
-                    <input clrInput type="text" formControlName="PathSuffix" />
-                    <clr-control-error>This field is required!</clr-control-error>
-                </clr-input-container>
-
-                <clr-input-container>
-                    <label>ParentPathId</label>
-                    <input clrInput type="text" formControlName="ParentPathId" />
-                    <clr-control-error>This field is required!</clr-control-error>
-                </clr-input-container>
-
-                <clr-input-container>
-                    <label>ParentPathLatin</label>
-                    <input clrInput type="text" formControlName="ParentPathLatin" />
-                    <clr-control-error>This field is required!</clr-control-error>
-                </clr-input-container>
-
-                <clr-input-container>
-                    <label>ParentPathSuffix</label>
-                    <input clrInput type="text" formControlName="ParentPathSuffix" />
-                    <clr-control-error>This field is required!</clr-control-error>
-                </clr-input-container>
-
-                <button type="submit" class="btn btn-primary">Update</button>     
-
-            </form>
+            <div class="card-footer">
+                <ngb-pagination class="d-flex justify-content-end" 
+                    [maxSize]="7" 
+                    [rotate]="true" 
+                    [collectionSize]="totalMediasItems"
+                    size="sm" 
+                    (pageChange)="pageChange($event)"
+                ></ngb-pagination>
+            </div>
         </div>
-        -->
-
-        <h2>Список роликов</h2>
-
-        <clr-datagrid >
-            <clr-dg-column>ID</clr-dg-column>
-            <clr-dg-column>Name</clr-dg-column>
-            <clr-dg-column>ChannelName</clr-dg-column>
-            <clr-dg-column>SectionName</clr-dg-column>
-            <clr-dg-column>StateName</clr-dg-column>
-            <clr-dg-column>ShootDate</clr-dg-column>
-            <clr-dg-placeholder>Ничего не найдено</clr-dg-placeholder>
-
-            <clr-dg-row *ngFor="let media of medias">
-                <clr-dg-cell>{{media.Id}}</clr-dg-cell>
-                <clr-dg-cell>{{media.Name}}</clr-dg-cell>      
-                <clr-dg-cell>{{media.ChannelName}}</clr-dg-cell>        
-                <clr-dg-cell>{{media.SectionName}}</clr-dg-cell>
-                <clr-dg-cell>{{media.StateName}}</clr-dg-cell>
-                <clr-dg-cell>{{media.ShootDate | date: 'dd.MM.yyyy HH:mm:ss'}}</clr-dg-cell>  
-            </clr-dg-row>
-
-            <clr-dg-footer *ngIf="totalMediasItems">
-                <app-pagination #pagination [itemsPerPage]="pageMediasSize" [totalItems]="totalMediasItems" (goToPage)="pageChange($event)">
-                    {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
-                    of {{pagination.totalItems}} items
-                </app-pagination>
-            </clr-dg-footer>
-        </clr-datagrid>
+    </div>
+</div>

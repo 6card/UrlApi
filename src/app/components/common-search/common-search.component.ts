@@ -7,12 +7,13 @@ import { PathService } from '../../services/path.service';
 
 import { filter, finalize } from 'rxjs/operators'
 
-const START_SQ = [{Operation:0,Columns:[]}];
-const START_SP = { Start: 1, Length: 10, Sort: [{ Column: 1, Desc: true }]};
+export const START_SQ = [{ Operation:0, Columns:[] }];
+export const START_SS = [{ Column: 1, Desc: false }];
+export const START_SP = { Start: 1, Length: 10, Sort: START_SS};
 
 @Component({
     selector: 'common-search',
-    templateUrl: './common-search.component.html'
+    templateUrl: './common-search.component.html',
   })
   
 export class CommonSearchComponent implements OnInit {
@@ -79,12 +80,7 @@ export class CommonSearchComponent implements OnInit {
         const page = {
             Start: (pageNumber - 1) * 10 + 1,        
             Length: 10,        
-            Sort: [        
-                {        
-                    Column: 1,        
-                    Desc: true        
-                }        
-            ]        
+            Sort: START_SS     
         };
 
         this.searchPage = page;
@@ -94,7 +90,8 @@ export class CommonSearchComponent implements OnInit {
     public onSortChange(columns) {
         
 
-        const sort = columns.filter( i => i.sortDirection).map(i => {return {Column: i.Column, Desc: i.Desc}});
+        let sort = columns.filter( i => i.sortDirection).map(i => {return {Column: i.Column, Desc: i.Desc}});
+        if (sort.length == 0) sort = START_SS;
 
         const page = {
             Start: 1,        

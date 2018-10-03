@@ -1,136 +1,24 @@
-<form class="clr-form clr-form-horizontal" [formGroup]="tagForm" (ngSubmit)="submitForm(tagForm)">
-<!--
-    <div class="clr-form-control" [ngClass]="{'clr-error' : tagForm.get('Name').isValid}">
-        <label class="clr-control-label">{{tagForm.get('Name').label}}</label>
-        <div class="clr-control-container">
-            <div class="clr-input-wrapper">
-                <input type="text" class="clr-input" formControlName="Name">
-            </div>
-            <div class="clr-subtext" *ngIf="tagForm.get('Name').isValid">{{tagForm.get('Name').getValidationLastMessage()}}</div>
-        </div>
-    </div>
-
-    <div class="clr-form-control" [ngClass]="{'clr-error' : tagForm.get('Description').isValid}">
-        <label class="clr-control-label">{{tagForm.get('Description').label}}</label>
-        <div class="clr-control-container">
-            <div class="clr-textarea-wrapper">
-                <textarea rows="2" class="form-control" formControlName="Description"></textarea>
-            </div>
-            <div class="clr-subtext" *ngIf="tagForm.get('Description').isValid">{{tagForm.get('Description').getValidationLastMessage()}}</div>
-        </div>
-    </div>
-
-    <div class="clr-form-control" [ngClass]="{'clr-error' : tagForm.get('SeoEnable').isValid}">
-        <label class="clr-control-label">{{tagForm.get('SeoEnable').label}}</label>
-        <div class="clr-control-container">
-                <div class="toggle-switch">
-                    <input type="checkbox" id="SeoEnable" formControlName="SeoEnable">
-                    <label for="SeoEnable"></label>
-                </div>
-            <div class="clr-subtext" *ngIf="tagForm.get('SeoEnable').isValid">{{tagForm.get('SeoEnable').getValidationLastMessage()}}</div>
-        </div>
-    </div>
-
-    <div *ngIf="tagForm.get('SeoEnable').value" class="clr-form-control" [ngClass]="{'clr-error' : tagForm.get('SeoTitle').isValid}">
-        <label class="clr-control-label">{{tagForm.get('SeoTitle').label}}</label>
-        <div class="clr-control-container">
-            <div class="clr-input-wrapper">
-                <input type="text" class="clr-input" formControlName="SeoTitle">
-            </div>
-            <div class="clr-subtext" *ngIf="tagForm.get('SeoTitle').isValid">{{tagForm.get('SeoTitle').getValidationLastMessage()}}</div>
-        </div>
-    </div>
-
-    <div *ngIf="tagForm.get('SeoEnable').value" class="clr-form-control" [ngClass]="{'clr-error' : tagForm.get('SeoDescription').isValid}">
-        <label class="clr-control-label">{{tagForm.get('SeoDescription').label}}</label>
-        <div class="clr-control-container">
-            <div class="clr-textarea-wrapper">
-                <textarea rows="2" class="form-control" formControlName="SeoDescription"></textarea>
-            </div>
-            <div class="clr-subtext" *ngIf="tagForm.get('SeoDescription').isValid">{{tagForm.get('SeoDescription').getValidationLastMessage()}}</div>
-        </div>
-    </div>
-
-    <div *ngIf="tagForm.get('SeoEnable').value" class="clr-form-control" [ngClass]="{'clr-error' : tagForm.get('SeoKeywords').isValid}">
-        <label class="clr-control-label">{{tagForm.get('SeoKeywords').label}}</label>
-        <div class="clr-control-container">
-            <div class="clr-input-wrapper">
-                <input type="text" class="clr-input" formControlName="SeoKeywords">
-            </div>
-            <div class="clr-subtext" *ngIf="tagForm.get('SeoKeywords').isValid">{{tagForm.get('SeoKeywords').getValidationLastMessage()}}</div>
-        </div>
-    </div>
-
-    <div *ngIf="tagForm.get('SeoEnable').value" class="clr-form-control" [ngClass]="{'clr-error' : tagForm.get('SeoNoIndex').isValid}">
-        <label class="clr-control-label">{{tagForm.get('SeoNoIndex').label}}</label>
-        <div class="clr-control-container">
-                <div class="toggle-switch">
-                    <input type="checkbox" id="SeoNoIndex" formControlName="SeoNoIndex">
-                    <label for="SeoNoIndex"></label>
-                </div>
-            <div class="clr-subtext" *ngIf="tagForm.get('SeoNoIndex').isValid">{{tagForm.get('SeoNoIndex').getValidationLastMessage()}}</div>
-        </div>
-    </div>
-
-    <div class="clr-form-control" [ngClass]="{'clr-error' : tagForm.get('PathLatin').isValid}">
-        <label class="clr-control-label">{{tagForm.get('PathLatin').label}}</label>
-        <div class="clr-control-container">
-            <div class="clr-input-wrapper">
-                <input type="text" class="clr-input" formControlName="PathLatin">
-            </div>
-            <div class="clr-subtext" *ngIf="tagForm.get('PathLatin').isValid">{{tagForm.get('PathLatin').getValidationLastMessage()}}</div>
-        </div>
-    </div>
-
-    <div class="clr-form-control" [ngClass]="{'clr-error' : tagForm.get('PathParentId').isValid}">
-        <label class="clr-control-label">{{tagForm.get('PathParentId').label}}</label>
-        <div class="clr-control-container">
-            <div class="clr-input-wrapper">
-                <input type="text" class="clr-input" formControlName="PathParentId">
-            </div>
-            <div class="clr-subtext" *ngIf="tagForm.get('PathParentId').isValid">{{tagForm.get('PathParentId').getValidationLastMessage()}}</div>
-        </div>
-    </div>
-
-    <div class="clr-form-control" [ngClass]="{'clr-error' : tagForm.get('PathId').isValid}">
-        <label class="clr-control-label">{{tagForm.get('PathId').label}}</label>
-        <div class="clr-control-container">
-            <div class="clr-input-wrapper">
-                <input type="text" class="clr-input" formControlName="PathId">
-            </div>
-            <div class="clr-subtext" *ngIf="tagForm.get('PathId').isValid">{{tagForm.get('PathId').getValidationLastMessage()}}</div>
-        </div>
-    </div>
-
--->
-
-    <div class="clr-form-control" *ngFor="let control of tagForm.tagControls" [ngClass]="{'clr-error' : control.isValid}">
-        <label class="clr-control-label">{{control.label}}</label>
-        <div class="clr-control-container" [ngSwitch]="control.type">
-
-            <div class="clr-input-wrapper" *ngSwitchCase="0">
-                <input type="text" class="clr-input" formControlName="{{control.modelProperty}}">
+<form [formGroup]="tagForm" (ngSubmit)="submitForm(tagForm)">
+    <ng-container *ngFor="let control of tagForm.tagControls">
+        <ng-container [ngSwitch]="control.type">
+            <div class="form-group" *ngSwitchCase="0">
+                <label>{{control.label}}</label>
+                <input *ngSwitchCase="0" type="text" class="form-control" formControlName="{{control.modelProperty}}" [ngClass]="{'is-invalid' : control.isValid}">
+                <div class="invalid-feedback" *ngIf="control.isValid">{{control.getValidationLastMessage()}}</div>
             </div>
 
-            <div class="clr-textarea-wrapper" *ngSwitchCase="1">
-                <textarea rows="2" class="form-control" formControlName="{{control.modelProperty}}"></textarea>
+            <div class="form-group" *ngSwitchCase="1">
+                <label>{{control.label}}</label>
+                <textarea *ngSwitchCase="1" rows="2" class="form-control" formControlName="{{control.modelProperty}}" [ngClass]="{'is-invalid' : control.isValid}"></textarea>
+                <div class="invalid-feedback" *ngIf="control.isValid">{{control.getValidationLastMessage()}}</div>
             </div>
-
-            <div class="toggle-switch" *ngSwitchCase="2">
-                <input type="checkbox" id="{{control.modelProperty}}" formControlName="{{control.modelProperty}}">
-                <label for="{{control.modelProperty}}"></label>
+            <div class="form-check" *ngSwitchCase="2">
+                <input type="checkbox" class="form-check-input" id="{{control.modelProperty}}" formControlName="{{control.modelProperty}}" [ngClass]="{'is-invalid' : control.isValid}"  >
+                <label class="form-check-label" for="{{control.modelProperty}}">{{control.modelProperty}}</label>
+                <div class="invalid-feedback" *ngIf="control.isValid">{{control.getValidationLastMessage()}}</div>
             </div>
+        </ng-container>
+    </ng-container>
 
-            <div class="clr-subtext" *ngIf="control.isValid">{{control.getValidationLastMessage()}}</div>
-        </div>
-    </div>
-
-
-
-    
-    <div class="clr-form-control">
-        <div class="clr-control-container">
-            <button [clrLoading]="formSubmitted" class="btn btn-primary" type="submit" [disabled]="formSubmitted">{{currentObject ? 'Update' : 'Create'}}</button>
-        </div>
-    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="formSubmitted">{{currentObject ? 'Update' : 'Create'}}</button>
 </form>

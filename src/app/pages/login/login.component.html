@@ -1,27 +1,13 @@
-
-        <div class="login-form-wrapper">
-            <form [formGroup]="loginForm" class="login-form" (ngSubmit)="onSubmit()">
-                <label class="title">
-                    <h3 class="welcome">Welcome to</h3>
-                    Company Product Name
-                </label>
-                <div class="form-group">
-                    <input class="username" formControlName="username" type="text" id="login_username" placeholder="Username">
-                    <input class="password" formControlName="password" type="password" id="login_password" placeholder="Password">
-                    <!--
-                    <div class="checkbox">
-                        <input type="checkbox" id="rememberme">
-                        <label for="rememberme">
-                            Remember me
-                        </label>
-                    </div>
-                    -->
-                        <div *ngIf="loginError" class="error active">
-                            <clr-icon shape="error-standard"></clr-icon>
-                            &nbsp;&nbsp;Invalid user name or password
-                        </div>
-                    <button [clrLoading]="submitLoading" type="submit" class="btn btn-primary">LOGIN</button>
-                    
-                </div>
-            </form>
+<div class="login-form-wrapper">
+    <form class="form-signin" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <h1 class="h3 mb-3 font-weight-normal">NEWSTUBE</h1>
+        <div class="form-group">            
+            <label for="inputUsername" class="sr-only">Username</label>
+            <input type="text" id="inputUsername" class="form-control mb-3" placeholder="Username" autofocus formControlName="username">
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" id="inputPassword" class="form-control mb-3" placeholder="Password" formControlName="password">
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Вход</button>
+            <div *ngIf="loginError" class="invalid-feedback" style="display: block">&nbsp;&nbsp;Invalid user name or password</div>
         </div>
+    </form>
+</div>

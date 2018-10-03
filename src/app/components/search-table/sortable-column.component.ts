@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, OnDestroy, HostListener, ViewChild, ElementRef } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
@@ -18,7 +18,8 @@ export class SortableColumnComponent implements OnInit, OnDestroy {
 
     @Input('sort-direction') sortDirection: string = '';
 
-    @HostListener('click')
+    //@ViewChild("sortLink") sortLink: ElementRef;
+    //@HostListener('click')
     sort() {
         if (this.sortDirection === '')
             this.sortDirection = 'asc'
