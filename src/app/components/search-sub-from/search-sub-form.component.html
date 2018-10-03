@@ -1,28 +1,28 @@
 <div [formGroup]="subForm" *ngIf="meta" [clrLoading]="metaLoading"> 
     <input type="hidden" formControlName="queryOperation">
     
-    <div class="form-row">
+    <div class="row">
                 
-        <div class="col-md-4" [ngClass]="{'clr-error' : controlIsInvalid('column')}">
-                <select formControlName="column" class="form-control" (change)="onChangeColumn($event.target.value)">
+        <div class="form-group col-md-4">
+                <select formControlName="column" class="form-control" [ngClass]="{'is-invalid' : controlIsInvalid('column')}" (change)="onChangeColumn($event.target.value)">
                     <option disabled selected hidden [value]="null">-- select --</option>
                     <option *ngFor="let c of getColumns();" [value]="c.id">{{c.name}}</option>
                 </select>                  
-            <div class="clr-subtext" *ngIf="controlIsInvalid('column')">{{getControlErrorMessage('column')}}</div>
+            <div class="invalid-feedback" *ngIf="controlIsInvalid('column')">{{getControlErrorMessage('column')}}</div>
         </div>
         
-        <div *ngIf="selectedColumn" class="col-md-4" [ngClass]="{'clr-error' : controlIsInvalid('operation')}">
+        <div *ngIf="selectedColumn" class="form-group col-md-4">
 
-                <select formControlName="operation" class="form-control" (change)="onChangeOperation($event.target.value)">
+                <select formControlName="operation" class="form-control" [ngClass]="{'is-invalid' : controlIsInvalid('operation')}" (change)="onChangeOperation($event.target.value)">
                     <option disabled selected hidden [value]="null">-- select --</option>
                     <option *ngFor="let o of getOperations(selectedColumn);" [value]="o.id">{{o.name}}</option>
                 </select>
-            <div class="clr-subtext" *ngIf="controlIsInvalid('operation')">{{getControlErrorMessage('operation')}}</div>
+            <div class="invalid-feedback" *ngIf="controlIsInvalid('operation')">{{getControlErrorMessage('operation')}}</div>
         </div>
         
-        <div *ngIf="selectedColumn" class="col-md-4" [ngClass]="{'clr-error' : controlIsInvalid('value')}">
+        <div *ngIf="selectedColumn" class="form-group col-md-4">
 
-                <select formControlName="value" class="form-control" *ngIf="getColumnValues()">
+                <select formControlName="value" class="form-control" [ngClass]="{'is-invalid' : controlIsInvalid('value')}" *ngIf="getColumnValues()">
                     <option disabled selected hidden [value]="null">-- select --</option>
                     <option *ngFor="let v of getColumnValues();" [value]="v.Key">{{v.Value}}</option>
                 </select>
@@ -33,8 +33,8 @@
                 [initValue]="getValue('value')"
                 [typeId]="metaColumn.ValueObjectType"
             ></app-test>
-            <input [type]="getColumnValues() || isAutocomplete() ? 'hidden' : 'text'" formControlName="value" placeholder="Value" class="clr-input" />
-            <div class="clr-subtext" *ngIf="controlIsInvalid('value')">
+            <input [type]="getColumnValues() || isAutocomplete() ? 'hidden' : 'text'" formControlName="value" placeholder="Value" class="form-control" [ngClass]="{'is-invalid' : controlIsInvalid('value')}" />
+            <div class="invalid-feedback" *ngIf="controlIsInvalid('value')">
                 {{getControlErrorMessage('value')}}
             </div>
         </div>

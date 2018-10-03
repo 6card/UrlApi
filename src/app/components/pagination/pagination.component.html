@@ -3,7 +3,7 @@
     <div class="col col-xs-4"><ng-content></ng-content></div>
     <div class="col col-xs-8">
 
-        <ul class="pagination float-right" *ngIf="pages.length > 1">
+        <ul class="pagination pagination-sm float-right" *ngIf="pages.length > 1">
 
             <li class="page-item" *ngIf="directionLinks && !noPrevious()">
                 <a class="page-link" (click)="selectPage(page - 1, $event)" aria-label="Previous">
