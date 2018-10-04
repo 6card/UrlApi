@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, Output, EventEmitter, Input, ViewChild, ElementRef, ComponentRef, ViewContainerRef, ComponentFactoryResolver } from "@angular/core";
+import { Component, OnInit, OnDestroy, AfterViewInit, Output, EventEmitter, Input, HostListener, ViewChild, ElementRef, ComponentRef, ViewContainerRef, ComponentFactoryResolver } from "@angular/core";
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 
 import { finalize, debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
@@ -71,6 +71,7 @@ export class AutocompleteComponent implements OnInit, OnDestroy, AfterViewInit {
             const factory = this.resolver.resolveComponentFactory(AutocompleteWindowComponent);
             this.componentRef = this.viewContainerRef.createComponent(factory);
             this.componentRef.instance.selectEvent.subscribe((result: any) => this.addTag(result));
+            this.componentRef.instance.clickOutside.subscribe(result => this.hideAutoCompleteDropdown());
         }
         this.componentRef.instance.searchResults = this.searchResults;
     }

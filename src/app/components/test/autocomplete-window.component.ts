@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, Output, EventEmitter, Input, ViewChild, ElementRef, HostBinding } from "@angular/core";
+import { Component, OnInit, OnDestroy, AfterViewInit, Output, EventEmitter, Input, HostListener, ViewChild, ElementRef, HostBinding } from "@angular/core";
 
 @Component({
     selector: "autocomplete-window",
@@ -23,6 +23,22 @@ export class AutocompleteWindowComponent implements OnInit, OnDestroy, AfterView
     @Input() focusFirst = false;
 
     @Output() selectEvent = new EventEmitter();
+
+    @Output() clickOutside = new EventEmitter();
+
+    @HostListener('document:click', ['$event.target'])
+    public onClick(targetElement) {
+        const clickedInside = this._elementRef.nativeElement.contains(targetElement);
+        if (!clickedInside) {
+            this.clickOutside.emit(null);
+        }
+    }
+
+    constructor (private _elementRef: ElementRef<HTMLElement>) {}
+
+    get element() {
+      return this._elementRef;
+    }
 
     select(item) { this.selectEvent.emit(item); }
 
