@@ -1,23 +1,28 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, Output, EventEmitter, Input, ViewChild, ElementRef } from "@angular/core";
+import { Component, OnInit, OnDestroy, AfterViewInit, Output, EventEmitter, Input, ViewChild, ElementRef, ComponentRef, ViewContainerRef, ComponentFactoryResolver } from "@angular/core";
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 
 import { finalize, debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { Observable, Subject, merge } from 'rxjs';
 
 import { SearchService } from '../../services/search.service';
 import { AuthenticationService } from '../../services/auth.service';
+import { AutocompleteWindowComponent } from './autocomplete-window.component';
 
 @Component({
     selector: "app-test",
-    templateUrl: './test.component.html'
+    templateUrl: './autocomplete.component.html'
 })
 
-export class TestComponent implements OnInit, OnDestroy, AfterViewInit {
-
+export class AutocompleteComponent implements OnInit, OnDestroy, AfterViewInit {
+    activeIdx = 0;
+    focusFirst = false;
     aContainerVisible: boolean = false;
     tags: Tag[] = [];
 
     searchResults: Tag[];
+
+    private componentRef: ComponentRef<AutocompleteWindowComponent>;
+    private el: HTMLElement; // this element element, can be any
 
     @Input() initValue: string;
     @Input() multiValue: boolean;
@@ -32,21 +37,28 @@ export class TestComponent implements OnInit, OnDestroy, AfterViewInit {
     constructor(
         private searchService: SearchService,
         private authenticationService: AuthenticationService,
-    ) {}
+        public viewContainerRef: ViewContainerRef,
+        private resolver: ComponentFactoryResolver,
+    ) {
+        this.el = this.viewContainerRef.element.nativeElement;
+        console.log(this.el);
+    }
 
     ngAfterViewInit() { }
 
     ngOnInit() {
-
+        
+        this.input.nativeElement.addEventListener('focus', (e) => this.loadSearchResults());
+        //this.input.nativeElement.addEventListener('blur', (e) => setTimeout(() => this.aContainerVisible = false, 150));
             //this.setTagsToInput();
             if (this.initValue)
                 this.setInputToTags(this.initValue);
 
             this.typeText
             .pipe(
-                filter(text => text.length > 1),
+                //filter(text => text.length > 1),
                 debounceTime(500),
-                //distinctUntilChanged(),
+                distinctUntilChanged(),
             )
             .subscribe(textValue => {
                 this.loadSearchResults(textValue);
@@ -54,23 +66,29 @@ export class TestComponent implements OnInit, OnDestroy, AfterViewInit {
         
     }
 
-    eventHandler($event) {
-        //if ($event.keyCode != 8)
-        this.typeText.next($event.target.value);
-        /*
-        if ($event.keyCode == 13) {
-            this.addTag($event);            
+    public showAutoCompleteDropdown = (event?: any): void => {
+        if (!this.componentRef) {
+            const factory = this.resolver.resolveComponentFactory(AutocompleteWindowComponent);
+            this.componentRef = this.viewContainerRef.createComponent(factory);
+            this.componentRef.instance.selectEvent.subscribe((result: any) => this.addTag(result));
         }
-        */
-        
-    } 
+        this.componentRef.instance.searchResults = this.searchResults;
+    }
 
-    loadSearchResults(str: string) {
+    public hideAutoCompleteDropdown = (event?: any): void => {
+        if (this.componentRef) {
+            //this.componentRef.instance.selectEvent.unsubscribe();
+            this.componentRef.destroy();
+            this.componentRef = null;
+        }
+    }
+
+    loadSearchResults(str?: string) {
         this.aContainerVisible = true;
 
         this.searchService.search(this.typeId, this.authenticationService.sessionId, {
             Query: [{Operation:0,Columns:[
-                {Column: 8, Operation: 7, Value: str}
+                {Column: 8, Operation: 7, Value: str ? str : ''}
             ]}], 
             Page: { Start: 1, Length: 50, Sort: [{ Column: 8, Desc: false }]}
         })
@@ -80,6 +98,7 @@ export class TestComponent implements OnInit, OnDestroy, AfterViewInit {
             .subscribe(
                 data => { 
                     this.searchResults = data.map( item => new Tag(item));
+                    this.showAutoCompleteDropdown();
                 },
                 error => {}
             );
@@ -128,6 +147,58 @@ export class TestComponent implements OnInit, OnDestroy, AfterViewInit {
         this.setTagsToInput();
         this.input.nativeElement.value = "";         
         this.aContainerVisible = false;
+
+        this.hideAutoCompleteDropdown();
+    }
+
+    
+
+    
+
+    handleKeyDown(event: KeyboardEvent) {
+        //console.log(event.which);
+
+        //40 - down
+        //38 - up
+        //13 - enter
+        //8 - backspace
+        //27 - escape
+        switch (event.which) {
+            case 8: //backspace
+                this.removeLastTag(event);
+                break;
+
+            case 40: // down
+                event.preventDefault();
+                this.componentRef.instance.selectNext();
+                break;
+            case 38: // up
+                event.preventDefault();
+                this.componentRef.instance.selectPrev();
+                break;
+
+            case 13: // enter
+                event.preventDefault();
+                const result = this.componentRef.instance.getActive();
+                if (result) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    this.addTag(result);
+                }
+                this.hideAutoCompleteDropdown();
+                break;
+        }
+    }
+
+    handleKeyUp($event) {
+        //if ($event.keyCode != 8)
+        this.typeText.next($event.target.value);
+        /*
+        if ($event.keyCode == 13) {
+            this.addTag($event);            
+        }
+        */
+        
     }
 
     removeLastTag($event) {  

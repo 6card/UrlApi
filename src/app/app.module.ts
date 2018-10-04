@@ -5,6 +5,8 @@ import { NgModule } from '@angular/core';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { AutocompleteModule } from './components/test/autocomplete.module';
+
 import { AppComponent } from './app.component';
 
 import { AppRoutingModule } from "./routing.module";
@@ -26,7 +28,8 @@ import { SearchTableComponent } from './components/search-table/search-table.com
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { AlertComponent } from './components/alert/alert.component';
 import { TagFormComponent } from './components/tag-form/tag-from.component';
-import { TestComponent } from './components/test/test.component';
+//import { AutocompleteComponent } from './components/test/autocomplete.component';
+//import { AutocompleteWindowComponent } from './components/test/autocomplete-window.component';
 import { SortableColumnComponent } from './components/search-table/sortable-column.component'
 
 import { CookieService } from 'ngx-cookie-service';
@@ -54,7 +57,8 @@ import { AuthGuard } from './guards/auth.guard';
     AlertComponent,
     TagFormComponent,
     
-    TestComponent,
+    //AutocompleteComponent,
+    //AutocompleteWindowComponent,
     SortableColumnComponent
   ],
   imports: [
@@ -64,7 +68,9 @@ import { AuthGuard } from './guards/auth.guard';
     ReactiveFormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    HttpClientModule
+    HttpClientModule,
+
+    AutocompleteModule
   ],
   providers: [
     AuthGuard,
