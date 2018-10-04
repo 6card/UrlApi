@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, Output, EventEmitter, Input, HostListener, ViewChild, ElementRef, ComponentRef, ViewContainerRef, ComponentFactoryResolver } from "@angular/core";
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 
-import { finalize, debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
+import { finalize, debounceTime, distinctUntilChanged, filter, first } from 'rxjs/operators';
 import { Observable, Subject, merge } from 'rxjs';
 
 import { SearchService } from '../../services/search.service';
@@ -14,12 +14,13 @@ import { AutocompleteWindowComponent } from './autocomplete-window.component';
 })
 
 export class AutocompleteComponent implements OnInit, OnDestroy, AfterViewInit {
-    activeIdx = 0;
-    focusFirst = false;
+
     aContainerVisible: boolean = false;
     tags: Tag[] = [];
 
     searchResults: Tag[];
+
+    private isChangedTagFlag = false;
 
     private componentRef: ComponentRef<AutocompleteWindowComponent>;
     private el: HTMLElement; // this element element, can be any
@@ -31,7 +32,9 @@ export class AutocompleteComponent implements OnInit, OnDestroy, AfterViewInit {
     @Output() pushInput = new EventEmitter<any>();
 
     private typeText: Subject<string> = new Subject();
-    @ViewChild("tagsInput") tagsInput: ElementRef;
+    @ViewChild(AutocompleteWindowComponent) 
+    private aWindow: AutocompleteWindowComponent;
+
     @ViewChild("input") input: ElementRef;
 
     constructor(
@@ -39,34 +42,55 @@ export class AutocompleteComponent implements OnInit, OnDestroy, AfterViewInit {
         private authenticationService: AuthenticationService,
         public viewContainerRef: ViewContainerRef,
         private resolver: ComponentFactoryResolver,
+        private _elementRef: ElementRef
     ) {
         this.el = this.viewContainerRef.element.nativeElement;
-        console.log(this.el);
+        //console.log(this.el);
+    }
+
+    @HostListener('click', ['$event.target'])
+    public onClick(targetElement) {
+        const clickedInside = this._elementRef.nativeElement.contains(targetElement);
+        if (clickedInside && !this.aContainerVisible) {
+            console.log('click');
+            this.loadSearchResults()
+            this.isChangedTagFlag = false;
+            //this.typeText.next(this.input.nativeElement.value);
+        }
     }
 
     ngAfterViewInit() { }
 
+    closeWindow($event) {
+        const clickedInside = this._elementRef.nativeElement.contains($event);
+        if (!clickedInside) {
+            this.aContainerVisible = false;
+        }
+    }
+
     ngOnInit() {
         
-        this.input.nativeElement.addEventListener('focus', (e) => this.loadSearchResults());
+        //this.input.nativeElement.addEventListener('click', (e) => this.loadSearchResults());
         //this.input.nativeElement.addEventListener('blur', (e) => setTimeout(() => this.aContainerVisible = false, 150));
             //this.setTagsToInput();
-            if (this.initValue)
-                this.setInputToTags(this.initValue);
+        if (this.initValue)
+            this.setInputToTags(this.initValue);
 
-            this.typeText
+        this.typeText
             .pipe(
-                //filter(text => text.length > 1),
+                //filter(text => text.length > 0),
                 debounceTime(500),
                 distinctUntilChanged(),
             )
             .subscribe(textValue => {
+                console.log('change value');
                 this.loadSearchResults(textValue);
             });
         
     }
 
     public showAutoCompleteDropdown = (event?: any): void => {
+        /*
         if (!this.componentRef) {
             const factory = this.resolver.resolveComponentFactory(AutocompleteWindowComponent);
             this.componentRef = this.viewContainerRef.createComponent(factory);
@@ -74,32 +98,39 @@ export class AutocompleteComponent implements OnInit, OnDestroy, AfterViewInit {
             this.componentRef.instance.clickOutside.subscribe(result => this.hideAutoCompleteDropdown());
         }
         this.componentRef.instance.searchResults = this.searchResults;
+        */
     }
 
     public hideAutoCompleteDropdown = (event?: any): void => {
+        /*
         if (this.componentRef) {
             //this.componentRef.instance.selectEvent.unsubscribe();
             this.componentRef.destroy();
             this.componentRef = null;
         }
+        */
     }
 
     loadSearchResults(str?: string) {
         this.aContainerVisible = true;
-
+        const str2 = this.input.nativeElement.value;
         this.searchService.search(this.typeId, this.authenticationService.sessionId, {
             Query: [{Operation:0,Columns:[
-                {Column: 8, Operation: 7, Value: str ? str : ''}
+                //{Column: 8, Operation: 7, Value: str ? str : ''}
+                {Column: 8, Operation: 7, Value: str2}
             ]}], 
             Page: { Start: 1, Length: 50, Sort: [{ Column: 8, Desc: false }]}
         })
             .pipe(
+                first(),
+                distinctUntilChanged(),
                 //finalize(() => this.aContainerVisible = false)
             )
             .subscribe(
                 data => { 
                     this.searchResults = data.map( item => new Tag(item));
-                    this.showAutoCompleteDropdown();
+                    this.aWindow.resetActive();
+                    //this.showAutoCompleteDropdown();
                 },
                 error => {}
             );
@@ -146,15 +177,14 @@ export class AutocompleteComponent implements OnInit, OnDestroy, AfterViewInit {
             this.tags = [tag];
 
         this.setTagsToInput();
-        this.input.nativeElement.value = "";         
+        this.input.nativeElement.value = "";
+        //this.input.nativeElement.blur();
+
         this.aContainerVisible = false;
-
-        this.hideAutoCompleteDropdown();
+        this.isChangedTagFlag = true;
+        //this.hideAutoCompleteDropdown();
+        console.log('add Tag');
     }
-
-    
-
-    
 
     handleKeyDown(event: KeyboardEvent) {
         //console.log(event.which);
@@ -169,31 +199,37 @@ export class AutocompleteComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.removeLastTag(event);
                 break;
 
-            case 40: // down
+            case 40: // down                
                 event.preventDefault();
-                this.componentRef.instance.selectNext();
+                if (this.aWindow)
+                    this.aWindow.selectNext();
                 break;
             case 38: // up
                 event.preventDefault();
-                this.componentRef.instance.selectPrev();
+                if (this.aWindow)
+                    this.aWindow.selectPrev();
                 break;
 
             case 13: // enter
                 event.preventDefault();
-                const result = this.componentRef.instance.getActive();
-                if (result) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    this.addTag(result);
+                if (this.aWindow) {
+                    const result = this.aWindow.getActive();
+                    if (result) 
+                        this.addTag(result);
                 }
-                this.hideAutoCompleteDropdown();
+                break;
+
+            case 27: //escape
+                event.preventDefault();
+                this.aContainerVisible = false;
                 break;
         }
     }
 
     handleKeyUp($event) {
-        //if ($event.keyCode != 8)
-        this.typeText.next($event.target.value);
+        if ($event.keyCode != 13) 
+            this.typeText.next($event.target.value);
+
         /*
         if ($event.keyCode == 13) {
             this.addTag($event);            

@@ -30,7 +30,7 @@ export class AutocompleteWindowComponent implements OnInit, OnDestroy, AfterView
     public onClick(targetElement) {
         const clickedInside = this._elementRef.nativeElement.contains(targetElement);
         if (!clickedInside) {
-            this.clickOutside.emit(null);
+            this.clickOutside.emit(targetElement);
         }
     }
 
@@ -67,7 +67,7 @@ export class AutocompleteWindowComponent implements OnInit, OnDestroy, AfterView
 
     
 
-    ngOnInit() { }
+    ngOnInit() { this.resetActive(); }
 
     ngAfterViewInit() { }
 
