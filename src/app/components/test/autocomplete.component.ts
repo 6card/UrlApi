@@ -52,7 +52,6 @@ export class AutocompleteComponent implements OnInit, OnDestroy, AfterViewInit {
     public onClick(targetElement) {
         const clickedInside = this._elementRef.nativeElement.contains(targetElement);
         if (clickedInside && !this.aContainerVisible) {
-            console.log('click');
             this.loadSearchResults()
             this.isChangedTagFlag = false;
             //this.typeText.next(this.input.nativeElement.value);
@@ -83,7 +82,6 @@ export class AutocompleteComponent implements OnInit, OnDestroy, AfterViewInit {
                 distinctUntilChanged(),
             )
             .subscribe(textValue => {
-                console.log('change value');
                 this.loadSearchResults(textValue);
             });
         
@@ -183,7 +181,6 @@ export class AutocompleteComponent implements OnInit, OnDestroy, AfterViewInit {
         this.aContainerVisible = false;
         this.isChangedTagFlag = true;
         //this.hideAutoCompleteDropdown();
-        console.log('add Tag');
     }
 
     handleKeyDown(event: KeyboardEvent) {

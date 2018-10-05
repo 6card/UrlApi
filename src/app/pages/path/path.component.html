@@ -1,30 +1,11 @@
 <div *ngIf="item">
     <div class="row mb-4">
-        <div class="col-md-4 col-sm-12">
-            <div class="card">
-                <div class="card-header">
-                    Блок Путь
-                </div>
-                <div class="card-block">
-                    <ul class="list-unstyled">
-                        <li>Id = {{item.Id}}</li>
-                        <li>PathLatin = {{item.PathLatin}}</li>
-                        <li>PathSuffix = {{item.PathSuffix}}</li>
-                        <li>ParentPathId = {{item.ParentPathId}}</li>
-                        <li>ParentPathLatin = {{item.ParentPathLatin}}</li>
-                        <li>ParentPathSuffix = {{item.ParentPathSuffix}}</li>
-                    </ul>
-                </div>
-                <div class="card-footer">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-primary">Перенаправить на путь</button>
-                    </div>
-                </div>
-            </div>
+        <div class="col-md-12">
+            <h4>Url - {{item.Url}}</h4>
         </div>
-    
-
-        <div class="col-md-4 col-sm-12">
+    </div>
+    <div class="row mb-4">
+        <div class="col-md-6 col-sm-12">
             <div class="card">
                 <div class="card-header">
                     Блок Объект
@@ -40,16 +21,23 @@
                     </ul>
                 </div>
                 <div class="card-footer">
-                    <div class="btn-group btn-primary">
-                        <a [routerLink]="['/object', item.ObjectTypeId, item.ObjectId]" class="btn btn-primary">EDIT</a>
-                        <button class="btn btn-success" (click)="openDialog(modalContent)">Выставить объект</button>
-                        <button class="btn btn-danger" (click)="deleteObject()">Удалить</button>
+                    <div class="mb-2">
+                        <div class="btn-group">
+                            <a [routerLink]="['/object', item.ObjectTypeId, item.ObjectId]" class="btn btn-primary">EDIT</a>
+                            <button class="btn btn-success" (click)="openDialog(modalContent)">Выставить объект</button>
+                            <button class="btn btn-danger" (click)="deleteObject()">Удалить</button>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary">Выставить Redirect</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4 col-sm-12">
+        <div class="col-md-6 col-sm-12">
             <div class="card">
                 <div class="card-header">
                     Блок SEO
