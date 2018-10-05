@@ -5,7 +5,7 @@ import { AuthenticationService } from '../../services/auth.service';
 import { SearchService } from '../../services/search.service';
 import { PathService } from '../../services/path.service';
 
-import { filter, finalize } from 'rxjs/operators'
+import { filter, finalize, first } from 'rxjs/operators'
 
 export const START_SQ = [{ Operation:0, Columns:[] }];
 export const START_SS = [{ Column: 1, Desc: false }];
@@ -149,8 +149,11 @@ export class CommonSearchComponent implements OnInit {
                 finalize(() => this.submitLoading = false)
             )
             .subscribe(
-              data => { this.searchResult = data; },
-              error => {}
+              data => {
+                  this.searchResult = data; 
+                },
+              error => {},
+              //() => {this.submitLoading = false}
             );
     
             this.searchService.searchCount(this.typeId,this.authenticationService.sessionId, this.searchQuery)
@@ -160,7 +163,7 @@ export class CommonSearchComponent implements OnInit {
             .subscribe(
                 data => { this.searchItemsResult = data; },
                 error => { },
-                () => { }
+                //() => {this.submitLoading = false}
             );
       }
 }
