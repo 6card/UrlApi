@@ -9,7 +9,7 @@
     (pushPage)="onPageChange($event)"
     (pushSort)="onSortChange($event)"
     (setObj)="onSetObject($event)" 
-
+    [firstQuery]="searchPage"
     [typeId]="typeId"
     [loading]="submitLoading"
     [items]="searchResult"

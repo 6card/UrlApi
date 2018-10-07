@@ -158,7 +158,7 @@ export class CommonSearchComponent implements OnInit {
     
             this.searchService.searchCount(this.typeId,this.authenticationService.sessionId, this.searchQuery)
             .pipe(
-                finalize(() => this.submitLoading = false)
+                //finalize(() => this.submitLoading = false)
             )
             .subscribe(
                 data => { this.searchItemsResult = data; },

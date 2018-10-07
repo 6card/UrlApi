@@ -4,8 +4,8 @@
             <thead class="thead-dark">
                 <tr>
                     <th>ID</th>
-                    <th sortable-column="8">Название</th>
-                    <th sortable-column="32">Описание</th>
+                    <th sortable-column="8" [sort-direction]="getDirection(8)">Название</th>
+                    <th sortable-column="32" [sort-direction]="getDirection(32)">Описание</th>
                     <th>URL</th>
                     <th *ngIf="!path">Edit Path</th>
                     <th *ngIf="!path">Edit Object</th>

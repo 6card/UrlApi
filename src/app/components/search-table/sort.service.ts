@@ -13,7 +13,9 @@ export class SortService {
     columnSorted$ = this.columnSortedSource.asObservable();
 
     columnSorted(event: ColumnSortedEvent) {
-        this._columns.find( i => i.sortColumn == event.sortColumn).sortDirection = event.sortDirection;
+        const sortedColumn = this._columns.find( i => i.sortColumn == event.sortColumn);
+        if (sortedColumn)
+            sortedColumn.sortDirection = event.sortDirection;
         this.columnSortedSource.next(this._columns);
     }
 

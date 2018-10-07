@@ -1,8 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
-import { SortService } from './sort.service';
+import { SortService, ColumnSortedEvent } from './sort.service';
 import { Meta, MetaColumn } from '../../models/meta.model';
 import { MetaService } from '../../services/meta.service';
 
@@ -15,7 +15,7 @@ import { MetaService } from '../../services/meta.service';
 export class SearchTableComponent implements OnInit {
 
     public meta;
-
+    @Input() firstQuery: any;
     @Input() currentPage: number = 0;
     @Input() typeId: number;
     @Input() loading: boolean = false;
@@ -61,10 +61,24 @@ export class SearchTableComponent implements OnInit {
         );
     }
 
+    getDirection(columnId: number) {
+        if (!this.firstQuery)
+            return '';
+        const sortCoulumn = this.firstQuery.Sort.find( s => s.Column == columnId);
+        if (sortCoulumn)
+            return sortCoulumn.Desc ? 'desc' : 'asc';
+        else
+            return '';
+    }
+
     public setCortingColumns(){
         const columns = this.meta.Columns.filter( i => i.Sort == true).map( i => i.Id);
         this.sortService.setColumns(columns);
-    }
+        
+        if (this.firstQuery)
+            this.firstQuery.Sort.map( sort => this.sortService.columnSorted( {sortColumn: sort.Column, sortDirection: sort.Desc ? 'desc' : 'asc'}));
+        
+        }
 
     pageChange(pageNumber: number) {
        this.pushPage.emit(pageNumber);        
