@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, OnDestroy, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
@@ -9,10 +9,10 @@ import { MetaService } from '../../services/meta.service';
 @Component({
     selector: 'search-table',
     templateUrl: './search-table.component.html',
-    providers: [SortService, MetaService]
+    providers: [SortService]
   })
 
-export class SearchTableComponent implements OnInit {
+export class SearchTableComponent implements OnInit, OnDestroy {
 
     public meta;
     @Input() firstQuery: any;
@@ -28,6 +28,7 @@ export class SearchTableComponent implements OnInit {
     @Output() pushSort = new EventEmitter();
 
     private columnSortedSubscription: Subscription;
+    public metaSubscription: Subscription;
 
     constructor(
         private sortService: SortService, 
@@ -35,18 +36,34 @@ export class SearchTableComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.getMeta(this.typeId);
-
+        //this.getMeta(this.typeId);
         this.columnSortedSubscription = this.sortService.columnSorted$.subscribe(columns => {
             //console.log(columns);
             this.pushSort.emit(columns);
         });
+
+        this.metaSubscription = this.metaService.meta
+        .subscribe(
+            (meta: Meta) => { 
+                this.meta = new Meta(meta);
+                this.sortService.clearAllColumns();
+                this.setCortingColumns();
+        });
     }
+
+    /*
+    ngOnChanges(changes: SimpleChanges) {
+        if(changes.typeId) 
+            this.sortService.clearAllColumns();
+    }
+    */
 
     ngOnDestroy() {
         this.columnSortedSubscription.unsubscribe();
+        this.metaSubscription.unsubscribe();
     }
 
+    /*
     getMeta(typeId: number) {
         //this.metaLoading = true;
 
@@ -60,6 +77,7 @@ export class SearchTableComponent implements OnInit {
             error => {}
         );
     }
+    */
 
     getDirection(columnId: number) {
         if (!this.firstQuery)
@@ -75,10 +93,10 @@ export class SearchTableComponent implements OnInit {
         const columns = this.meta.Columns.filter( i => i.Sort == true).map( i => i.Id);
         this.sortService.setColumns(columns);
         
-        if (this.firstQuery)
-            this.firstQuery.Sort.map( sort => this.sortService.columnSorted( {sortColumn: sort.Column, sortDirection: sort.Desc ? 'desc' : 'asc'}));
-        
+        if (this.firstQuery) {
+            this.firstQuery.Sort.map( sort => this.sortService.setSorted( {Column: sort.Column, Desc: sort.Desc}));
         }
+    }
 
     pageChange(pageNumber: number) {
        this.pushPage.emit(pageNumber);        

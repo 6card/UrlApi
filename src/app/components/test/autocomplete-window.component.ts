@@ -5,10 +5,11 @@ import { Component, OnInit, OnDestroy, AfterViewInit, Output, EventEmitter, Inpu
     exportAs: 'AutocompleteWindowComponent',
     host: {'class': 'dropdown-menu show', 'style': 'left: 14px;'},
     template: `
+    <div class="loader-20" *ngIf="loading"></div>
     <div *ngIf="searchResults && searchResults.length == 0">Нет результатов</div>
     <button type="button" class="dropdown-item" *ngFor="let item of searchResults; let i = index"
         (click)="select(item)"
-        [id]="id + '-' + i"
+        [id]="'aid-' + i"
         [class.active]="i === activeIdx"
         (mouseenter)="markActive(i)"
     >{{item.title}}</button>
@@ -18,7 +19,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit, Output, EventEmitter, Inpu
 export class AutocompleteWindowComponent implements OnInit, OnDestroy, AfterViewInit {
 
     activeIdx = 0;
-
+    @Input() loading: boolean;
     @Input() searchResults: Array<any>;
     @Input() focusFirst = false;
 
@@ -34,7 +35,7 @@ export class AutocompleteWindowComponent implements OnInit, OnDestroy, AfterView
         }
     }
 
-    constructor (private _elementRef: ElementRef<HTMLElement>) {}
+    constructor (private _elementRef: ElementRef) {}
 
     get element() {
       return this._elementRef;
@@ -53,7 +54,8 @@ export class AutocompleteWindowComponent implements OnInit, OnDestroy, AfterView
         } else {
           this.activeIdx++;
         }
-      }
+        this.scrollToElement();
+    }
     
     selectPrev() {
         if (this.activeIdx < 0) {
@@ -63,6 +65,33 @@ export class AutocompleteWindowComponent implements OnInit, OnDestroy, AfterView
         } else {
           this.activeIdx--;
         }
+        this.scrollToElement(true);
+    }
+
+    scrollToElement(top: boolean = false) {
+      const button = this.selectedElement;
+      if (!button)
+        return;
+
+      let notVisible: boolean = false;
+      if (button.offsetTop + button.offsetHeight > this.element.nativeElement.scrollTop + this.element.nativeElement.offsetHeight || button.offsetTop < this.element.nativeElement.scrollTop)
+        notVisible = true;
+        
+      if (top) { // scroll to top        
+        if (this.element.nativeElement.scrollTop + button.offsetHeight > button.offsetTop || notVisible) {
+          this.element.nativeElement.scrollTo(0, button.offsetTop - button.offsetHeight);
+        }
+      }
+      else { // scroll to bottom
+        if ( (this.element.nativeElement.offsetHeight + this.element.nativeElement.scrollTop ) <= button.offsetTop + button.offsetHeight + 10  || notVisible ) {
+          this.element.nativeElement.scrollTo(0, button.offsetTop + button.offsetHeight*2 - this.element.nativeElement.offsetHeight);
+        }
+      }
+    }
+
+    get selectedElement(): HTMLElement {
+      let el = document.getElementById(`aid-${this.activeIdx}`)
+      return el ? el : null;
     }
 
     

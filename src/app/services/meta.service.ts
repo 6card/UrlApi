@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
 
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+
+import { Meta, MetaColumn } from '../models/meta.model';
 
 import { AlertService } from './alert.service'
 
@@ -12,16 +14,29 @@ import { AlertService } from './alert.service'
 
 export class MetaService {
 
+    public _meta = new Subject<any>();
+
     constructor(
         private http: HttpClient,
         private alertService: AlertService
     ) { }
 
-    getMeta(typeId: number){
+    get meta(): Observable<any> {        
+        return this._meta.asObservable();
+    }
+
+    loadMeta(typeId: number){
         const url = `https://api.newstube.ru/urldev/Meta/GetMeta`
         const params = new HttpParams().set('typeId', String(typeId));    
-        return this.http.get(url, {params})
-          .pipe( catchError(this.handleError(url)));
+        this.http.get(url, {params})
+        .pipe( catchError(this.handleError(url)))
+        .subscribe(            
+            (data: Meta) => {                
+                this._meta.next(new Meta(data));
+                //this.setValueValidators();
+            },
+            error => {}
+        );
     }
 
 

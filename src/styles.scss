@@ -106,7 +106,18 @@ $badge-padding-x: .4em;
     align-items: center;
 }
 
-.loader {
+.loader-20 {
+    display: block;
+    top: 50%;
+    border: 3px solid #ffffff; /* Light grey */
+    border-top: 3px solid $primary; /* Blue */
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 2s linear infinite;
+}
+
+.loader-60 {
     display: block;
     top: 50%;
     border: 8px solid #ffffff; /* Light grey */
@@ -120,4 +131,9 @@ $badge-padding-x: .4em;
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+autocomplete-window{
+    max-height: 300px;
+    overflow-y: scroll;
 }

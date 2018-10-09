@@ -5,7 +5,8 @@
     </a>
     <input #input type="text" (keyup)="handleKeyUp($event)" (keydown)="handleKeyDown($event)">
     <autocomplete-window #awindow
-        *ngIf="aContainerVisible" 
+        *ngIf="aContainerVisible"
+        [loading]="loadingResults"
         [searchResults]="searchResults"
         (selectEvent)="addTag($event)"
         (clickOutside)="closeWindow($event)"

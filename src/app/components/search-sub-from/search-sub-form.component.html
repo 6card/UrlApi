@@ -33,7 +33,20 @@
                 [initValue]="getValue('value')"
                 [typeId]="metaColumn.ValueObjectType"
             ></app-test>
-            <input [type]="getColumnValues() || isAutocomplete() ? 'hidden' : 'text'" formControlName="value" placeholder="Value" class="form-control" [ngClass]="{'is-invalid' : controlIsInvalid('value')}" />
+
+
+            <ng-container *ngIf="isDateTime()">
+                <div class="input-group">
+                    <input class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #d="ngbDatepicker" (dateSelect)="onPushInput($event)" (click)="d.open()">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i class="fa fa-calendar"></i></button>
+                    </div>
+                  </div>
+            </ng-container>
+
+
+
+            <input [type]="getColumnValues() || isAutocomplete() || isDateTime() ? 'hidden' : 'text'" formControlName="value" placeholder="Value" class="form-control" [ngClass]="{'is-invalid' : controlIsInvalid('value')}" />
             <div class="invalid-feedback" *ngIf="controlIsInvalid('value')">
                 {{getControlErrorMessage('value')}}
             </div>

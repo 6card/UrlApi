@@ -1,6 +1,7 @@
-import { Component, OnInit, OnChanges, Input, Output, ViewChild, ElementRef, EventEmitter, SimpleChanges, SimpleChange } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, ViewChild, ElementRef, EventEmitter, SimpleChanges, SimpleChange } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 
+import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
 import { Meta, MetaColumn } from '../../models/meta.model';
@@ -9,16 +10,16 @@ import { MetaService } from '../../services/meta.service';
 @Component({
     selector: 'search-sub-form',
     templateUrl: './search-sub-form.component.html',
-    providers: [ MetaService ]
   })
 
-export class SearchSubFormComponent implements OnInit  {
+export class SearchSubFormComponent implements OnInit, OnDestroy  {
 
     @Input() subForm: FormGroup;
     @Input() typeId: number;
 
     public meta;
     public metaLoading: boolean = false;
+    public metaSubscription: Subscription;
 
     public selectedColumn: number;
     public selectedOperation: number;
@@ -28,16 +29,28 @@ export class SearchSubFormComponent implements OnInit  {
     ) { }
     
     ngOnInit() {
-        this.getMeta(this.typeId);
+        //this.getMeta(this.typeId);
         this.selectedColumn = this.subForm.get('column').value || null;
         this.selectedOperation = this.subForm.get('operation').value || null;
+
+        this.metaSubscription = this.metaService.meta
+        .subscribe(
+            (meta: Meta) => {
+                this.meta = new Meta(meta);
+                this.setValueValidators();
+        });
     }
 
+    ngOnDestroy(): void {
+        this.metaSubscription.unsubscribe();
+    }
+
+    /*
     getMeta(typeId: number) {
         this.metaLoading = true;
 
-        this.metaService.getMeta(typeId)        
-        .pipe( finalize( () => this.metaLoading = false ) )
+        this.metaService.loadMeta(typeId)        
+        //.pipe( finalize( () => this.metaLoading = false ) )
         .subscribe(
             (data: Meta) => { 
                 this.meta = new Meta(data);
@@ -46,6 +59,7 @@ export class SearchSubFormComponent implements OnInit  {
             error => {}
         );
     }
+    */
 
     setValueValidators() {
         if (this.selectedColumn) {
@@ -164,7 +178,12 @@ export class SearchSubFormComponent implements OnInit  {
     isAutocomplete() {
         //return (this.selectedOperation == 9 || this.selectedOperation == 10);
         //console.log(this.metaColumn.ValueObjectType);
-        return this.metaColumn.ValueObjectType;
+        return this.metaColumn.ValueObjectType && this.metaColumn.Type == 'Int32';
+    }
+
+    isDateTime() {
+        //return (this.selectedOperation == 9 || this.selectedOperation == 10);
+        return !this.metaColumn.ValueObjectType && this.metaColumn.Type == 'DateTime';
     }
 
     public controlIsInvalid(controlName: string): boolean {
@@ -173,6 +192,7 @@ export class SearchSubFormComponent implements OnInit  {
     }
 
     onPushInput(value: string) {
+        console.log(value);
         this.subForm.get('value').setValue(value);
     }
 }

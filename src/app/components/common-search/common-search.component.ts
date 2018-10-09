@@ -4,6 +4,7 @@ import { Router, ActivatedRoute, Params } from "@angular/router";
 import { AuthenticationService } from '../../services/auth.service';
 import { SearchService } from '../../services/search.service';
 import { PathService } from '../../services/path.service';
+import { MetaService } from '../../services/meta.service';
 
 import { filter, finalize, first } from 'rxjs/operators'
 
@@ -14,6 +15,7 @@ export const START_SP = { Start: 1, Length: 10, Sort: START_SS};
 @Component({
     selector: 'common-search',
     templateUrl: './common-search.component.html',
+    providers: [ MetaService ]
   })
   
 export class CommonSearchComponent implements OnInit {
@@ -35,7 +37,8 @@ export class CommonSearchComponent implements OnInit {
         protected activatedRoute: ActivatedRoute,
         protected searchService: SearchService,
         protected authenticationService: AuthenticationService,
-        protected pathService: PathService
+        protected pathService: PathService,
+        private metaService: MetaService
     ) { }
 
     ngOnInit() { 
@@ -46,8 +49,9 @@ export class CommonSearchComponent implements OnInit {
 
             }
             else {
-                this.setSearchParams(Number(param.typeId), this.parseParam(param.q), this.parseParam(param.p))
+                this.setSearchParams(Number(param.typeId), this.parseParam(param.q), this.parseParam(param.p));
 
+                this.metaService.loadMeta(Number(param.typeId));
                 this.getResults();
             }
         }); 
@@ -89,14 +93,12 @@ export class CommonSearchComponent implements OnInit {
 
     public onSortChange(columns) {
         
-
-        let sort = columns.filter( i => i.sortDirection).map(i => {return {Column: i.Column, Desc: i.Desc}});
-        if (sort.length == 0) sort = START_SS;
+        if (columns.length == 0) columns = START_SS;
 
         const page = {
             Start: 1,        
             Length: 10,        
-            Sort: sort      
+            Sort: columns      
         };
 
 

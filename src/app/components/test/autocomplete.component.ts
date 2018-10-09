@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, Output, EventEmitter, Input, HostListener, ViewChild, ElementRef, ComponentRef, ViewContainerRef, ComponentFactoryResolver } from "@angular/core";
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 
-import { finalize, debounceTime, distinctUntilChanged, filter, first } from 'rxjs/operators';
+import { finalize, debounceTime, distinctUntilChanged, filter, first, } from 'rxjs/operators';
 import { Observable, Subject, merge } from 'rxjs';
 
 import { SearchService } from '../../services/search.service';
@@ -20,7 +20,7 @@ export class AutocompleteComponent implements OnInit, OnDestroy, AfterViewInit {
 
     searchResults: Tag[];
 
-    private isChangedTagFlag = false;
+    private loadingResults: boolean = false;
 
     private componentRef: ComponentRef<AutocompleteWindowComponent>;
     private el: HTMLElement; // this element element, can be any
@@ -52,8 +52,8 @@ export class AutocompleteComponent implements OnInit, OnDestroy, AfterViewInit {
     public onClick(targetElement) {
         const clickedInside = this._elementRef.nativeElement.contains(targetElement);
         if (clickedInside && !this.aContainerVisible) {
-            this.loadSearchResults()
-            this.isChangedTagFlag = false;
+            this.loadSearchResults();
+            
             //this.typeText.next(this.input.nativeElement.value);
         }
     }
@@ -111,6 +111,7 @@ export class AutocompleteComponent implements OnInit, OnDestroy, AfterViewInit {
 
     loadSearchResults(str?: string) {
         this.aContainerVisible = true;
+        this.loadingResults = true;
         const str2 = this.input.nativeElement.value;
         this.searchService.search(this.typeId, this.authenticationService.sessionId, {
             Query: [{Operation:0,Columns:[
@@ -120,6 +121,7 @@ export class AutocompleteComponent implements OnInit, OnDestroy, AfterViewInit {
             Page: { Start: 1, Length: 50, Sort: [{ Column: 8, Desc: false }]}
         })
             .pipe(
+                finalize(()=> this.loadingResults = false),
                 first(),
                 distinctUntilChanged(),
                 //finalize(() => this.aContainerVisible = false)
@@ -179,7 +181,7 @@ export class AutocompleteComponent implements OnInit, OnDestroy, AfterViewInit {
         //this.input.nativeElement.blur();
 
         this.aContainerVisible = false;
-        this.isChangedTagFlag = true;
+        //this.isChangedTagFlag = true;
         //this.hideAutoCompleteDropdown();
     }
 
@@ -224,7 +226,7 @@ export class AutocompleteComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     handleKeyUp($event) {
-        if ($event.keyCode != 13) 
+        if ($event.keyCode != 13 && $event.keyCode != 40 && $event.keyCode != 38) 
             this.typeText.next($event.target.value);
 
         /*
