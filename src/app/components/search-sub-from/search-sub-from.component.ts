@@ -170,10 +170,12 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
         return values || null;
     }
 
+    /*
     getValue(controlName: string): string {
         const control = this.subForm.get(controlName);
         return control.value;
     }
+    */
 
     isAutocomplete() {
         //return (this.selectedOperation == 9 || this.selectedOperation == 10);
@@ -191,8 +193,9 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
         return control.invalid && control.touched;
     }
 
+    /*
     onPushInput(value: string) {
-        console.log(value);
         this.subForm.get('value').setValue(value);
     }
+    */
 }

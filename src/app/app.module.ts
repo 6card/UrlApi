@@ -29,7 +29,7 @@ import { PaginationComponent } from './components/pagination/pagination.componen
 import { AlertComponent } from './components/alert/alert.component';
 import { TagFormComponent } from './components/tag-form/tag-from.component';
 //import { AutocompleteComponent } from './components/test/autocomplete.component';
-//import { AutocompleteWindowComponent } from './components/test/autocomplete-window.component';
+import { NgbDateTimePicker } from './components/datetimepiker/datetimepicker.component';
 import { SortableColumnComponent } from './components/search-table/sortable-column.component';
 import { LoadingDirective } from './components/search-table/loading.directive';
 
@@ -60,6 +60,7 @@ import { AuthGuard } from './guards/auth.guard';
     
     //AutocompleteComponent,
     //AutocompleteWindowComponent,
+    NgbDateTimePicker,
     SortableColumnComponent,
     LoadingDirective
   ],

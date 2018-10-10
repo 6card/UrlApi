@@ -22,31 +22,24 @@
         
         <div *ngIf="selectedColumn" class="form-group col-md-4">
 
-                <select formControlName="value" class="form-control" [ngClass]="{'is-invalid' : controlIsInvalid('value')}" *ngIf="getColumnValues()">
-                    <option disabled selected hidden [value]="null">-- select --</option>
-                    <option *ngFor="let v of getColumnValues();" [value]="v.Key">{{v.Value}}</option>
-                </select>
+            <select *ngIf="getColumnValues()" formControlName="value" class="form-control" [ngClass]="{'is-invalid' : controlIsInvalid('value')}">
+                <option disabled selected hidden [value]="null">-- select --</option>
+                <option *ngFor="let v of getColumnValues();" [value]="v.Key">{{v.Value}}</option>
+            </select>
 
-            <app-test *ngIf="isAutocomplete()" class="autocomplete form-control" [ngClass]="{'is-invalid' : controlIsInvalid('value')}"
-                (pushInput)="onPushInput($event)" 
-                [multiValue]="selectedOperation == 9 || selectedOperation == 10" 
-                [initValue]="getValue('value')"
+            <app-test *ngIf="isAutocomplete()" formControlName="value" class="autocomplete form-control" [ngClass]="{'is-invalid' : controlIsInvalid('value')}"
+                [multiValue]="true" 
                 [typeId]="metaColumn.ValueObjectType"
             ></app-test>
 
+            <ngbd-datetimepicker *ngIf="isDateTime()" class="datetimepicker form-control" #dtp datePlaceholder="yyyy-mm-dd" formControlName="value" [ngClass]="{'is-invalid' : controlIsInvalid('value')}"
+                [displayMonths]="displayMonths"
+                [seconds]="true"
+                [spinners]="false"                    
+            ></ngbd-datetimepicker>
+            
+            <input *ngIf="!(getColumnValues() || isAutocomplete() || isDateTime() )" type="text" formControlName="value" placeholder="Value" class="form-control" [ngClass]="{'is-invalid' : controlIsInvalid('value')}" />
 
-            <ng-container *ngIf="isDateTime()">
-                <div class="input-group">
-                    <input class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #d="ngbDatepicker" (dateSelect)="onPushInput($event)" (click)="d.open()">
-                    <div class="input-group-append">
-                      <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><i class="fa fa-calendar"></i></button>
-                    </div>
-                  </div>
-            </ng-container>
-
-
-
-            <input [type]="getColumnValues() || isAutocomplete() || isDateTime() ? 'hidden' : 'text'" formControlName="value" placeholder="Value" class="form-control" [ngClass]="{'is-invalid' : controlIsInvalid('value')}" />
             <div class="invalid-feedback" *ngIf="controlIsInvalid('value')">
                 {{getControlErrorMessage('value')}}
             </div>

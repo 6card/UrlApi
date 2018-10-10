@@ -1,5 +1,6 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, Output, EventEmitter, Input, HostListener, ViewChild, ElementRef, ComponentRef, ViewContainerRef, ComponentFactoryResolver } from "@angular/core";
+import { Component, OnInit, Output, forwardRef, EventEmitter, Input, HostListener, ViewChild, ElementRef, ComponentRef, ViewContainerRef, ComponentFactoryResolver } from "@angular/core";
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { finalize, debounceTime, distinctUntilChanged, filter, first, } from 'rxjs/operators';
 import { Observable, Subject, merge } from 'rxjs';
@@ -10,10 +11,17 @@ import { AutocompleteWindowComponent } from './autocomplete-window.component';
 
 @Component({
     selector: "app-test",
-    templateUrl: './autocomplete.component.html'
+    templateUrl: './autocomplete.component.html',
+    providers: [
+        { 
+          provide: NG_VALUE_ACCESSOR,
+          useExisting: forwardRef(() => AutocompleteComponent),
+          multi: true
+        }
+    ]
 })
 
-export class AutocompleteComponent implements OnInit, OnDestroy, AfterViewInit {
+export class AutocompleteComponent implements OnInit, ControlValueAccessor {
 
     aContainerVisible: boolean = false;
     tags: Tag[] = [];
@@ -36,6 +44,7 @@ export class AutocompleteComponent implements OnInit, OnDestroy, AfterViewInit {
     private aWindow: AutocompleteWindowComponent;
 
     @ViewChild("input") input: ElementRef;
+    @ViewChild("tagInput") tagInput: ElementRef;
 
     constructor(
         private searchService: SearchService,
@@ -58,7 +67,19 @@ export class AutocompleteComponent implements OnInit, OnDestroy, AfterViewInit {
         }
     }
 
-    ngAfterViewInit() { }
+    writeValue(newModel: any) {
+        // Value is passed from outside via ngModel field
+        this.setInputToTags(newModel);
+    }
+    
+    onChange (model: any) {};
+
+    registerOnChange(fn: any): void {     
+        this.onChange = fn;
+    }
+
+    registerOnTouched(): void {}
+
 
     closeWindow($event) {
         const clickedInside = this._elementRef.nativeElement.contains($event);
@@ -72,8 +93,10 @@ export class AutocompleteComponent implements OnInit, OnDestroy, AfterViewInit {
         //this.input.nativeElement.addEventListener('click', (e) => this.loadSearchResults());
         //this.input.nativeElement.addEventListener('blur', (e) => setTimeout(() => this.aContainerVisible = false, 150));
             //this.setTagsToInput();
-        if (this.initValue)
+        /*
+            if (this.initValue)
             this.setInputToTags(this.initValue);
+        */
 
         this.typeText
             .pipe(
@@ -137,11 +160,15 @@ export class AutocompleteComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     setInputToTags(value) {
+        if (!value)
+            return;
         let tagsIds: any[] = [];
         if (Array.isArray(value))
             tagsIds = value;
         else
             tagsIds = value.split(', ');
+        
+        this.tagInput.nativeElement.value = tagsIds;
 
         this.searchService.search(this.typeId, this.authenticationService.sessionId, {
             Query: [{Operation:0,Columns:[
@@ -164,11 +191,11 @@ export class AutocompleteComponent implements OnInit, OnDestroy, AfterViewInit {
 
     setTagsToInput() {
         const values = this.tags.map( i => i.id).join(', ');
-        //this.tagsInput.nativeElement.value = this.tags.map( i => i.id).join(", ");
-        this.pushInput.emit(values);
+        this.tagInput.nativeElement.value = values;
+        this.onChange(values);
+        //this.pushInput.emit(values);
     }
 
-    ngOnDestroy() {}
 
     addTag(tag: Tag) {
         if (this.multiValue)

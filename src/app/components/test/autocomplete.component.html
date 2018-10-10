@@ -4,6 +4,7 @@
         <i class="fa fa-times"(click)="removeTag(i)"></i>
     </a>
     <input #input type="text" (keyup)="handleKeyUp($event)" (keydown)="handleKeyDown($event)">
+    <input #tagInput type="hidden">
     <autocomplete-window #awindow
         *ngIf="aContainerVisible"
         [loading]="loadingResults"

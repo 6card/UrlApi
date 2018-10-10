@@ -1,0 +1,25 @@
+        <input [placeholder]="datePlaceholder" [(ngModel)]="date" ngbDatepicker (click)="datetimepicker.open()" class="date"
+            #datetimepicker="ngbDatepicker" name="datepicker"
+            (ngModelChange)="onDateChange($event)"
+            [displayMonths]="displayMonths"
+            [firstDayOfWeek]="firstDayOfWeek"
+            [navigation]="navigation"
+            [showWeekdays]="showWeekdays"
+            [outsideDays]="outsideDays"
+            [showWeekNumbers]="showWeekNumbers"
+        >
+    <!--  
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary" (click)="datetimepicker.toggle()" type="button"><i class="fa fa-calendar"></i></button>
+        </div>
+    -->
+       
+        <ngb-timepicker [(ngModel)]="time" name="timepicker" (ngModelChange)="onTimeChange($event)" class="time"
+            [meridian]="meridian"
+            [spinners]="spinners"
+            [seconds]="seconds"
+            [hourStep]="hourStep"
+            [minuteStep]="minuteStep"
+            [secondStep]="secondStep"
+            [readonlyInputs]="timeReadonlyInputs"
+        ></ngb-timepicker>

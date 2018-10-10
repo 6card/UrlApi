@@ -50,7 +50,6 @@ export class CommonSearchComponent implements OnInit {
             }
             else {
                 this.setSearchParams(Number(param.typeId), this.parseParam(param.q), this.parseParam(param.p));
-
                 this.metaService.loadMeta(Number(param.typeId));
                 this.getResults();
             }
@@ -124,8 +123,7 @@ export class CommonSearchComponent implements OnInit {
             q: srl.q,
             p: srl.p,
             typeId: this.typeId
-        }
-        
+        };        
         this.router.navigate([], { replaceUrl: replaceUrl || false, queryParams: params });
     }
 
