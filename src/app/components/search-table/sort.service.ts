@@ -40,7 +40,7 @@ export class SortService {
 
     clearAllColumns() {
         this._columns = [];
-        this.columnSortedSource.next(this._columns);
+        //this.columnSortedSource.next(this._columns);
     }
 
     setColumns(columns: number[]) {
