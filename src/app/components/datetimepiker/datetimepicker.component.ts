@@ -19,7 +19,7 @@ export class NgbDateTimePicker implements ControlValueAccessor {
 
     @Input() model: NgbDateTimeStruct;
     date: NgbDateStruct;
-    time: NgbTimeStruct = {hour: 0, minute: 0, second: 0};
+    time: NgbTimeStruct;
     firstTimeAssign: boolean = true; // TODO make it private once ivy is default in Angular 7, see https://github.com/angular/angular/issues/11978
 
     /**
@@ -97,8 +97,7 @@ export class NgbDateTimePicker implements ControlValueAccessor {
         if (!date || !time)
             return '';
         else {
-            const datetime = new Date(date.year, date.month, date.day, time.hour, time.minute, time.second);
-            //return datetime.toISOString().slice(0, -5) + 'Z';
+            const datetime = new Date(date.year, date.month-1, date.day, time.hour, time.minute, time.second);
             return datetime.toISOString();
         }
     }
@@ -109,7 +108,7 @@ export class NgbDateTimePicker implements ControlValueAccessor {
         const dt = new Date(value);
         const model = {
             year: dt.getFullYear(), 
-            month: dt.getMonth(), 
+            month: dt.getMonth()+1, 
             day: dt.getDate(), 
             hour: dt.getHours(), 
             minute: dt.getMinutes(), 
@@ -119,9 +118,8 @@ export class NgbDateTimePicker implements ControlValueAccessor {
         
     }
 
-    writeValue(newModel: any) {
+    writeValue(newModel: string) {
         // Value is passed from outside via ngModel field
-        
         this.setModel(this.preparationInput(newModel));
     }
     
