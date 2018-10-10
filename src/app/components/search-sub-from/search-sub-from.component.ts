@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Input, Output, ViewChild, ElementRef, Eve
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 
 import { Subscription } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { finalize, distinctUntilChanged } from 'rxjs/operators';
 
 import { Meta, MetaColumn } from '../../models/meta.model';
 import { MetaService } from '../../services/meta.service';
@@ -34,6 +34,9 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
         this.selectedOperation = this.subForm.get('operation').value || null;
 
         this.metaSubscription = this.metaService.meta
+        .pipe(
+            distinctUntilChanged()
+        )
         .subscribe(
             (meta: Meta) => {
                 this.meta = new Meta(meta);
@@ -44,22 +47,6 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
     ngOnDestroy(): void {
         this.metaSubscription.unsubscribe();
     }
-
-    /*
-    getMeta(typeId: number) {
-        this.metaLoading = true;
-
-        this.metaService.loadMeta(typeId)        
-        //.pipe( finalize( () => this.metaLoading = false ) )
-        .subscribe(
-            (data: Meta) => { 
-                this.meta = new Meta(data);
-                this.setValueValidators();
-            },
-            error => {}
-        );
-    }
-    */
 
     setValueValidators() {
         if (this.selectedColumn) {

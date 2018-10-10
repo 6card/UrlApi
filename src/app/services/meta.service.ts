@@ -33,7 +33,6 @@ export class MetaService {
         .subscribe(            
             (data: Meta) => {                
                 this._meta.next(new Meta(data));
-                //this.setValueValidators();
             },
             error => {}
         );
@@ -42,14 +41,7 @@ export class MetaService {
 
     private handleError<T>(operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {
-    
-          // TODO: send the error to remote logging infrastructure
-          //console.error(error); // log to console instead
-      
-          // TODO: better job of transforming error for user consumption
           this.alertService.error(`Response ${operation} failed. ${error.message}`);
-      
-          // Let the app keep running by returning an empty result.
           return of(result as T);
         };
     };

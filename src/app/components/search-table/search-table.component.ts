@@ -1,6 +1,7 @@
 import { Component, OnInit, OnChanges, OnDestroy, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 
 import { Subscription } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators'
 
 import { SortService, ColumnSortedEvent } from './sort.service';
 import { Meta, MetaColumn } from '../../models/meta.model';
@@ -43,6 +44,9 @@ export class SearchTableComponent implements OnInit, OnDestroy {
         });
 
         this.metaSubscription = this.metaService.meta
+        .pipe(
+            distinctUntilChanged()
+        )
         .subscribe(
             (meta: Meta) => { 
                 this.meta = new Meta(meta);
@@ -62,22 +66,6 @@ export class SearchTableComponent implements OnInit, OnDestroy {
         this.columnSortedSubscription.unsubscribe();
         this.metaSubscription.unsubscribe();
     }
-
-    /*
-    getMeta(typeId: number) {
-        //this.metaLoading = true;
-
-        this.metaService.getMeta(typeId)        
-        //.pipe( finalize( () => this.metaLoading = false ) )
-        .subscribe(
-            (data: Meta) => { 
-                this.meta = new Meta(data);
-                this.setCortingColumns();
-            },
-            error => {}
-        );
-    }
-    */
 
     getDirection(columnId: number) {
         if (!this.firstQuery)
