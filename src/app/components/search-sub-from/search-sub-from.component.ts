@@ -35,7 +35,7 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
 
         this.metaSubscription = this.metaService.meta
         .pipe(
-            distinctUntilChanged()
+            //distinctUntilChanged()
         )
         .subscribe(
             (meta: Meta) => {
@@ -103,6 +103,7 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
     }
 
     get metaColumn(): MetaColumn {
+        //console.log(this.meta.Columns);
         return this.meta.Columns.find( c => c.Id == this.selectedColumn) || null;
     }
 

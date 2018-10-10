@@ -14,7 +14,7 @@ import { AlertService } from './alert.service'
 
 export class MetaService {
 
-    public _meta = new ReplaySubject<any>();
+    public _meta = new ReplaySubject(1);
 
     constructor(
         private http: HttpClient,

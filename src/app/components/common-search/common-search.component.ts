@@ -20,6 +20,7 @@ export const START_SP = { Start: 1, Length: 10, Sort: START_SS};
   
 export class CommonSearchComponent implements OnInit {
 
+    typeId;
     submitLoading: boolean = false;
 
     @Input() pathId: number;

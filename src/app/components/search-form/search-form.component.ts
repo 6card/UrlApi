@@ -27,7 +27,9 @@ export class SearchFormComponent implements OnInit, OnChanges  {
     }
 
     ngOnChanges(changes: SimpleChanges) {        
-        if(changes.typeId || changes.firstQuery) this.generateForm(); //переделываем форму при изменении typeId или firstQuery
+        if(changes.typeId || changes.firstQuery) {
+            this.generateForm(); //переделываем форму при изменении typeId или firstQuery
+        }
     }
 
     getCondition(qop: number) {

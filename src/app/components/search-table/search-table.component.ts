@@ -45,7 +45,7 @@ export class SearchTableComponent implements OnInit, OnDestroy {
 
         this.metaSubscription = this.metaService.meta
         .pipe(
-            distinctUntilChanged()
+            //distinctUntilChanged()
         )
         .subscribe(
             (meta: Meta) => { 
