@@ -7,7 +7,7 @@ import { SearchComponent } from './pages/search/search.component';
 import { ObjectComponent } from './pages/object/object.component';
 import { CreateTagComponent } from './pages/cteatetag/create-tag.component';
 import { SetObjectComponent } from './pages/set-object/set-object.component';
-import { AutocompleteComponent } from './components/test/autocomplete.component';
+import { TestComponent } from './pages/test.component';
 
 import { AuthGuard } from './guards/auth.guard';
 
@@ -44,7 +44,7 @@ const appRoutes: Routes = [
     },
     {
       path: 'test',
-      component: AutocompleteComponent,
+      component: TestComponent,
     },
     { path: '', redirectTo: 'search', pathMatch: 'full' },
     { path: '**', redirectTo: '' },

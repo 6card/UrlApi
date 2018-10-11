@@ -1,0 +1,4 @@
+<ngb-datepicker (select)="onDateChange($event)" [(ngModel)]="date" #datepicker></ngb-datepicker>
+<div style="display: flex; justify-content: center; align-items: center;">
+    <ngb-timepicker [(ngModel)]="time" (ngModelChange)="onTimeChange($event)" size="small"></ngb-timepicker>
+</div>

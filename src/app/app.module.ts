@@ -5,7 +5,8 @@ import { NgModule } from '@angular/core';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { AutocompleteModule } from './components/test/autocomplete.module';
+import { AutocompleteModule } from './components/autocomplete/autocomplete.module';
+import { DtpickerModule } from './components/dtpicker/dtpicker.module';
 
 import { AppComponent } from './app.component';
 
@@ -19,6 +20,7 @@ import { SearchPathComponent } from './components/search-path/search-path.compon
 import { EditPathComponent } from './pages/path/path.component';
 import { CreateTagComponent } from './pages/cteatetag/create-tag.component';
 import { SetObjectComponent } from './pages/set-object/set-object.component';
+import { TestComponent } from './pages/test.component';
 
 import { CommonSearchComponent } from './components/common-search/common-search.component';
 import { NavigationComponent } from "./components/navigation/navigation.component";
@@ -48,6 +50,7 @@ import { AuthGuard } from './guards/auth.guard';
     EditPathComponent,
     CreateTagComponent,
     SetObjectComponent,
+    TestComponent,
     
     CommonSearchComponent,
     ObjectComponent,
@@ -73,7 +76,8 @@ import { AuthGuard } from './guards/auth.guard';
     BrowserAnimationsModule,
     HttpClientModule,
 
-    AutocompleteModule
+    AutocompleteModule,
+    DtpickerModule.forRoot()
   ],
   providers: [
     AuthGuard,
