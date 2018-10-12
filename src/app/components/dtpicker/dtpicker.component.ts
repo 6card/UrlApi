@@ -43,7 +43,10 @@ export class DtpickerComponent implements ControlValueAccessor {
     ) { }
 
     setValidateValue(target) {
-        target.value = moment(target.value, this.dtTemplate).format(this.dtTemplate);
+        if(target.value != '')
+            target.value = moment(target.value, this.dtTemplate).format(this.dtTemplate);
+        else
+            target.value = moment(new Date()).format(this.dtTemplate);
     }
 
     handleKeyboard(event) {
