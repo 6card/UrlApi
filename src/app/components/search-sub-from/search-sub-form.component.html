@@ -32,7 +32,7 @@
                 [typeId]="metaColumn.ValueObjectType"
             ></app-test>
 
-            <dtpicker *ngIf="isDateTime()" formControlName="value" class="datetimepicker form-control" dtTemplate="DD.MM.YYYY HH:mm" [ngClass]="{'is-invalid' : controlIsInvalid('value')}"></dtpicker>
+            <dt-picker *ngIf="isDateTime()" formControlName="value" dtTemplate="DD.MM.YYYY HH:mm" [invalidClass]="controlIsInvalid('value') ? 'is-invalid' : ''"></dt-picker>
             
             <input *ngIf="!(getColumnValues() || isAutocomplete() || isDateTime() )" type="text" formControlName="value" placeholder="Value" class="form-control" [ngClass]="{'is-invalid' : controlIsInvalid('value')}" />
 

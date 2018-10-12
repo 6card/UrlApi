@@ -6,7 +6,7 @@ import { DtpickerWindowComponent } from '../components/dtpicker/dtpicker-window.
 @Component({
     selector: 'test',
     template: `
-        <dtpicker></dtpicker>
+        <dt-picker></dt-picker>
     `
 })
 

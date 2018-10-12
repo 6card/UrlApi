@@ -7,10 +7,10 @@ import * as moment from 'moment';
 import { DtpickerWindowComponent } from './dtpicker-window.component';
 
 @Component({
-    selector: 'dtpicker',
+    selector: 'dt-picker',
     template: `
         <div style="position: relative;">
-            <input class="form-control" type="text" #dtinput (click)="toggle()" (blur)="setValidateValue($event.target)" (keyup)="handleKeyboard($event)" />        
+            <input class="form-control" [ngClass]="invalidClass" type="text" #dtinput (click)="toggle()" (blur)="setValidateValue($event.target)" (keyup)="handleKeyboard($event)" />        
             <ng-template #dtpw></ng-template>
         </div>  
     `,
@@ -27,6 +27,7 @@ export class DtpickerComponent implements ControlValueAccessor {
     private _componentRef: ComponentRef<DtpickerWindowComponent>;
 
     @Input() dtTemplate: string = 'DD.MM.YYYY HH:mm';
+    @Input() invalidClass: string;
 
     @ViewChild("dtpw", { read: ViewContainerRef }) container: ViewContainerRef;
     @ViewChild("dtinput") dtinput;
@@ -62,7 +63,7 @@ export class DtpickerComponent implements ControlValueAccessor {
         }
     }
 
-    onChange (value: any) {}; //this.onChange(values);
+    onChange (value: any) {};
 
     registerOnChange(fn: (_: any) => void): void {
         this.onChange = fn;
@@ -71,8 +72,7 @@ export class DtpickerComponent implements ControlValueAccessor {
     registerOnTouched(fn: any): void { }
 
     writeValue(value: any): void {
-        // Value is passed from outside via ngModel field
-        this._setNewValue(value);
+        //this._setNewValue(value);
     }
 
     private _setNewValue(value: string) {

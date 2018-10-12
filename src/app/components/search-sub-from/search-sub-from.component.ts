@@ -72,6 +72,7 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
                 validators.push(this.datetimeValidator());
             }
             
+            this.subForm.get('value').setValue('');
             this.subForm.get('value').setValidators(validators);    
             this.subForm.get('value').updateValueAndValidity();   
         }
