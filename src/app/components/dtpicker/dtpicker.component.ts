@@ -72,7 +72,7 @@ export class DtpickerComponent implements ControlValueAccessor {
     registerOnTouched(fn: any): void { }
 
     writeValue(value: any): void {
-        //this._setNewValue(value);
+        this._setNewValue(value);
     }
 
     private _setNewValue(value: string) {
