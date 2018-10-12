@@ -1,70 +1,127 @@
-import { Component, OnInit, Input, Output, ViewChild, HostListener, EventEmitter, ElementRef} from "@angular/core";
+import { Component, Input, ViewChild, ViewContainerRef, ComponentFactoryResolver, Renderer2, Inject, ComponentRef, forwardRef, HostListener } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { DOCUMENT } from '@angular/common';
 
 import * as moment from 'moment';
 
-import {NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
-import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import { DtpickerWindowComponent } from './dtpicker-window.component';
 
 @Component({
-    selector: "dt-picker",
-    templateUrl: './dtpicker.component.html',
+    selector: 'dtpicker',
+    template: `
+        <div style="position: relative;">
+            <input class="form-control" type="text" #dtinput (click)="toggle()" (blur)="setValidateValue($event.target)" (keyup)="handleKeyboard($event)" />        
+            <ng-template #dtpw></ng-template>
+        </div>  
+    `,
+    providers: [
+        { 
+          provide: NG_VALUE_ACCESSOR,
+          useExisting: forwardRef(() => DtpickerComponent),
+          multi: true
+        }
+    ]
 })
 
-export class DtpickerComponent implements OnInit {
+export class DtpickerComponent implements ControlValueAccessor {
+    private _componentRef: ComponentRef<DtpickerWindowComponent>;
 
-    public date: NgbDateStruct;
-    public time: NgbTimeStruct;
-    public opened: boolean = false;
-       
-    @Input() datetime: string;
     @Input() dtTemplate: string = 'DD.MM.YYYY HH:mm';
-    @Output() change = new EventEmitter<string>();
-    @Output() clickOutside = new EventEmitter();
 
-    @ViewChild("datepicker") datepicker;     
+    @ViewChild("dtpw", { read: ViewContainerRef }) container: ViewContainerRef;
+    @ViewChild("dtinput") dtinput;
 
-    /*
-    @HostListener('document:click', ['$event.target'])
+    @HostListener('click', ['$event.target'])
     public onClick(targetElement) {
-        const clickedInside = this._elementRef.nativeElement.contains(targetElement);
-        if (!clickedInside && this.opened) {
-            console.log('close');
+        this.dtinput.nativeElement.focus();
+    }
+
+    constructor(
+        private _resolver: ComponentFactoryResolver,
+        private _renderer: Renderer2,
+        @Inject(DOCUMENT) private _document: any
+    ) { }
+
+    setValidateValue(target) {
+        target.value = moment(target.value, this.dtTemplate).format(this.dtTemplate);
+    }
+
+    handleKeyboard(event) {
+        if (this.isOpen()) {
+            const v = event.target.value;
+            this._componentRef.instance.setDateTime(v);
+            //this.dtinput.nativeElement.value = moment(v, this.dtTemplate).format(this.dtTemplate);
+            //this.dtinput.nativeElement.setSelectionRange(3, 3);
+            //console.log(this.dtinput.nativeElement.selectionStart);
+            this.onChange((moment(v, this.dtTemplate).toISOString()));
         }
     }
-    */
 
-    constructor (private _elementRef: ElementRef) {}
+    onChange (value: any) {}; //this.onChange(values);
 
-    ngOnInit() {        
-        this._setDateTime(this.datetime);
+    registerOnChange(fn: (_: any) => void): void {
+        this.onChange = fn;
+      }
+
+    registerOnTouched(fn: any): void { }
+
+    writeValue(value: any): void {
+        // Value is passed from outside via ngModel field
+        this._setNewValue(value);
     }
 
-    private _setDateTime(datetime: string) {
-        if (!datetime)
-            return;        
-        const dt: Date = this._dateToString(datetime);
-        this.date = {year: dt.getFullYear(), month: dt.getMonth()+1, day: dt.getDate()}; 
-        this.time = {hour: dt.getHours(), minute: dt.getMinutes(), second: dt.getSeconds()};
-        this.datepicker.navigateTo(this.date);
+    private _setNewValue(value: string) {
+        let dt = new Date();
+        if (value)
+            dt = new Date(value);
+        this.dtinput.nativeElement.value = moment(dt).format(this.dtTemplate);
     }
 
-    private _dateToString(dt: string): Date {
-        return moment(dt, this.dtTemplate).toDate();
+    private _applyStyling(nativeElement: any) {
+        this._renderer.addClass(nativeElement, 'dropdown-menu');
+        this._renderer.setStyle(nativeElement, 'padding', '0');
+        this._renderer.addClass(nativeElement, 'show');
     }
 
-    private _datetimeToString(date: NgbDateStruct, time: NgbTimeStruct): string {
-        const d: Date = new Date(date.year, date.month-1, date.day, time.hour, time.minute);
-        return moment(d).format(this.dtTemplate);
+    isOpen() { return !!this._componentRef; }
+
+    open() {        
+        this.container.clear(); 
+        const factory = this._resolver.resolveComponentFactory(DtpickerWindowComponent);
+        this._componentRef = this.container.createComponent(factory);
+        this._applyStyling(this._componentRef.location.nativeElement);
+
+        this._componentRef.instance.dtTemplate = this.dtTemplate;
+        this._componentRef.instance.datetime = this.dtinput.nativeElement.value;
+        this._componentRef.instance.ngOnInit();
+
+        this._componentRef.instance.change.subscribe(
+            dt => {
+                this.dtinput.nativeElement.value = dt;
+                this.onChange(moment(dt, this.dtTemplate).toISOString());
+            }
+        );
+
+        this._renderer.listen(this._document, 'click', (e:MouseEvent) => {
+            if (this._componentRef) {
+                const target = e.target as Element;
+                if (!(this._componentRef.location.nativeElement as Element).contains(target)) {
+                    this.close();
+                }
+            }
+        });
+    }    
+
+    close() {        
+        this.container.remove(this.container.indexOf(this._componentRef.hostView));
+        this._componentRef = null;
     }
 
-    public onDateChange(date: NgbDateStruct) {
-        this.date = date;
-        this.change.emit(this._datetimeToString(this.date, this.time));
+    toggle() {
+        if (this.isOpen()) {
+          this.close();
+        } else {
+            setTimeout(() => this.open(), 0); //fix to click handler
+        }
     }
-
-    public onTimeChange(time: NgbTimeStruct) {
-        this.time = time;
-        this.change.emit(this._datetimeToString(this.date, this.time));
-    }
-
 }

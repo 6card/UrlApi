@@ -4,14 +4,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { DtpickerWindowComponent } from './dtpicker-window.component';
 import { DtpickerComponent } from './dtpicker.component';
-//import { AutocompleteWindowComponent } from './autocomplete-window.component';
 
 @NgModule({
     imports: [ CommonModule, NgbModule, FormsModule ],
-    declarations: [ DtpickerComponent ],
+    declarations: [ DtpickerWindowComponent, DtpickerComponent ],
     exports: [ DtpickerComponent ],
-    entryComponents: [ DtpickerComponent ]
+    entryComponents: [ DtpickerWindowComponent ]
 })
 export class DtpickerModule {
     public static forRoot() {

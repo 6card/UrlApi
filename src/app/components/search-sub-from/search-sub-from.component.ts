@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, FormControl, FormArray, Validators, ValidatorFn
 import { Subscription } from 'rxjs';
 import { finalize, distinctUntilChanged } from 'rxjs/operators';
 
+import * as moment from 'moment';
+
 import { Meta, MetaColumn } from '../../models/meta.model';
 import { MetaService } from '../../services/meta.service';
 
@@ -65,10 +67,25 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
                     //console.log("string");
                 }
             }
+
+            if (this.metaColumn.Type == 'DateTime') {
+                validators.push(this.datetimeValidator());
+            }
             
             this.subForm.get('value').setValidators(validators);    
             this.subForm.get('value').updateValueAndValidity();   
         }
+    }
+
+    datetimeValidator(): ValidatorFn {
+        
+        const pattern: RegExp = new RegExp(/^\d{2}.\d{2}.\d{4}\s\d{2}:\d{2}$/i)
+        return (control: AbstractControl): {[key: string]: any} | null => {
+            const value = moment(control.value).format("DD.MM.YYYY HH:mm");
+            //console.log(control.value);
+            const forbidden = value.match(pattern);
+            return !forbidden ? {'datetime': true} : null;
+        };
     }
 
     digitsArrayValidator(): ValidatorFn {
@@ -98,6 +115,8 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
             return `Поле должно содержать только цифры`;
         if (control.errors.digitsArray) 
             return `Поле должно содержать только цифры или список цифр через запятую`; 
+        if (control.errors.datetime) 
+            return `Значение должно соответствовать шаблону "DD.MM.YYYY HH:mm"`; 
 
         return null;
     }
