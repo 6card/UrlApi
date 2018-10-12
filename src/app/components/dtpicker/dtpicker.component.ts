@@ -33,7 +33,7 @@ export class DtpickerComponent implements ControlValueAccessor {
 
     @HostListener('click', ['$event.target'])
     public onClick(targetElement) {
-        this.dtinput.nativeElement.focus();
+        //this.dtinput.nativeElement.focus();
     }
 
     constructor(
@@ -43,12 +43,12 @@ export class DtpickerComponent implements ControlValueAccessor {
     ) { }
 
     setValidateValue(target) {
-        if (!this.isOpen()) {
-            if(target.value != '')
-                target.value = moment(target.value, this.dtTemplate).format(this.dtTemplate);
-            else
-                target.value = moment(new Date()).format(this.dtTemplate);
-        }
+        if(target.value != '')
+            target.value = moment(target.value, this.dtTemplate).format(this.dtTemplate);
+        else
+            target.value = moment(new Date()).format(this.dtTemplate);
+
+        this.onChange(moment(target.value, this.dtTemplate).toISOString());
     }
 
     handleKeyboard(event) {
