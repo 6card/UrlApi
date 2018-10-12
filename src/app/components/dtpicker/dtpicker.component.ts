@@ -43,7 +43,7 @@ export class DtpickerComponent implements ControlValueAccessor {
     ) { }
 
     setValidateValue(target) {
-        if (this.isOpen()) {
+        if (!this.isOpen()) {
             if(target.value != '')
                 target.value = moment(target.value, this.dtTemplate).format(this.dtTemplate);
             else
