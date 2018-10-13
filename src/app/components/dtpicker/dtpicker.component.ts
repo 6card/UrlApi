@@ -76,9 +76,7 @@ export class DtpickerComponent implements ControlValueAccessor {
     }
 
     private _setNewValue(value: string) {
-        let dt = new Date();
-        if (value)
-            dt = new Date(value);
+        let dt = value ? new Date(value) : new Date();
         this.dtinput.nativeElement.value = moment(dt).format(this.dtTemplate);
     }
 
