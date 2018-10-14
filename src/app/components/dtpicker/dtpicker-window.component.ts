@@ -13,7 +13,7 @@ import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 export class DtpickerWindowComponent implements OnInit {
 
     public date: NgbDateStruct;
-    public time: NgbTimeStruct;
+    public time: NgbTimeStruct = { hour: 0, minute: 0, second: 0};
        
     @Input() datetime: string;
     @Input() dtTemplate: string;

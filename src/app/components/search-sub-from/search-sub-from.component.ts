@@ -42,7 +42,7 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
         .subscribe(
             (meta: Meta) => {
                 this.meta = new Meta(meta);
-                this.setValueValidators();
+                //this.setValueValidators();
         });
     }
 
@@ -58,13 +58,13 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
                 validators.push(Validators.maxLength(this.metaColumn.MaxLength));
             
             if (this.metaColumn.Type == 'Int32') {
-                if(this.selectedOperation == 9|| this.selectedOperation == 10) {
+                if( (this.metaColumn.Operations.indexOf(9) != -1) || (this.metaColumn.Operations.indexOf(10) != -1)) {
                     validators.push(this.digitsArrayValidator());
                     //console.log("array");
                 }
                 else {
                     validators.push(this.digitsValidator());
-                    //console.log("string");
+                    //console.log("number");
                 }
             }
 
@@ -128,13 +128,14 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
 
     onChangeColumn(id: number) {        
         this.selectedColumn = id;
+        this.subForm.get('operation').setValue(null);
         this.subForm.get('value').setValue('');
         this.setValueValidators();
     }
 
     onChangeOperation(id: number) {
         this.selectedOperation = id;
-        this.setValueValidators();
+        //this.setValueValidators();
     }
 
     getColumns(){
