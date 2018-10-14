@@ -71,8 +71,7 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
             if (this.metaColumn.Type == 'DateTime') {
                 validators.push(this.datetimeValidator());
             }
-            
-            //this.subForm.get('value').setValue('');
+
             this.subForm.get('value').setValidators(validators);    
             this.subForm.get('value').updateValueAndValidity();   
         }
@@ -129,6 +128,7 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
 
     onChangeColumn(id: number) {        
         this.selectedColumn = id;
+        this.subForm.get('value').patchValue('');
         this.setValueValidators();
     }
 
