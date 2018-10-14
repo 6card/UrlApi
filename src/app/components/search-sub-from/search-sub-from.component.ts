@@ -128,7 +128,7 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
 
     onChangeColumn(id: number) {        
         this.selectedColumn = id;
-        this.subForm.get('value').patchValue('');
+        this.subForm.get('value').setValue('');
         this.setValueValidators();
     }
 
