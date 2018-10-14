@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
 
-import { Observable, of, ReplaySubject } from 'rxjs';
+import { Observable, of, Subject, ReplaySubject } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import { Meta, MetaColumn } from '../models/meta.model';
@@ -14,7 +14,7 @@ import { AlertService } from './alert.service'
 
 export class MetaService {
 
-    public _meta = new ReplaySubject(1);
+    public _meta = new Subject();
 
     constructor(
         private http: HttpClient,

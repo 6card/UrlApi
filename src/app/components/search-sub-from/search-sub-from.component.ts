@@ -31,10 +31,8 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
     ) { }
     
     ngOnInit() {
-        //this.getMeta(this.typeId);
         this.selectedColumn = this.subForm.get('column').value || null;
         this.selectedOperation = this.subForm.get('operation').value || null;
-
         this.metaSubscription = this.metaService.meta
         .pipe(
             //distinctUntilChanged()
@@ -122,15 +120,16 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
     }
 
     get metaColumn(): MetaColumn {
-        //console.log(this.meta.Columns);
         return this.meta.Columns.find( c => c.Id == this.selectedColumn) || null;
     }
 
-    onChangeColumn(id: number) {        
-        this.selectedColumn = id;
-        this.subForm.get('operation').setValue(null);
-        this.subForm.get('value').setValue('');
-        this.setValueValidators();
+    onChangeColumn(id: number) {   
+        if (this.selectedColumn != id) {   
+            this.selectedColumn = id;
+            this.subForm.get('operation').setValue(null);
+            this.subForm.get('value').setValue('');
+            this.setValueValidators();
+        }
     }
 
     onChangeOperation(id: number) {
