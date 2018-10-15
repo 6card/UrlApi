@@ -33,13 +33,15 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
     ngOnInit() {
         this.selectedColumn = this.subForm.get('column').value || null;
         this.selectedOperation = this.subForm.get('operation').value || null;
+        this.meta = this.metaService.lastMeta;
         this.metaSubscription = this.metaService.meta
         .pipe(
             //distinctUntilChanged()
         )
         .subscribe(
             (meta: Meta) => {
-                this.meta = new Meta(meta);
+                //if (meta)
+                    this.meta = new Meta(meta);
                 //this.setValueValidators();
         });
     }

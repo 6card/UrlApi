@@ -132,15 +132,16 @@ export class AutocompleteComponent implements OnInit, ControlValueAccessor {
         */
     }
 
-    loadSearchResults(str?: string) {
+    loadSearchResults(str?: string | number[]) {
         this.aContainerVisible = true;
         this.loadingResults = true;
-        const str2 = this.input.nativeElement.value;
+        let query = [{Operation:0, Columns:[{Column: 8, Operation: 7, Value: str}]}];
+        if (this.tags.length > 0) {
+            const ids = this.tags.map( i => i.id);
+            query.push({Operation:1, Columns:[{Column: 1, Operation: 10, Value: ids}]});
+        }
         this.searchService.search(this.typeId, this.authenticationService.sessionId, {
-            Query: [{Operation:0,Columns:[
-                //{Column: 8, Operation: 7, Value: str ? str : ''}
-                {Column: 8, Operation: 7, Value: str2}
-            ]}], 
+            Query: query, 
             Page: { Start: 1, Length: 50, Sort: [{ Column: 8, Desc: false }]}
         })
             .pipe(

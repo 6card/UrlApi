@@ -15,6 +15,7 @@ import { AlertService } from './alert.service'
 export class MetaService {
 
     public _meta = new Subject();
+    public lastMeta = null;
 
     constructor(
         private http: HttpClient,
@@ -26,6 +27,7 @@ export class MetaService {
     }
 
     loadMeta(typeId: number){
+        this.lastMeta = null;
         const url = `https://api.newstube.ru/urldev/Meta/GetMeta`
         const params = new HttpParams().set('typeId', String(typeId));    
         this.http.get(url, {params})
@@ -33,6 +35,7 @@ export class MetaService {
         .subscribe(            
             (data: Meta) => {                
                 this._meta.next(new Meta(data));
+                this.lastMeta = new Meta(data);
             },
             error => {}
         );

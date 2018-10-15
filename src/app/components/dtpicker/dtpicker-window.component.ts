@@ -13,7 +13,7 @@ import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 export class DtpickerWindowComponent implements OnInit {
 
     public date: NgbDateStruct;
-    public time: NgbTimeStruct = { hour: 0, minute: 0, second: 0};
+    public time: NgbTimeStruct;
        
     @Input() datetime: string;
     @Input() dtTemplate: string;
@@ -25,11 +25,12 @@ export class DtpickerWindowComponent implements OnInit {
 
     ngOnInit() {        
         this.setDateTime(this.datetime);
+        //this.change.emit(this._datetimeToString(this.date, this.time));
     }
 
     public setDateTime(datetime: string) {
         if (!datetime)
-            return;        
+            datetime = moment().format(this.dtTemplate);
         const dt: Date = this._dateToString(datetime);
         this.date = {year: dt.getFullYear(), month: dt.getMonth()+1, day: dt.getDate()}; 
         this.time = {hour: dt.getHours(), minute: dt.getMinutes(), second: dt.getSeconds()};
