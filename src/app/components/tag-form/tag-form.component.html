@@ -6,7 +6,6 @@
                 <input *ngSwitchCase="0" type="text" class="form-control" formControlName="{{control.modelProperty}}" [ngClass]="{'is-invalid' : control.isValid}">
                 <div class="invalid-feedback" *ngIf="control.isValid">{{control.getValidationLastMessage()}}</div>
             </div>
-
             <div class="form-group" *ngSwitchCase="1">
                 <label>{{control.label}}</label>
                 <textarea *ngSwitchCase="1" rows="2" class="form-control" formControlName="{{control.modelProperty}}" [ngClass]="{'is-invalid' : control.isValid}"></textarea>
@@ -14,11 +13,11 @@
             </div>
             <div class="form-check" *ngSwitchCase="2">
                 <input type="checkbox" class="form-check-input" id="{{control.modelProperty}}" formControlName="{{control.modelProperty}}" [ngClass]="{'is-invalid' : control.isValid}"  >
-                <label class="form-check-label" for="{{control.modelProperty}}">{{control.modelProperty}}</label>
+                <label class="form-check-label" for="{{control.modelProperty}}">{{control.label}}</label>
                 <div class="invalid-feedback" *ngIf="control.isValid">{{control.getValidationLastMessage()}}</div>
             </div>
         </ng-container>
     </ng-container>
 
-    <button type="submit" class="btn btn-primary" [disabled]="formSubmitted">{{currentObject ? 'Update' : 'Create'}}</button>
+    <button type="submit" class="btn btn-primary" [disabled]="formSubmitted">{{currentObject ? 'Обновить' : 'Создать'}}</button>
 </form>

@@ -1,68 +1,81 @@
 <div *ngIf="item">
     <div class="row mb-4">
-        <div class="col-md-12">
-            <h4>Url - {{item.Url}}</h4>
+        <div class="col-sm-12">
+            <div class="form-group">
+                Url: http://newstube.ru/{{item.Url}}
+                    <a href="http://newstube.ru/{{item.Url}}" target="_blank">Открыть на newstube.ru</a>
+            </div>
+            <div class="form-group">
+                <label>Объект</label>
+                <div>
+                    {{item.ObjectTypeName}}
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <a [routerLink]="['/object', item.ObjectTypeId, item.ObjectId]" class="btn btn-outline-primary btn-sm">Редактировать</a>
+                        <button class="btn btn-outline-success btn-sm" (click)="openDialog(modalSetObject)">Выставить объект</button>
+                        <button class="btn btn-outline-warning btn-sm">Выставить Redirect</button>
+                        <button class="btn btn-outline-danger btn-sm" (click)="deleteObject()">Удалить</button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Название</label>
+                <div>{{item.Name}}</div>
+            </div>
+            <div class="form-group">
+                <label>Описание</label>
+                <div>{{item.Description}}</div>
+            </div>
+            <div class="form-group">
+                <label>Запрет индексации</label>
+                <div>{{item.SeoNoIndex ? 'установлен' : 'не установлен'}}</div>
+            </div>
+
+            <div class="form-group" [ngClass]="!item.SeoEnable ? 'text-secondary' : ''"><label>Title</label><div>{{item.SeoTitle}}</div></div>
+            <div class="form-group" [ngClass]="!item.SeoEnable ? 'text-secondary' : ''"><label>Description</label><div>{{item.SeoDescription}}</div></div>
+            <div class="form-group" [ngClass]="!item.SeoEnable ? 'text-secondary' : ''"><label>Keywords</label><div>{{item.SeoKeywords}}</div></div>
+
         </div>
     </div>
+
     <div class="row mb-4">
-        <div class="col-md-6 col-sm-12">
-            <div class="card">
-                <div class="card-header">
-                    Блок Объект
-                </div>
-                <div class="card-block">
-                    <ul class="list-unstyled">
-                        <li>GlobalId = {{item.GlobalId}}</li>
-                        <li>ObjectId = {{item.ObjectId}}</li>
-                        <li>ObjectTypeId = {{item.ObjectTypeId}}</li>
-                        <li>ObjectTypeName = {{item.ObjectTypeName}}</li>
-                        <li>Name = {{item.Name}}</li>
-                        <li>Description = {{item.Description}}</li>
-                    </ul>
-                </div>
-                <div class="card-footer">
-                    <div class="mb-2">
-                        <div class="btn-group">
-                            <a [routerLink]="['/object', item.ObjectTypeId, item.ObjectId]" class="btn btn-primary">EDIT</a>
-                            <button class="btn btn-success" (click)="openDialog(modalContent)">Выставить объект</button>
-                            <button class="btn btn-danger" (click)="deleteObject()">Удалить</button>
+        <div class="col-sm-12">
+                <div class="card card-table">
+                        <div class="card-header">
+                            <a class="no-line" href="javascript:void(0);" (click)="collapseRedirect = !collapseRedirect"><i class="far" [ngClass]="collapseRedirect ? 'fa-plus-square' : ' fa-minus-square'"></i> Список редиректов на данный путь</a> 
+                        </div>
+                        <div class="card-body" [ngbCollapse]="collapseRedirect">
+                            <table class="table table-bordered">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Url</th>
+                                        <th>Edit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let red of item.Redirects">      
+                                        <td>{{red.Id}}</td>
+                                        <td>{{red.Url}}</td>
+                                        <td>
+                                            <a [routerLink]="['/path', red.PathId]">Edit</a>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <div>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-primary">Выставить Redirect</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                
         </div>
-
-        <div class="col-md-6 col-sm-12">
-            <div class="card">
-                <div class="card-header">
-                    Блок SEO
-                </div>
-                <div class="card-block">
-                    <ul class="list-unstyled">
-                        <li>SeoNoIndex = {{item.SeoNoIndex}}</li>
-                        <li>SeoStatusId = {{item.SeoStatusId}}</li>
-                        <li>SeoTitle = {{item.SeoTitle}}</li>
-                        <li>SeoDescription = {{item.SeoDescription}}</li>
-                        <li>SeoKeywords = {{item.SeoKeywords}}</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
+    </div>  
+    
     <div class="row mb-4">
         <div class="col-sm-12">        
             <div class="card card-table">
                 <div class="card-header">
-                    <h3>История изменения пути у объекта HistoryPath</h3>
+                    <a class="no-line" href="javascript:void(0);" (click)="collapsePath = !collapsePath"><i class="far" [ngClass]="collapsePath ? 'fa-plus-square' : ' fa-minus-square'"></i> Список изменений пути у объекта</a>
                 </div>
-                <div class="card-body">
+                <div class="card-body" [ngbCollapse]="collapsePath">
                     <table class="table table-bordered">
                         <thead class="thead-dark">
                             <tr>
@@ -97,9 +110,9 @@
 
             <div class="card card-table">
                 <div class="card-header">
-                    <h3>История изменения объектов на пути HistoryObject</h3>
+                    <a class="no-line" href="javascript:void(0);" (click)="collapseObject = !collapseObject"><i class="far" [ngClass]="collapseObject ? 'fa-plus-square' : ' fa-minus-square'"></i> Список изменений объектов у пути</a>
                 </div>
-                <div class="card-body">
+                <div class="card-body" [ngbCollapse]="collapseObject">
                     <table class="table table-bordered">
                         <thead class="thead-dark">
                             <tr>
@@ -127,45 +140,12 @@
             </div>
         </div>
     </div>
-
-    <div class="row mb-4">
-        <div class="col-sm-12">
-                <div class="card card-table">
-                        <div class="card-header">
-                            <h3>Список редиректов на данный путь</h3> 
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-bordered">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>Url</th>
-                                        <th>Edit</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let red of item.Redirects">      
-                                        <td>{{red.Id}}</td>
-                                        <td>{{red.Url}}</td>
-                                        <td>
-                                            <a [routerLink]="['/path', red.PathId]">Edit</a>
-                                        </td>
-                                    </tr>
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-               
-        </div>
-    </div>  
-
 </div>
 
 
-<ng-template #modalContent let-modal>
+<ng-template #modalSetObject let-modal>
     <div class="modal-header">
-        <h4 id="modal-basic-title">Выберите объект</h4>
+        <h4 id="modal-set-object">Выберите объект</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>

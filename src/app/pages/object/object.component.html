@@ -1,51 +1,60 @@
-<div class="row mb-4">
-    <div class="col-sm-12">
-        <h2>Данные объекта</h2>
-        <app-tag-form *ngIf="item" (newTagEvent)="updateItem($event)" [currentObject]="item"></app-tag-form>
+<div *ngIf="item">  
+    <div class="row mb-4">
+        <div class="col-sm-12">
+            <div class="form-group">
+                Url: http://newstube.ru/{{item.Url}}
+                    <a href="http://newstube.ru/{{item.Url}}" target="_blank">Открыть на newstube.ru</a>                                                   
+                    <a [routerLink]="['/path', item.PathId]" class="btn btn-outline-primary btn-sm" title="Редактировать">Редактировать</a>
+            </div>
+            <div class="form-group">
+                {{item.ParentPathLatin}} [Изменить] / {{item.PathLatin}} – {{item.PathSuffix}}
+            </div>
+            <app-tag-form *ngIf="item" (newTagEvent)="updateItem($event)" [currentObject]="item"></app-tag-form>
+        </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-sm-12">
-        <div class="card card-table">
-            <div class="card-header">
-                <h2>Список роликов</h2> 
-            </div>
-            <div class="card-body">
-                <table class="table table-bordered">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>ChannelName</th>
-                            <th>SectionName</th>
-                            <th>StateName</th>
-                            <th>ShootDate</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card card-table">
+                <div class="card-header">
+                    Список роликов <button class="btn btn-outline-primary">Изменить</button>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>ChannelName</th>
+                                <th>SectionName</th>
+                                <th>StateName</th>
+                                <th>ShootDate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
-                        <tr *ngFor="let media of medias">
-                            <td>{{media.Id}}</td>
-                            <td>{{media.Name}}</td>
-                            <td>{{media.ChannelName}}</td>
-                            <td>{{media.SectionName}}</td>
-                            <td>{{media.StateName}}</td>
-                            <td>{{media.ShootDate | date: 'dd.MM.yyyy HH:mm:ss'}}</td>
-                        </tr>
+                            <tr *ngFor="let media of medias">
+                                <td>{{media.Id}}</td>
+                                <td>{{media.Name}}</td>
+                                <td>{{media.ChannelName}}</td>
+                                <td>{{media.SectionName}}</td>
+                                <td>{{media.StateName}}</td>
+                                <td>{{media.ShootDate | date: 'dd.MM.yyyy HH:mm:ss'}}</td>
+                            </tr>
 
-                    </tbody>
-                </table>
-            </div>
+                        </tbody>
+                    </table>
+                </div>
 
-            <div class="card-footer">
-                <ngb-pagination class="d-flex justify-content-end" 
-                    [maxSize]="7" 
-                    [rotate]="true" 
-                    [collectionSize]="totalMediasItems"
-                    size="sm" 
-                    (pageChange)="pageChange($event)"
-                ></ngb-pagination>
+                <div class="card-footer">
+                    <ngb-pagination class="d-flex justify-content-end" 
+                        [maxSize]="7" 
+                        [rotate]="true" 
+                        [collectionSize]="totalMediasItems"
+                        size="sm" 
+                        (pageChange)="pageChange($event)"
+                    ></ngb-pagination>
+                </div>
             </div>
         </div>
     </div>

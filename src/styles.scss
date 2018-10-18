@@ -1,6 +1,8 @@
 
-$fa-font-path: "~font-awesome/fonts";
-@import "~node_modules/font-awesome/scss/font-awesome.scss";
+$fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
+@import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "~@fortawesome/fontawesome-free/scss/solid.scss";
+@import "~@fortawesome/fontawesome-free/scss/regular.scss";
 
 $font-size-base: .9rem;
 $font-weight-bold: 700;
@@ -170,4 +172,21 @@ autocomplete-window{
 
 .invalid-feedback{
     display: block;
+}
+
+.no-line {
+    &:hover {
+        text-decoration: none;
+    }
+    text-decoration: none;
+}
+
+.form-check {
+    @extend .form-group;
+}
+
+.form-group{
+    label {
+        font-weight: bold;
+    }
 }

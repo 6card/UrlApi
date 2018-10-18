@@ -17,7 +17,10 @@ import { finalize } from 'rxjs/operators';
 
 export class EditPathComponent implements OnInit {
   item: any;
-
+  collapsePath: boolean = true;
+  collapseObject: boolean = true;
+  collapseRedirect: boolean = true;
+  
   //@ViewChild("modal-content") modalContent: ElementRef;
     
     constructor(
@@ -53,7 +56,7 @@ export class EditPathComponent implements OnInit {
     }
 
     public openDialog(content) {
-      this.modalService.open(content, {size: 'lg'});
+      this.modalService.open(content, {size: 'lg', ariaLabelledBy: 'modal-set-object'});
     }
 
     ngOnInit() {

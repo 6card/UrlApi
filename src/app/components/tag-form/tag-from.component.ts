@@ -39,11 +39,11 @@ export class TagFormComponent implements OnInit, OnDestroy {
             .pipe( 
                 takeUntil(this.unsubscribe),             
                 debounceTime(500),
-                distinctUntilChanged(),           
+                distinctUntilChanged(),
+                filter(_ => !this.tagForm.get('GenerateLatin').value)           
             )
             .subscribe( val => {
                 this.setPathLatin(val);
-                //console.log(val);
             });
     }
 
@@ -140,14 +140,15 @@ const CONTROL_SELECT = 3;
 class TagFormGroup extends FormGroup {
 
     constructor() {
-        super({
-            Name: new TagFormControl("Name", "Name", CONTROL_INPUT, "", Validators.compose([Validators.required])),
-            Description: new TagFormControl("Description", "Description", CONTROL_TEXTAREA, ""),
-            SeoEnable: new TagFormControl("SeoEnable", "SeoEnable", CONTROL_CHECKBOX, false),
-            SeoTitle: new TagFormControl("SeoTitle", "SeoTitle", CONTROL_INPUT, ""),
-            SeoDescription: new TagFormControl("SeoDescription", "SeoDescription", CONTROL_TEXTAREA, ""),
-            SeoKeywords: new TagFormControl("SeoKeywords", "SeoKeywords", CONTROL_INPUT, ""),
-            SeoNoIndex: new TagFormControl("SeoNoIndex", "SeoNoIndex", CONTROL_CHECKBOX, false),
+        super({            
+            GenerateLatin: new TagFormControl("Не изменять путь при изменение названия", "GenerateLatin", CONTROL_CHECKBOX, false),
+            Name: new TagFormControl("Название", "Name", CONTROL_INPUT, "", Validators.compose([Validators.required])),
+            Description: new TagFormControl("Описание", "Description", CONTROL_TEXTAREA, ""),
+            SeoEnable: new TagFormControl("Использовать данные SEO", "SeoEnable", CONTROL_CHECKBOX, false),
+            SeoTitle: new TagFormControl("Title", "SeoTitle", CONTROL_INPUT, ""),
+            SeoDescription: new TagFormControl("Description", "SeoDescription", CONTROL_TEXTAREA, ""),
+            SeoKeywords: new TagFormControl("Keywords", "SeoKeywords", CONTROL_INPUT, ""),
+            SeoNoIndex: new TagFormControl("Запрет индексации", "SeoNoIndex", CONTROL_CHECKBOX, false),
             PathLatin: new TagFormControl("PathLatin", "PathLatin", CONTROL_INPUT, ""),
             /*
             PathParentId: new TagFormControl("PathParentId", "PathParentId", CONTROL_INPUT, ""),
