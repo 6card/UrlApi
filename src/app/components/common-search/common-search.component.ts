@@ -22,12 +22,13 @@ export class CommonSearchComponent implements OnInit {
 
     typeId;
     submitLoading: boolean = false;
-
-    @Input() pathId: number;
     searchResult: Array<any>;
     searchItemsResult: number = 0;
     searchQuery: any = START_SQ;
     searchPage: any = START_SP;
+
+    @Input() pathId: number;
+    @Output() selectObject = new EventEmitter();
 
     constructor(
         protected router: Router,
@@ -125,11 +126,14 @@ export class CommonSearchComponent implements OnInit {
     }
 
     setObject(obj: any) {
+        this.selectObject.emit(obj);
+        /*
         this.pathService.setObject(this.authenticationService.sessionId, this.pathId, {ObjectTypeId: this.typeId, ObjectId: obj.Id})
         .subscribe(
             data => { this.router.navigate([]); },
             error => {}
         );
+        */
     }
 
     onSetObject(obj: any) {

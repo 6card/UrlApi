@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute, Params } from "@angular/router";
 
 import { filter, finalize } from 'rxjs/operators'
@@ -11,6 +11,7 @@ export class SearchComponent implements OnInit {
 
   typeId: number = 0;
   @Input("pathId") pathId: number;
+  @Output() selectObject = new EventEmitter();
 
   constructor(
     protected router: Router,
@@ -45,6 +46,10 @@ export class SearchComponent implements OnInit {
 
   public navigate(replaceUrl?: boolean) {
     this.router.navigate([], { replaceUrl: replaceUrl || false, queryParams: {typeId: this.typeId} });
+  }
+
+  public setObject(obj: any) {
+    this.selectObject.emit(obj);
   }
 
 }

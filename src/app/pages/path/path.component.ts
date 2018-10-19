@@ -1,14 +1,14 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, Output, ViewChild, ElementRef, EventEmitter } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+import { SetObjectModal } from '../../components/modals/set-object-modal.component';
 
 import { AuthenticationService } from '../../services/auth.service';
 import { PathService } from '../../services/path.service';
 
 import { finalize } from 'rxjs/operators';
-
-//https://kamranahmed.info/blog/2018/02/28/dealing-with-route-params-in-angular-5/
 
 @Component({
     selector: 'app-path',
@@ -57,6 +57,20 @@ export class EditPathComponent implements OnInit {
 
     public openDialog(content) {
       this.modalService.open(content, {size: 'lg', ariaLabelledBy: 'modal-set-object'});
+    }
+
+    open() {
+      const modalRef = this.modalService.open(SetObjectModal, {size: 'lg', ariaLabelledBy: 'modal-set-object'});
+      modalRef.componentInstance.pathId = this.item.Id;
+      modalRef.componentInstance.selectObject
+        .subscribe(
+          data => this.setObject(data),
+      );
+    }
+
+    public setObject(obj: any) {
+      console.log(obj);
+      //this.modalService.dismissAll();
     }
 
     ngOnInit() {

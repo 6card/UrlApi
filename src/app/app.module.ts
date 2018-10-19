@@ -13,6 +13,9 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from "./routing.module";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { SetObjectModal } from './components/modals/set-object-modal.component';
+//import { ModalModule } from './components/modals/modal.module';
+
 import { LoginComponent } from './pages/login/login.component';
 import { ObjectComponent } from './pages/object/object.component';
 import { SearchComponent } from './pages/search/search.component';
@@ -61,7 +64,8 @@ import { AuthGuard } from './guards/auth.guard';
     AlertComponent,
     TagFormComponent,
     
-    //AutocompleteComponent,
+    
+    SetObjectModal,
     //AutocompleteWindowComponent,
     NgbDateTimePicker,
     SortableColumnComponent,
@@ -75,7 +79,7 @@ import { AuthGuard } from './guards/auth.guard';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-
+    //PathModule,
     AutocompleteModule,
     DtpickerModule.forRoot()
   ],
@@ -83,9 +87,11 @@ import { AuthGuard } from './guards/auth.guard';
     AuthGuard,
     AuthenticationService,
     CookieService,
-    AlertService
+    AlertService,
+
     //PathService
   ],
+  entryComponents: [SetObjectModal],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

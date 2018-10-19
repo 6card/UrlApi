@@ -11,7 +11,7 @@
                     {{item.ObjectTypeName}}
                     <div class="btn-group" role="group" aria-label="Basic example">
                         <a [routerLink]="['/object', item.ObjectTypeId, item.ObjectId]" class="btn btn-outline-primary btn-sm">Редактировать</a>
-                        <button class="btn btn-outline-success btn-sm" (click)="openDialog(modalSetObject)">Выставить объект</button>
+                        <button class="btn btn-outline-success btn-sm" (click)="open()">Выставить объект</button>
                         <button class="btn btn-outline-warning btn-sm">Выставить Redirect</button>
                         <button class="btn btn-outline-danger btn-sm" (click)="deleteObject()">Удалить</button>
                     </div>
@@ -151,6 +151,6 @@
         </button>
     </div>
     <div class="modal-body">
-        <app-search [pathId]="item?.Id"></app-search>
+        <app-search [pathId]="item?.Id" (selectObject)="setObject($event)"></app-search>
     </div>
 </ng-template>

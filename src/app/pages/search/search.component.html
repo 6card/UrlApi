@@ -9,6 +9,6 @@
     <li class="nav-item"><a href="javascript:void(0)" (click)="setType(8)" [class.active]="isActive(8)" class="nav-link">Передача</a></li>
 </ul>
 <div class="tabs-body">
-    <common-search *ngIf="typeId" [pathId]="pathId"></common-search>
+    <common-search *ngIf="typeId" [pathId]="pathId" (selectObject)="setObject($event)"></common-search>
     <app-search-path *ngIf="!typeId"></app-search-path>
 </div>
