@@ -2,12 +2,12 @@
     <div class="row mb-4">
         <div class="col-sm-12">
             <div class="form-group">
-                Url: http://newstube.ru/{{item.Url}}
+                <label>Url</label>
+                <div>
+                    http://newstube.ru{{item.ParentPathLatin ? '/'+item.ParentPathLatin : ''}}/{{item.PathLatin}}{{item.PathSuffix > 1 ? '-'+item.PathSuffix : ''}}
                     <a href="http://newstube.ru/{{item.Url}}" target="_blank">Открыть на newstube.ru</a>                                                   
                     <a [routerLink]="['/path', item.PathId]" class="btn btn-outline-primary btn-sm" title="Редактировать">Редактировать</a>
-            </div>
-            <div class="form-group">
-                {{item.ParentPathLatin}} [Изменить] / {{item.PathLatin}} – {{item.PathSuffix}}
+                </div>
             </div>
             <app-tag-form *ngIf="item" (newTagEvent)="updateItem($event)" [currentObject]="item"></app-tag-form>
         </div>

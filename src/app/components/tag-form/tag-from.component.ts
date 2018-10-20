@@ -140,16 +140,16 @@ const CONTROL_SELECT = 3;
 class TagFormGroup extends FormGroup {
 
     constructor() {
-        super({            
+        super({
+            PathLatin: new TagFormControl("PathLatin", "PathLatin", CONTROL_INPUT, ""),           
             GenerateLatin: new TagFormControl("Не изменять путь при изменение названия", "GenerateLatin", CONTROL_CHECKBOX, false),
             Name: new TagFormControl("Название", "Name", CONTROL_INPUT, "", Validators.compose([Validators.required])),
             Description: new TagFormControl("Описание", "Description", CONTROL_TEXTAREA, ""),
+            SeoNoIndex: new TagFormControl("Запрет индексации", "SeoNoIndex", CONTROL_CHECKBOX, false),
             SeoEnable: new TagFormControl("Использовать данные SEO", "SeoEnable", CONTROL_CHECKBOX, false),
             SeoTitle: new TagFormControl("Title", "SeoTitle", CONTROL_INPUT, ""),
             SeoDescription: new TagFormControl("Description", "SeoDescription", CONTROL_TEXTAREA, ""),
-            SeoKeywords: new TagFormControl("Keywords", "SeoKeywords", CONTROL_INPUT, ""),
-            SeoNoIndex: new TagFormControl("Запрет индексации", "SeoNoIndex", CONTROL_CHECKBOX, false),
-            PathLatin: new TagFormControl("PathLatin", "PathLatin", CONTROL_INPUT, ""),
+            SeoKeywords: new TagFormControl("Keywords", "SeoKeywords", CONTROL_INPUT, ""),            
             /*
             PathParentId: new TagFormControl("PathParentId", "PathParentId", CONTROL_INPUT, ""),
             PathId: new TagFormControl("PathId", "PathId", CONTROL_INPUT, ""),

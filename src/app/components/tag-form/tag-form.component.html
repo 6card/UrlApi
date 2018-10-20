@@ -11,9 +11,9 @@
                 <textarea *ngSwitchCase="1" rows="2" class="form-control" formControlName="{{control.modelProperty}}" [ngClass]="{'is-invalid' : control.isValid}"></textarea>
                 <div class="invalid-feedback" *ngIf="control.isValid">{{control.getValidationLastMessage()}}</div>
             </div>
-            <div class="form-check" *ngSwitchCase="2">
-                <input type="checkbox" class="form-check-input" id="{{control.modelProperty}}" formControlName="{{control.modelProperty}}" [ngClass]="{'is-invalid' : control.isValid}"  >
+            <div class="form-check label-first" *ngSwitchCase="2">
                 <label class="form-check-label" for="{{control.modelProperty}}">{{control.label}}</label>
+                <input type="checkbox" class="form-check-input" id="{{control.modelProperty}}" formControlName="{{control.modelProperty}}" [ngClass]="{'is-invalid' : control.isValid}"  >
                 <div class="invalid-feedback" *ngIf="control.isValid">{{control.getValidationLastMessage()}}</div>
             </div>
         </ng-container>

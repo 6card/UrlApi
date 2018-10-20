@@ -190,3 +190,10 @@ autocomplete-window{
         font-weight: bold;
     }
 }
+
+.form-check.label-first{
+    padding-left: 0;
+    .form-check-input {
+        margin-left: .3rem;
+    }
+}
