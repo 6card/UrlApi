@@ -1,4 +1,62 @@
 <form [formGroup]="tagForm" (ngSubmit)="submitForm(tagForm)">
+
+    <div class="form-group">
+        <label>Url</label>
+        <div>
+            http://newstube.ru/{{tagForm.get('ParentPathLatin').value ? tagForm.get('ParentPathLatin').value+'/' : ''}}<input type="text" class="form-control simple" formControlName="{{controlProperty('PathLatin')}}" [ngClass]="{'is-invalid' : controlIsInvalid('PathLatin')}">{{tagForm.get('PathSuffix').value > 1 ? '-'+tagForm.get('PathSuffix').value : ''}}
+        </div>
+    </div>
+
+    <div class="form-check label-first">
+        <label class="form-check-label" for="{{controlProperty('GenerateLatin')}}">{{controlLabel('GenerateLatin')}}</label>
+        <input type="checkbox" class="form-check-input" id="{{controlProperty('GenerateLatin')}}" formControlName="{{controlProperty('GenerateLatin')}}" [ngClass]="{'is-invalid' : controlIsInvalid('GenerateLatin')}"  >
+        <div class="invalid-feedback" *ngIf="controlIsInvalid('GenerateLatin')">{{controlValidationMessage('GenerateLatin')}}</div>
+    </div>
+
+    <div class="form-group">
+        <label>{{controlLabel('Name')}}</label>
+        <input type="text" class="form-control" formControlName="{{controlProperty('Name')}}" [ngClass]="{'is-invalid' : controlIsInvalid('Name')}">
+        <div class="invalid-feedback" *ngIf="controlIsInvalid('Name')">{{controlValidationMessage('Name')}}</div>
+    </div>
+
+    <div class="form-group">
+        <label>{{controlLabel('Description')}}</label>
+        <textarea rows="3" class="form-control" formControlName="{{controlProperty('Description')}}" [ngClass]="{'is-invalid' : controlIsInvalid('Description')}"></textarea>
+        <div class="invalid-feedback" *ngIf="controlIsInvalid('Description')">{{controlValidationMessage('Description')}}</div>
+    </div>
+
+    <div class="form-check label-first">
+        <label class="form-check-label" for="{{controlProperty('SeoNoIndex')}}">{{controlLabel('SeoNoIndex')}}</label>
+        <input type="checkbox" class="form-check-input" id="{{controlProperty('SeoNoIndex')}}" formControlName="{{controlProperty('SeoNoIndex')}}" [ngClass]="{'is-invalid' : controlIsInvalid('SeoNoIndex')}"  >
+        <div class="invalid-feedback" *ngIf="controlIsInvalid('SeoNoIndex')">{{controlValidationMessage('SeoNoIndex')}}</div>
+    </div>
+
+    <div class="form-check label-first">
+        <label class="form-check-label" for="{{controlProperty('SeoEnable')}}">{{controlLabel('SeoEnable')}}</label>
+        <input type="checkbox" class="form-check-input" id="{{controlProperty('SeoEnable')}}" formControlName="{{controlProperty('SeoEnable')}}" [ngClass]="{'is-invalid' : controlIsInvalid('SeoEnable')}"  >
+        <div class="invalid-feedback" *ngIf="controlIsInvalid('SeoEnable')">{{controlValidationMessage('SeoEnable')}}</div>
+    </div>
+
+
+    <div class="form-group">
+        <label>{{controlLabel('SeoTitle')}}</label>
+        <input type="text" class="form-control" formControlName="{{controlProperty('SeoTitle')}}" [ngClass]="{'is-invalid' : controlIsInvalid('SeoTitle')}">
+        <div class="invalid-feedback" *ngIf="controlIsInvalid('SeoTitle')">{{controlValidationMessage('SeoTitle')}}</div>
+    </div>
+
+    <div class="form-group">
+        <label>{{controlLabel('SeoDescription')}}</label>
+        <textarea rows="3" class="form-control" formControlName="{{controlProperty('SeoDescription')}}" [ngClass]="{'is-invalid' : controlIsInvalid('SeoDescription')}"></textarea>
+        <div class="invalid-feedback" *ngIf="controlIsInvalid('SeoDescription')">{{controlValidationMessage('SeoDescription')}}</div>
+    </div>
+
+    <div class="form-group">
+        <label>{{controlLabel('SeoKeywords')}}</label>
+        <input type="text" class="form-control" formControlName="{{controlProperty('SeoKeywords')}}" [ngClass]="{'is-invalid' : controlIsInvalid('SeoKeywords')}">
+        <div class="invalid-feedback" *ngIf="controlIsInvalid('SeoKeywords')">{{controlValidationMessage('SeoKeywords')}}</div>
+    </div>
+
+<!--
     <ng-container *ngFor="let control of tagForm.tagControls">
         <ng-container [ngSwitch]="control.type">
             <div class="form-group" *ngSwitchCase="0">
@@ -18,6 +76,7 @@
             </div>
         </ng-container>
     </ng-container>
+-->
 
     <button type="submit" class="btn btn-primary" [disabled]="formSubmitted">{{currentObject ? 'Обновить' : 'Создать'}}</button>
 </form>
