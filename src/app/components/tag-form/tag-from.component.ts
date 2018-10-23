@@ -58,10 +58,13 @@ export class TagFormComponent implements OnInit, OnDestroy {
             return;
         }
         this.pathService.getLatin(text)
-        .pipe(
-            first(),
-        )
-        .subscribe( data => this.tagForm.get('PathLatin').setValue(data));
+        .pipe( first() )
+        .subscribe( 
+            data => {
+                this.tagForm.get('PathLatin').setValue(data);
+                this.tagForm.get('PathId').setValue('');
+                this.tagForm.get('PathSuffix').setValue('');
+        });
     }
 
     public controlIsInvalid(controlName: string): boolean {
@@ -161,11 +164,14 @@ class TagFormGroup extends FormGroup {
 
     constructor() {
         super({
+            PathId: new TagFormControl("PathId", "PathId", CONTROL_INPUT, ""),
+            
             PathLatin: new TagFormControl("PathLatin", "PathLatin", CONTROL_INPUT, ""),
             PathSuffix: new TagFormControl("PathSuffix", "PathSuffix", CONTROL_INPUT, ""),
             ParentPathLatin: new TagFormControl("ParentPathLatin", "ParentPathLatin", CONTROL_INPUT, ""),
             ParentPathId: new TagFormControl("ParentPathId", "ParentPathId", CONTROL_INPUT, ""),
 
+            Url: new TagFormControl("Url", "Url", CONTROL_INPUT, ""),
             GenerateLatin: new TagFormControl("Не изменять путь при изменение названия", "GenerateLatin", CONTROL_CHECKBOX, false),
             Name: new TagFormControl("Название", "Name", CONTROL_INPUT, "", Validators.compose([Validators.required])),
             Description: new TagFormControl("Описание", "Description", CONTROL_TEXTAREA, ""),

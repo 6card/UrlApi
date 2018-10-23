@@ -1,9 +1,14 @@
 <form [formGroup]="tagForm" (ngSubmit)="submitForm(tagForm)">
 
     <div class="form-group">
-        <label>Url</label>
+        <label>Url <a *ngIf="currentObject && currentObject.PathId" [routerLink]="['/path', currentObject.PathId]" class="btn btn-outline-primary btn-sm" title="Редактировать">Редактировать</a></label>
+        <div class="mb-2">
+            http://newstube.ru/{{tagForm.get('ParentPathLatin').value ? tagForm.get('ParentPathLatin').value+'/' : ''}}<input type="text" class="form-control simple" formControlName="{{controlProperty('PathLatin')}}" [ngClass]="{'is-invalid' : controlIsInvalid('PathLatin')}">{{tagForm.get('PathSuffix').value && tagForm.get('PathSuffix').value > 1 ? '--'+tagForm.get('PathSuffix').value : ''}}{{!tagForm.get('PathId').value ? '--*  (ближайший свободный)' : ''}}
+            <a *ngIf="currentObject && tagForm.get('PathId').value && currentObject.Url" href="http://newstube.ru/{{currentObject.Url}}" target="_blank">Открыть на newstube.ru <i class="fas fa-external-link-alt"></i></a>    
+        </div>
         <div>
-            http://newstube.ru/{{tagForm.get('ParentPathLatin').value ? tagForm.get('ParentPathLatin').value+'/' : ''}}<input type="text" class="form-control simple" formControlName="{{controlProperty('PathLatin')}}" [ngClass]="{'is-invalid' : controlIsInvalid('PathLatin')}">{{tagForm.get('PathSuffix').value > 1 ? '-'+tagForm.get('PathSuffix').value : ''}}
+            <button type="button" class="btn btn-outline-secondary btn-sm">Выбрать родительский путь</button>&nbsp;
+            <button type="button" class="btn btn-outline-secondary btn-sm">Выбрать путь размещения</button>
         </div>
     </div>
 

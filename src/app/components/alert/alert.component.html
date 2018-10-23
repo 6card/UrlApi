@@ -1,4 +1,4 @@
-<div id="messages" class="messages" style="position: absolute; display: block; width: 100%; padding: 0 20px;">
+<div id="messages" class="messages" style="position: absolute; display: block; padding: 0 20px; z-index: 2000">
     <div *ngFor="let alert of alerts" class="alert" [ngClass]="cssClass(alert)">
             {{alert.message}}
         <button type="button" class="close" aria-label="Close" *ngIf="!alert.timeout">

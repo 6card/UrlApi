@@ -1,10 +1,6 @@
 <div *ngIf="item">  
     <div class="row mb-4">
         <div class="col-sm-12">
-
-                    <a href="http://newstube.ru/{{item.Url}}" target="_blank">Открыть на newstube.ru</a>                                                   
-                    <a [routerLink]="['/path', item.PathId]" class="btn btn-outline-primary btn-sm" title="Редактировать">Редактировать</a>
-
             <app-tag-form *ngIf="item" (newTagEvent)="updateItem($event)" [currentObject]="item"></app-tag-form>
         </div>
     </div>
@@ -13,12 +9,13 @@
         <div class="col-sm-12">
             <div class="card card-table">
                 <div class="card-header">
-                    Список роликов <button class="btn btn-outline-primary">Изменить</button>
+                    Список роликов <button class="btn btn-outline-success">Добавить</button>
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered">
                         <thead class="thead-dark">
                             <tr>
+                                <th><input type="checkbox"></th>
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>ChannelName</th>
@@ -30,6 +27,7 @@
                         <tbody>
 
                             <tr *ngFor="let media of medias">
+                                <td><input type="checkbox"></td>
                                 <td>{{media.Id}}</td>
                                 <td>{{media.Name}}</td>
                                 <td>{{media.ChannelName}}</td>
