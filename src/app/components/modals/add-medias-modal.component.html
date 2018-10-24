@@ -7,19 +7,40 @@
 <div class="modal-body">
     <search-form 
         (pushQuery)="onQuery($event)" 
-        [(loading)]="submitLoading"
-        [firstQuery]="[{ Operation:0, Columns:[] }]"
+        [(loading)]="loading"
+        [firstQuery]="searchQuery"
     ></search-form>
-    <search-table 
-        (pushPage)="onPageChange($event)"
-        (pushSort)="onSortChange($event)"
-        (setObj)="onSetObject($event)" 
-        [firstQuery]="searchPage"
-        
-        [loading]="submitLoading"
-        [items]="searchResult"
-        [totalItems]="searchItemsResult"
-        [currentPage]="page"
-        [path]="pathId"        
-    ></search-table>
+
+    <div class="card card-table">
+        <div class="card-body">
+            <table class="table table-bordered" [appLoading]="loading">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th sortable-column="8" [sort-direction]="getDirection(8)">Название</th>
+                        <th sortable-column="32" [sort-direction]="getDirection(32)">Описание</th>
+                        <th>URL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let res of searchResult">
+                        <td>{{res.Id}}</td>
+                        <td>{{res.Name}}</td>
+                        <td>{{res.Description}}</td>
+                        <td>{{res.Url}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            <ngb-pagination class="d-flex justify-content-end" 
+                [maxSize]="7" 
+                [rotate]="true" 
+                [collectionSize]="searchItemsResult" 
+                [(page)]="currentPage" 
+                size="sm" 
+                (pageChange)="onPageChange($event)"
+            ></ngb-pagination>
+        </div>
+    </div>
 </div>
