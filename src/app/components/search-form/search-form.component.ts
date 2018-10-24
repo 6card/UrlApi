@@ -1,12 +1,18 @@
-import { Component, OnInit, OnChanges, Input, Output, EventEmitter, SimpleChanges, SimpleChange } from '@angular/core';
+import { Component, OnInit, OnDestroy, OnChanges, Input, Output, EventEmitter, SimpleChanges, SimpleChange } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+
+import { Subscription } from 'rxjs';
+
+import { MetaService } from '../../services/meta.service';
 
 @Component({
     selector: 'search-form',
     templateUrl: './search-form.component.html'
   })
 
-export class SearchFormComponent implements OnInit, OnChanges  {
+export class SearchFormComponent implements OnInit, OnDestroy, OnChanges  {
+
+    public metaSubscription: Subscription;
 
     @Input() typeId: any;
     @Input() firstQuery: any;
@@ -20,16 +26,24 @@ export class SearchFormComponent implements OnInit, OnChanges  {
 
     constructor(
         private formBuilder: FormBuilder,
+        private metaService: MetaService,
     ) { }
 
     ngOnInit() {
-        //this.generateForm(); //первая инициализация формы
+        this.metaSubscription = this.metaService.meta
+        .subscribe(_ => this.generateForm());
     }
 
-    ngOnChanges(changes: SimpleChanges) {        
-        if(changes.typeId || changes.firstQuery) {
+    ngOnDestroy(): void {
+        this.metaSubscription.unsubscribe();
+    }
+
+    ngOnChanges(changes: SimpleChanges) {    
+        /*    
+        if(changes.firstQuery) {
             this.generateForm(); //переделываем форму при изменении typeId или firstQuery
         }
+        */
     }
 
     getCondition(qop: number) {

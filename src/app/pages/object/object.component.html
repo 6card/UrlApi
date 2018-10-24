@@ -9,13 +9,31 @@
         <div class="col-sm-12">
             <div class="card card-table">
                 <div class="card-header">
-                    Список роликов <button class="btn btn-outline-success">Добавить</button>
+                    Список роликов <button class="btn btn-outline-success" (click)="openModal()"><i class="fas fa-plus"></i> Добавить ролики</button>
+                    <div>Выбраны: {{checkedMediasIds}}</div>
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered">
                         <thead class="thead-dark">
                             <tr>
-                                <th><input type="checkbox"></th>
+                                <th>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-primary">
+                                            <input type="checkbox" 
+                                                [checked]="checkedCheckboxAll"
+                                                (change)="checkAllMedias($event)"
+                                            >
+                                        </button>
+                                        <div class="btn-group" ngbDropdown role="group" aria-label="Selected actions">
+                                            <button class="btn btn-primary dropdown-toggle-split" ngbDropdownToggle></button>
+                                            <div class="dropdown-menu" ngbDropdownMenu>
+                                            <button class="dropdown-item" (click)="deleteSelectedMedias()">Удалить выделенные</button>
+                                            <div class="dropdown-divider"></div>
+                                            <button class="dropdown-item" (click)="deleteAllMedias()">Удалить все</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th>
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>ChannelName</th>
@@ -25,15 +43,17 @@
                             </tr>
                         </thead>
                         <tbody>
-
-                            <tr *ngFor="let media of medias">
-                                <td><input type="checkbox"></td>
-                                <td>{{media.Id}}</td>
-                                <td>{{media.Name}}</td>
-                                <td>{{media.ChannelName}}</td>
-                                <td>{{media.SectionName}}</td>
-                                <td>{{media.StateName}}</td>
-                                <td>{{media.ShootDate | date: 'dd.MM.yyyy HH:mm:ss'}}</td>
+                            <tr *ngFor="let item of medias" [class.table-info]="item.checked">
+                                <td class="text-center"><input type="checkbox" 
+                                    [checked]="item.checked"
+                                    (change)="updateCheckedMedias(item, $event)"
+                                ></td>
+                                <td>{{item.media.Id}}</td>
+                                <td>{{item.media.Name}}</td>
+                                <td>{{item.media.ChannelName}}</td>
+                                <td>{{item.media.SectionName}}</td>
+                                <td>{{item.media.StateName}}</td>
+                                <td>{{item.media.ShootDate | date: 'dd.MM.yyyy HH:mm:ss'}}</td>
                             </tr>
 
                         </tbody>

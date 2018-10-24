@@ -7,7 +7,8 @@ import { takeWhile } from 'rxjs/operators';
 
 @Component({
     selector: 'app-alert',
-    templateUrl: 'alert.component.html'
+    templateUrl: 'alert.component.html',
+    host: {'class' : 'messages'}
 })
 
 export class AlertComponent implements OnInit, OnDestroy {
@@ -35,7 +36,7 @@ export class AlertComponent implements OnInit, OnDestroy {
                         this.alerts.splice(this.alerts.indexOf(alert), 1);
                    }, alert.timeout);
                 } 
-                document.getElementById("messages").scrollIntoView();
+                //document.getElementById("messages").scrollIntoView();
             //}
         });
     }

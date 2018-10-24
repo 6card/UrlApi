@@ -1,0 +1,25 @@
+<div class="modal-header">
+    <h4 id="modal-set-object">Выберите ролики</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <search-form 
+        (pushQuery)="onQuery($event)" 
+        [(loading)]="submitLoading"
+        [firstQuery]="[{ Operation:0, Columns:[] }]"
+    ></search-form>
+    <search-table 
+        (pushPage)="onPageChange($event)"
+        (pushSort)="onSortChange($event)"
+        (setObj)="onSetObject($event)" 
+        [firstQuery]="searchPage"
+        
+        [loading]="submitLoading"
+        [items]="searchResult"
+        [totalItems]="searchItemsResult"
+        [currentPage]="page"
+        [path]="pathId"        
+    ></search-table>
+</div>

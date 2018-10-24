@@ -14,6 +14,7 @@ import { AppRoutingModule } from "./routing.module";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { SetObjectModal } from './components/modals/set-object-modal.component';
+import { AddMediasModal } from './components/modals/add-medias-modal.component';
 //import { ModalModule } from './components/modals/modal.module';
 
 import { LoginComponent } from './pages/login/login.component';
@@ -66,6 +67,7 @@ import { AuthGuard } from './guards/auth.guard';
     
     
     SetObjectModal,
+    AddMediasModal,
     //AutocompleteWindowComponent,
     NgbDateTimePicker,
     SortableColumnComponent,
@@ -91,7 +93,7 @@ import { AuthGuard } from './guards/auth.guard';
 
     //PathService
   ],
-  entryComponents: [SetObjectModal],
+  entryComponents: [SetObjectModal, AddMediasModal],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
