@@ -44,6 +44,8 @@ import { AuthenticationService } from './services/auth.service';
 import { AlertService } from './services/alert.service';
 import { AuthGuard } from './guards/auth.guard';
 
+import { APP_CONST, Constants } from './config/const';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -90,6 +92,8 @@ import { AuthGuard } from './guards/auth.guard';
     AuthenticationService,
     CookieService,
     AlertService,
+
+    { provide: APP_CONST, useValue: Constants }
 
     //PathService
   ],

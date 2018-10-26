@@ -89,6 +89,28 @@ export class PathService {
       .pipe( catchError(this.handleError(url)));
   }
 
+  mediasAdd(sessionId: string, typeId: any, objectId: any, data: any) {
+    const url = `https://api.newstube.ru/urldev/Path/MediasAdd`;
+    const params = new HttpParams()
+      .set('sessionId', sessionId)
+      .set('typeId', typeId)
+      .set('objectId', objectId);
+
+      return this.http.post<any>(url, data, {params})
+        .pipe( catchError(this.handleError(url)));
+  }
+
+  mediasRemove(sessionId: string, typeId: any, objectId: any, data: any) {
+    const url = `https://api.newstube.ru/urldev/Path/MediasAdd`;
+    const params = new HttpParams()
+      .set('sessionId', sessionId)
+      .set('typeId', typeId)
+      .set('objectId', objectId);
+
+      return this.http.post<any>(url, data, {params})
+        .pipe( catchError(this.handleError(url)));
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
 
     return (error: any): Observable<T> => {

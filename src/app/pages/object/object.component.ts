@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 
@@ -13,7 +13,9 @@ import { AlertService } from '../../services/alert.service';
 
 import { ObjectBase } from '../../models/object-base';
 import { CheckedMedia } from '../../models/media';
+import { SearchQuery, SimpleQuery } from '../../models/search-query.model';
 
+import { APP_CONST } from '../../config/const';
 
 @Component({
     selector: 'app-object',
@@ -21,15 +23,14 @@ import { CheckedMedia } from '../../models/media';
   })
 
 export class ObjectComponent implements OnInit {
-  item: ObjectBase;
-  medias: Array<CheckedMedia>;
-
-  totalMediasItems: number = 0;
-  pageMediasSize: number = 10;
-  currentMediasPage: number = 0;
- 
+  
+	public item: ObjectBase;
+	public searchMediasQuery: SearchQuery;
+	public searchMedias: Array<CheckedMedia>;
+	public searchMediasCount: number;
     
     constructor(
+        @Inject(APP_CONST) private config,
         private pathService: PathService,
         private searchService: SearchService,
         private authenticationService: AuthenticationService,
@@ -38,85 +39,68 @@ export class ObjectComponent implements OnInit {
         private modalService: NgbModal
     ) {}
 
+    ngOnInit() {
+      this.activeRoute.params.subscribe(routeParams => {
+        this.loadItem(routeParams.typeid, routeParams.id);
+      });        
+    }
+
     public updateCheckedMedias(media, event) {
-      this.medias[this.medias.indexOf(media)].checked = event.target.checked;
+      this.searchMedias[this.searchMedias.indexOf(media)].checked = event.target.checked;
     }
 
     public checkAllMedias(event){
-        this.medias.map( i => i.checked = event.target.checked);
+        this.searchMedias.map( i => i.checked = event.target.checked);
     }
 
     get checkedCheckboxAll() {
-      if (!this.medias)
+      if (!this.searchMedias)
         return false;
-      return this.medias.filter( i => i.checked == true).length == this.medias.length;
+      return this.searchMedias.filter( i => i.checked == true).length == this.searchMedias.length;
     }
 
     get checkedMediasIds() {
-      if (!this.medias)
+      if (!this.searchMedias)
         return [];
-      return this.medias.filter( i => i.checked == true).map( i => i.media.Id);
+      return this.searchMedias.filter( i => i.checked == true).map( i => i.media.Id);
     }
 
     public deleteSelectedMedias() {
       /* TODO добавить удаление */
       this.alertService.success('ЗАГЛУШКА Ролики удалены', 2000);
-      this.getMediasItem(this.item.ObjectTypeId, this.item.ObjectId);
+      this.getMediasItem();
     }
 
     public deleteAllMedias() {
       /* TODO добавить удаление */
       this.alertService.success('ЗАГЛУШКА Ролики удалены', 2000);
-      this.getMediasItem(this.item.ObjectTypeId, this.item.ObjectId);
+      this.getMediasItem();
     }
 
     public pageChange(page: number) {    
-      this.currentMediasPage = page - 1;
-      this.getMediasItem(this.item.ObjectTypeId, this.item.ObjectId);    
+      this.searchMediasQuery.setPage(page);
+      this.getMediasItem();    
     }
     
-    public getMediasItem(typeid: number, id: number) {
-      const query = [{
-        Operation: 0,
-        Tables: [ {Table: typeid, Values:[id]}]
-      }];
-
-      const data = {
-        Query: query,
-        Page: {
-          Start: this.currentMediasPage * this.pageMediasSize + 1,        
-          Length: this.pageMediasSize,        
-          Sort: [        
-            {        
-              Column: 1,        
-              Desc: true        
-            }        
-           ]        
-          }
-      };
-
-      this.searchService.searchCount(3, this.authenticationService.sessionId, query) //Media
+    public getMediasItem() {
+      this.searchService.searchCount(3, this.authenticationService.sessionId, this.searchMediasQuery.Query) //Media
           .subscribe(data => {
-            this.totalMediasItems = data;
-          });
-
-      
-      this.searchService.search(3, this.authenticationService.sessionId, data) //Media
+            this.searchMediasCount = data;
+      });
+      this.searchService.search(3, this.authenticationService.sessionId, this.searchMediasQuery) //Media
           .subscribe(data => {
-            this.medias = data.map(item => new CheckedMedia(item));
-          });
+            this.searchMedias = data.map(item => new CheckedMedia(item));
+      });
     }
-
 
     public loadItem(typeid: number, id: number) {
       this.pathService.getByObjectDetail(this.authenticationService.sessionId, typeid, id)
         .subscribe(
             (data: ObjectBase) => {
               this.item = data;
-              //this.setValuesToForm(this.item);
-              this.getMediasItem(this.item.ObjectTypeId, this.item.ObjectId);
-              //console.log(this.item);
-              //this.objectForm = this.toFormGroup(this.item);
+              let query: SimpleQuery = { Operation: 0, Columns: [], Tables: [ {Table: this.item.ObjectTypeId, Values:[this.item.ObjectId]}] };
+              this.searchMediasQuery = new SearchQuery([query]);
+              this.getMediasItem();
             });
     }
 
@@ -126,7 +110,7 @@ export class ObjectComponent implements OnInit {
         .subscribe(
             data => {
               this.alertService.success('Данные сохранены', 2000);
-            });
+        });
     }
 
     toFormGroup(item: ObjectBase ) {
@@ -138,41 +122,34 @@ export class ObjectComponent implements OnInit {
 
       return new FormGroup(group);
     }
-    
-    ngOnInit() {
-      this.activeRoute.params.subscribe(routeParams => {
-        this.loadItem(routeParams.typeid, routeParams.id);
-      });        
-    }
 
-    /*
-    setValuesToForm(item: ObjectBase) {      
-      for (let key in item) {
-        //console.log(key);
-        let control = this.objectForm.get(key);
-        if (!Array.isArray(item[key]) && control !== null )
-        //if (control !== null)
-          control.setValue(item[key]);
-      }      
-    }
+    openModal(mode) {
+		const modalRef = this.modalService.open(AddMediasModal, {size: 'lg', ariaLabelledBy: 'modal-add-medias', backdrop: 'static'});
+		modalRef.componentInstance.mode = mode;
+		modalRef.componentInstance.objectSq = [ {Table: this.item.ObjectTypeId, Values:[this.item.ObjectId]}];
+		modalRef.componentInstance.selectedQuery
+		.subscribe(
+			data => {
+				switch(data.mode) {
+					case this.config.ADD: { 
+						this.addMedias(data.query);
+						break; 
+					}
+					case this.config.DELETE: { 
+						this.deleteMedias(data.query);
+						break; 
+					} 
+				}
+			}
+		);
+	}
+	
+	public addMedias(query: any) {
+		console.log('add medias query', query);
+	}
 
-    onSubmit() { 
-      this.updateItem(this.objectForm.value);  
-    }
-    */
-
-    openModal() {
-      const modalRef = this.modalService.open(AddMediasModal, {size: 'lg', ariaLabelledBy: 'modal-add-medias'});
-      modalRef.componentInstance.objectId = this.item.ObjectId;
-      modalRef.componentInstance.selectMedias
-        .subscribe(
-          data => this.addMedias(data),
-      );
-    }
-
-    public addMedias(medias: any) {
-      console.log(medias);
-    }
-
-
+    public deleteMedias(query: any) {
+      	console.log(query);
+	}
+	
 }

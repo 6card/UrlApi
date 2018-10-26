@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, AfterViewInit, Inject } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { Subscription } from 'rxjs';
@@ -10,8 +10,10 @@ import { MetaService } from '../../services/meta.service';
 import { SortService } from '../../components/search-table/sort.service';
 
 import { CheckedMedia } from '../../models/media';
+import { SearchQuery, SimpleQuery } from '../../models/search-query.model';
 
-import { START_SQ, START_SS, START_SP } from '../../components/common-search/common-search.component';
+import { APP_CONST } from '../../config/const';
+
 
 @Component({
   selector: 'add-medias-modal',
@@ -21,18 +23,21 @@ import { START_SQ, START_SS, START_SP } from '../../components/common-search/com
 export class AddMediasModal implements OnInit, OnDestroy, AfterViewInit {
 
     public medias: Array<CheckedMedia>;
-    public searchResult: Array<any>;
-    public searchItemsResult: number = 0;
-    public searchQuery: any = START_SQ;
-    public searchPage: any = START_SP;
-    public loading: boolean = true;
+    public searchItems: Array<any>;
+    public searchItemsCount: number = 0;
+    public loading: boolean = false;
+    public sq = new SearchQuery();
 
-    @Input() objectId;
-    @Output() selectMedias = new EventEmitter();
+    //dialogMediaAction: DialogMediaAction;
 
-    private columnSortedSubscription: Subscription;
+    @Input() objectSq: SearchQuery;
+    @Input() mode;
+    @Output() selectedQuery = new EventEmitter();
+
+    private _columnSortedSubscription: Subscription;    
 
     constructor(
+        @Inject(APP_CONST) private config,
         private activeModal: NgbActiveModal,
         private metaService: MetaService,
         private sortService: SortService, 
@@ -40,82 +45,61 @@ export class AddMediasModal implements OnInit, OnDestroy, AfterViewInit {
         private authenticationService: AuthenticationService,
     ) {}
 
-    ngOnInit() {
+    ngOnInit() {        
         this.metaService.loadMeta(3);
-        console.log('ngAfterViewInit');
-        this.loadMedias();
-
-        this.columnSortedSubscription = this.sortService.columnSorted$.subscribe(columns => {
-            //console.log(columns);
+        //console.log('ngOnInit');
+        //this.loadMedias(this.sq);
+        this._columnSortedSubscription = this.sortService.columnSorted$.subscribe(columns => {
             this.onSortChange(columns);
         });
-
     }
 
     ngOnDestroy() {
-        this.columnSortedSubscription.unsubscribe();
+        this._columnSortedSubscription.unsubscribe();
     }
 
     ngAfterViewInit() { }
 
-  public loadMedias() {
-    this.loading = true;
+    public loadMedias(searchQuery: SearchQuery) {
+        let search = new SearchQuery( Object.assign([], searchQuery.Query), Object.assign({}, searchQuery.Page));
+        
+        if (this.mode == this.config.ADD)
+            search.addExceptTableQuery(this.objectSq);
+        else if (this.mode == this.config.DELETE)
+            search.addIntersectTableQuery(this.objectSq);
+        this.loading = true;
 
-    this.searchService.search(3, this.authenticationService.sessionId, {Query: this.searchQuery, Page: this.searchPage})
-        .pipe( finalize(() => this.loading = false))
-        .subscribe( data => this.searchResult = data );
+        this.searchService.search(3, this.authenticationService.sessionId, search)
+            .pipe( finalize(() => this.loading = false))
+            .subscribe( data => this.searchItems = data );
 
-    this.searchService.searchCount(3, this.authenticationService.sessionId, this.searchQuery)
-        .pipe()
-        .subscribe( data => this.searchItemsResult = data );
+        this.searchService.searchCount(3, this.authenticationService.sessionId, search.Query)
+            .pipe()
+            .subscribe( data => this.searchItemsCount = data );
+    }
 
-  }
 
-    public onQuery(searchQuery) {
-        this.searchQuery = searchQuery;
-        console.log('onQuery');
-        //this.loadMedias();
-        this.onPageChange(1);
+
+    public onQuery(searchQuery: Array<SimpleQuery>) {
+        this.sq.setQuery(searchQuery);
+        //console.log('onQuery');
+        this.loadMedias(this.sq);
     }
 
     public onPageChange(pageNumber: number) {
-        this.searchPage = {
-            Start: (pageNumber - 1) * 10 + 1,        
-            Length: 10,        
-            Sort: START_SS     
-        };
-        console.log('onPageChange');
-        this.loadMedias();
+        this.sq.setPage(pageNumber);
+        //console.log('onPageChange');
+        this.loadMedias(this.sq);
     }
 
     public onSortChange(columns) {        
-        if (columns.length == 0) columns = START_SS;
-        this.searchPage = {
-            Start: 1,        
-            Length: 10,        
-            Sort: columns      
-        };
-        console.log('onSortChange');
-        this.loadMedias();
+        this.sq.setSort(columns);
+        //console.log('onSortChange');
+        this.loadMedias(this.sq);
     }
 
-    get currentPage(): number {
-        if (typeof this.searchPage === "undefined") return 1;
-        return (this.searchPage.Start - 1) / 10 + 1 || 1;
-    }
-
-    public setObject(obj: any) {
-        this.selectMedias.emit(obj);
+    public pushQuery() {
+        this.selectedQuery.emit({mode: this.mode, query: this.sq});
         this.activeModal.close();
-    }
-
-    getDirection(columnId: number) {
-        if (!this.searchPage)
-            return '';
-        const sortCoulumn = this.searchPage.Sort.find( s => s.Column == columnId);
-        if (sortCoulumn)
-            return sortCoulumn.Desc ? 'desc' : 'asc';
-        else
-            return '';
     }
 }

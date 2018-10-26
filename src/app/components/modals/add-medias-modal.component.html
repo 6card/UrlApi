@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h4 id="modal-set-object">Выберите ролики</h4>
+    <h4 id="modal-set-object">Выберите ролики для {{mode ? 'удаления' : 'добавления'}}</h4>
     <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
         <span aria-hidden="true">&times;</span>
     </button>
@@ -7,23 +7,27 @@
 <div class="modal-body">
     <search-form 
         (pushQuery)="onQuery($event)" 
-        [(loading)]="loading"
-        [firstQuery]="searchQuery"
+        [loading]="loading"
+        [firstQuery]="sq.Query"
     ></search-form>
 
-    <div class="card card-table">
-        <div class="card-body">
+    <div class="card" *ngIf="searchItems && searchItems.length == 0"> 
+        Нет результатов
+    </div>
+
+    <div class="card card-table" *ngIf="searchItems && searchItems.length > 0">
+        <div class="card-body">            
             <table class="table table-bordered" [appLoading]="loading">
                 <thead class="thead-dark">
                     <tr>
                         <th>ID</th>
-                        <th sortable-column="8" [sort-direction]="getDirection(8)">Название</th>
-                        <th sortable-column="32" [sort-direction]="getDirection(32)">Описание</th>
+                        <th sortable-column="8" [sort-direction]="sq.getCoulumnDirection(8)">Название</th>
+                        <th sortable-column="32" [sort-direction]="sq.getCoulumnDirection(32)">Описание</th>
                         <th>URL</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let res of searchResult">
+                    <tr *ngFor="let res of searchItems">
                         <td>{{res.Id}}</td>
                         <td>{{res.Name}}</td>
                         <td>{{res.Description}}</td>
@@ -36,11 +40,15 @@
             <ngb-pagination class="d-flex justify-content-end" 
                 [maxSize]="7" 
                 [rotate]="true" 
-                [collectionSize]="searchItemsResult" 
-                [(page)]="currentPage" 
+                [collectionSize]="searchItemsCount" 
+                [(page)]="sq.currentPage" 
                 size="sm" 
                 (pageChange)="onPageChange($event)"
             ></ngb-pagination>
+            <div>
+                <button *ngIf="mode == 0" class="btn btn-success" (click)="pushQuery()">Добавить ролики по заданному условию</button>
+                <button *ngIf="mode == 1" class="btn btn-danger" (click)="pushQuery()">Удалить ролики по заданному условию</button>
+            </div>
         </div>
     </div>
 </div>
