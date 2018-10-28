@@ -101,7 +101,7 @@ $badge-padding-x: .4em;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.3);
+    background-color: rgba(255,255,255,0.5);
     z-index: 2000;
     display: flex;
     justify-content: center;
@@ -111,8 +111,8 @@ $badge-padding-x: .4em;
 .loader-20 {
     display: block;
     top: 50%;
-    border: 3px solid #ffffff; /* Light grey */
-    border-top: 3px solid $primary; /* Blue */
+    border: 3px solid $primary; /* Light grey */
+    border-top: 3px solid transparent; /* Blue */
     border-radius: 50%;
     width: 20px;
     height: 20px;
@@ -122,8 +122,8 @@ $badge-padding-x: .4em;
 .loader-60 {
     display: block;
     top: 50%;
-    border: 8px solid #ffffff; /* Light grey */
-    border-top: 8px solid $primary; /* Blue */
+    border: 8px solid $primary; /* Light grey */
+    border-top: 8px solid transparent; /* Blue */
     border-radius: 50%;
     width: 60px;
     height: 60px;
