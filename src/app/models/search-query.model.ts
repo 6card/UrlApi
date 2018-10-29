@@ -50,7 +50,7 @@ interface SortQuery {
     Desc: boolean;
 }
 
-interface PageQuery {
+export interface PageQuery {
     Start: number;
     Length: number;
     Sort: Array<SortQuery>;
@@ -58,8 +58,8 @@ interface PageQuery {
 
 export interface SimpleQuery {
     Operation: number;
-    Columns: Array<ColumnQuery>;
-    Tables: Array<TableQuery>;
+    Columns?: Array<ColumnQuery>;
+    Tables?: Array<TableQuery>;
 }
 
 
@@ -82,6 +82,28 @@ export class SearchQuery {
         this.Page = page ? page : { Start: 1, Length: 10, Sort: [ this._defaultSort ] };
     }
 
+    /*
+    public setQueryPage(query?: Array<SimpleQuery>, page?: PageQuery) {
+        if (query)  
+            this.Query = query; 
+        else 
+            this.Query = [this._defaultQuery];
+        if (page)  
+            this.Page = page; 
+        else 
+            this.Page = { Start: 1, Length: 10, Sort: [ this._defaultSort ] };
+    }
+    */
+
+    public resetQuery(){
+        this.Query = [this._defaultQuery];
+    }
+
+    public setQuery(query: Array<SimpleQuery>) {
+        this.Query = query;
+        this.setPage(1);
+    }
+
     public setPage(pageNumber: number) {
         this.Page.Start = (pageNumber - 1) * this.Page.Length + 1;
     }
@@ -97,10 +119,11 @@ export class SearchQuery {
         return (this.Page.Start - 1) / this.Page.Length + 1 || 1;
     }
 
-    public setQuery(query: Array<SimpleQuery>) {
-        this.Query = query;
-        this.setPage(1);
+    /*
+    set currentPage(page: number) {
+        this.setPage(page);
     }
+    */
 
     public addQuery(operation, columns, tables) {
         this.Query.push({Operation: operation, Columns: columns, Tables: tables });
@@ -118,7 +141,7 @@ export class SearchQuery {
         this.addQuery(2, [], queryTable);
     }   
 
-    getCoulumnDirection(columnId: number) {
+    getColumnDirection(columnId: number) {
         const sortCoulumn = this.Page.Sort.find( s => s.Column == columnId);
         if (sortCoulumn)
             return sortCoulumn.Desc ? 'desc' : 'asc';

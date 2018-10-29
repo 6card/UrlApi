@@ -14,27 +14,16 @@
                         <button class="btn btn-outline-success" (click)="openModal(config.ADD)"><i class="fas fa-plus"></i> Добавить ролики</button>
                         <button class="btn btn-outline-danger" (click)="openModal(config.DELETE)"><i class="fas fa-minus"></i> Удалить ролики</button>
                     </div>
-                    <div>Выбраны: {{checkedMediasIds}}</div>
                 </div>
-                <div class="card-body">
+                <div class="card-body" [appLoading]="loading">
                     <table class="table table-bordered">
                         <thead class="thead-dark">
                             <tr>
-                                <th>
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-primary">
-                                            <input type="checkbox" 
-                                                [checked]="checkedCheckboxAll"
-                                                (change)="checkAllMedias($event)"
-                                            >
-                                        </button>
-                                        <div class="btn-group" ngbDropdown role="group" aria-label="Selected actions">
-                                            <button class="btn btn-primary dropdown-toggle-split" ngbDropdownToggle></button>
-                                            <div class="dropdown-menu" ngbDropdownMenu>
-                                                <button class="dropdown-item" (click)="deleteSelectedMedias()">Удалить выделенные</button>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <th class="text-center">
+                                    <input type="checkbox" 
+                                        [checked]="checkedMediasIds.length > 0"
+                                        (change)="checkAllMedias($event)"
+                                    >
                                 </th>
                                 <th>ID</th>
                                 <th>Name</th>
@@ -63,13 +52,16 @@
                 </div>
 
                 <div class="card-footer">
-                    <ngb-pagination class="d-flex justify-content-end" 
+                    <ngb-pagination class="d-flex justify-content-end" *ngIf="searchMediasCount"
                         [maxSize]="7" 
                         [rotate]="true" 
                         [collectionSize]="searchMediasCount"
                         size="sm" 
                         (pageChange)="pageChange($event)"
-                    ></ngb-pagination>                    
+                    ></ngb-pagination>              
+                    <div>
+                        <button [class.invisible]="checkedMediasIds.length > 0 ? false : true" class="btn btn-danger" (click)="deleteSelectedMedias()">Удалить отмеченные</button>
+                    </div>      
                 </div>
             </div>
         </div>

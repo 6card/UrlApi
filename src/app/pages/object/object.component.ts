@@ -4,6 +4,8 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+import { finalize } from 'rxjs/operators';
+
 import { AddMediasModal } from '../../components/modals/add-medias-modal.component';
 
 import { AuthenticationService } from '../../services/auth.service';
@@ -27,7 +29,9 @@ export class ObjectComponent implements OnInit {
 	public item: ObjectBase;
 	public searchMediasQuery: SearchQuery;
 	public searchMedias: Array<CheckedMedia>;
-	public searchMediasCount: number;
+  public searchMediasCount: number;
+  
+  public loading: boolean = false;
     
     constructor(
         @Inject(APP_CONST) private config,
@@ -66,15 +70,30 @@ export class ObjectComponent implements OnInit {
     }
 
     public deleteSelectedMedias() {
-      /* TODO добавить удаление */
-      this.alertService.success('ЗАГЛУШКА Ролики удалены', 2000);
-      this.getMediasItem();
+      const query: SimpleQuery = {Operation: 0, Columns: [{Column: 1, Operation: 9, Value: this.checkedMediasIds}]};
+      const sq = new SearchQuery([query]);
+
+      this.loading = true;
+
+      this.pathService.mediasRemove(this.authenticationService.sessionId, this.item.ObjectTypeId, this.item.ObjectId, sq.Query)
+        .subscribe(
+            data => {
+                this.alertService.success('Ролики удалены', 2000);
+                //this.searchMediasQuery.setPage(1);
+                this.getMediasItem(); 
+            }
+        );
     }
 
     public deleteAllMedias() {
-      /* TODO добавить удаление */
-      this.alertService.success('ЗАГЛУШКА Ролики удалены', 2000);
-      this.getMediasItem();
+        this.pathService.mediasClear(this.authenticationService.sessionId, this.item.ObjectTypeId, this.item.ObjectId)
+        .subscribe(
+            data => {
+                this.alertService.success('Ролики удалены', 2000);
+                //this.searchMediasQuery.setPage(1);
+                this.getMediasItem();
+            }
+        );
     }
 
     public pageChange(page: number) {    
@@ -83,11 +102,13 @@ export class ObjectComponent implements OnInit {
     }
     
     public getMediasItem() {
+      this.loading = true;
       this.searchService.searchCount(3, this.authenticationService.sessionId, this.searchMediasQuery.Query) //Media
           .subscribe(data => {
             this.searchMediasCount = data;
       });
       this.searchService.search(3, this.authenticationService.sessionId, this.searchMediasQuery) //Media
+        .pipe( finalize( () => this.loading = false ) )
           .subscribe(data => {
             this.searchMedias = data.map(item => new CheckedMedia(item));
       });
@@ -124,32 +145,35 @@ export class ObjectComponent implements OnInit {
     }
 
     openModal(mode) {
-		const modalRef = this.modalService.open(AddMediasModal, {size: 'lg', ariaLabelledBy: 'modal-add-medias', backdrop: 'static'});
-		modalRef.componentInstance.mode = mode;
+    const modalRef = this.modalService.open(AddMediasModal, {size: 'lg', ariaLabelledBy: 'modal-add-medias', backdrop: 'static'});
+    modalRef.componentInstance.mode = mode;
+    modalRef.componentInstance.objectId = this.item.ObjectId;
+		modalRef.componentInstance.objectTypeId = this.item.ObjectTypeId;
 		modalRef.componentInstance.objectSq = [ {Table: this.item.ObjectTypeId, Values:[this.item.ObjectId]}];
-		modalRef.componentInstance.selectedQuery
-		.subscribe(
-			data => {
-				switch(data.mode) {
-					case this.config.ADD: { 
-						this.addMedias(data.query);
-						break; 
-					}
-					case this.config.DELETE: { 
-						this.deleteMedias(data.query);
-						break; 
-					} 
-				}
-			}
-		);
+		modalRef.componentInstance.finishQuery
+		  .subscribe( data => this.getMediasItem());
 	}
-	
+  
+  /*
 	public addMedias(query: any) {
-		console.log('add medias query', query);
+        this.pathService.mediasAdd(this.authenticationService.sessionId, this.item.ObjectTypeId, this.item.ObjectId, query.Query)
+        .subscribe(
+            data => {
+                this.alertService.success('Ролики добавлены', 2000);
+                this.getMediasItem(); 
+            }
+        );
 	}
 
     public deleteMedias(query: any) {
-      	console.log(query);
-	}
+        this.pathService.mediasRemove(this.authenticationService.sessionId, this.item.ObjectTypeId, this.item.ObjectId, query.Query)
+        .subscribe(
+            data => {
+                this.alertService.success('Ролики удалены', 2000);
+                this.getMediasItem(); 
+            }
+        );
+  }
+  */
 	
 }

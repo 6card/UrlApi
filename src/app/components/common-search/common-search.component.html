@@ -1,20 +1,45 @@
 <search-form 
 (pushQuery)="onQuery($event)" 
 [(loading)]="submitLoading"
-[firstQuery]="searchQuery"
+[firstQuery]="sq.Query"
 [typeId]="typeId"
 ></search-form>
 
-<search-table 
-    (pushPage)="onPageChange($event)"
-    (pushSort)="onSortChange($event)"
-    (setObj)="onSetObject($event)" 
-    [firstQuery]="searchPage"
-    [typeId]="typeId"
-    [loading]="submitLoading"
-    [items]="searchResult"
-    [totalItems]="searchItemsResult"
-    [currentPage]="page"
-    [path]="pathId"
-    
-></search-table>
+<div class="card card-table">
+    <div class="card-body">
+        <table class="table table-bordered" [appLoading]="loading">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th sortable-column="8" [sort-direction]="sq.getColumnDirection(8)">Название</th>
+                    <th sortable-column="32" [sort-direction]="sq.getColumnDirection(32)">Описание</th>
+                    <th>URL</th>
+                    <th *ngIf="!path">Edit Path</th>
+                    <th *ngIf="!path">Edit Object</th>
+                    <th *ngIf="path">Set Object</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let res of searchResult">
+                    <td>{{res.Id}}</td>
+                    <td>{{res.Name}}</td>
+                    <td>{{res.Description}}</td>
+                    <td>{{res.Url}}</td>
+                    <td *ngIf="!path"><a *ngIf="res.PathId" [routerLink]="['/path', res.PathId]">Path</a></td>
+                    <td *ngIf="!path"><a [routerLink]="['/object', typeId ? typeId : res.ObjectTypeId, typeId ? res.Id : res.ObjectId]">Object</a></td>
+                    <td *ngIf="path"><button class="btn btn-primary" (click)="setObject(res)">Выбрать</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer">
+        <ngb-pagination class="d-flex justify-content-end" *ngIf="searchItemsResult"
+            [maxSize]="7" 
+            [rotate]="true" 
+            [collectionSize]="searchItemsResult" 
+            [(page)]="sq.currentPage" 
+            size="sm" 
+            (pageChange)="onPageChange($event)"
+        ></ngb-pagination>
+    </div>
+</div>

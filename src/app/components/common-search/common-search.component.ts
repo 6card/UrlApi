@@ -1,12 +1,16 @@
-import { Component, OnInit, Input, Output, EventEmitter  } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter  } from '@angular/core';
 import { Router, ActivatedRoute, Params } from "@angular/router";
+
+import { filter, finalize, first, takeWhile } from 'rxjs/operators'
 
 import { AuthenticationService } from '../../services/auth.service';
 import { SearchService } from '../../services/search.service';
 import { PathService } from '../../services/path.service';
 import { MetaService } from '../../services/meta.service';
+import { SortService } from '../../components/search-table/sort.service';
 
-import { filter, finalize, first } from 'rxjs/operators'
+import { Meta, MetaColumn } from '../../models/meta.model';
+import { SearchQuery, SimpleQuery, PageQuery } from '../../models/search-query.model';
 
 export const START_SQ = [{ Operation:0, Columns:[] }];
 export const START_SS = [{ Column: 1, Desc: false }];
@@ -15,17 +19,21 @@ export const START_SP = { Start: 1, Length: 10, Sort: START_SS};
 @Component({
     selector: 'common-search',
     templateUrl: './common-search.component.html',
-    providers: [ MetaService ]
+    providers: [ MetaService, SortService ]
   })
   
-export class CommonSearchComponent implements OnInit {
+export class CommonSearchComponent implements OnInit, OnDestroy {
+
+    private alive: boolean = true;
 
     typeId;
     submitLoading: boolean = false;
     searchResult: Array<any>;
-    searchItemsResult: number = 0;
-    searchQuery: any = START_SQ;
-    searchPage: any = START_SP;
+    searchItemsResult: number;
+    //searchQuery: any = START_SQ;
+    //searchPage: any = START_SP;
+
+    public sq: SearchQuery;
 
     @Input() pathId: number;
     @Output() selectObject = new EventEmitter();
@@ -36,7 +44,8 @@ export class CommonSearchComponent implements OnInit {
         protected searchService: SearchService,
         protected authenticationService: AuthenticationService,
         protected pathService: PathService,
-        private metaService: MetaService
+        private metaService: MetaService,
+        private sortService: SortService
     ) { }
 
     ngOnInit() { 
@@ -47,24 +56,29 @@ export class CommonSearchComponent implements OnInit {
 
             }
             else {
-                this.setSearchParams(Number(param.typeId), this.parseParam(param.q), this.parseParam(param.p));
                 this.metaService.loadMeta(Number(param.typeId));
+                this.setSearchParams(Number(param.typeId), this.parseParam(param.q), this.parseParam(param.p));                
                 this.getResults();
+                
             }
         }); 
+
+        this.sortService.columnSorted$
+        .pipe(takeWhile(() => this.alive))
+        .subscribe(columns => {            
+            this.onSortChange(columns);
+        });
+        
     }
 
+    ngOnDestroy() {
+        this.alive = false;
+    }
 
-    setSearchParams(t: number, q: string, p: string) {
-        if (q) 
-            this.searchQuery = q;
-        else
-            this.searchQuery = START_SQ;
-        if (p) 
-            this.searchPage = p;
-        else
-            this.searchPage = START_SP;
+    setSearchParams(t: number, q: Array<SimpleQuery>, p: PageQuery) {
+        this.sq = new SearchQuery(q, p);
         this.typeId = t;
+        this.sortService.setInitSorted(this.sq.Page.Sort);
     }
 
     private parseParam(param: string) {
@@ -72,39 +86,21 @@ export class CommonSearchComponent implements OnInit {
         return JSON.parse(decodeURIComponent(param))
     }
 
-    get page(): number {
-        if (typeof this.searchPage === "undefined") return 1;
-        return (this.searchPage.Start - 1) / 10 + 1 || 1;
-    }
-
     public onPageChange(pageNumber: number) {
-        const page = {
-            Start: (pageNumber - 1) * 10 + 1,        
-            Length: 10,        
-            Sort: START_SS     
-        };
-
-        this.searchPage = page;
+        console.log('onPageChange');
+        this.sq.setPage(pageNumber);
         this.navigate();
     }
 
-    public onSortChange(columns) {
-        
-        if (columns.length == 0) columns = START_SS;
-
-        const page = {
-            Start: 1,        
-            Length: 10,        
-            Sort: columns      
-        };
-
-
-        this.searchPage = page;
+    public onSortChange(columns) {   
+        console.log('onSortChange');     
+        this.sq.setSort(columns);
         this.navigate();
     }
     
-    public onQuery(searchQuery) {
-        this.searchQuery = searchQuery;
+    public onQuery(searchQuery: Array<SimpleQuery>) {
+        console.log('onQuery');     
+        this.sq.setQuery(searchQuery);
         this.navigate();
     }
 
@@ -116,7 +112,7 @@ export class CommonSearchComponent implements OnInit {
     }
     
     public navigate(replaceUrl?: boolean) {
-        const srl = this.serialize(this.searchQuery, this.searchPage);
+        const srl = this.serialize(this.sq.Query, this.sq.Page);
         const params = {
             q: srl.q,
             p: srl.p,
@@ -145,7 +141,7 @@ export class CommonSearchComponent implements OnInit {
     getResults() {
         this.submitLoading = true;
 
-            this.searchService.search(this.typeId, this.authenticationService.sessionId, {Query: this.searchQuery, Page: this.searchPage})
+            this.searchService.search(this.typeId, this.authenticationService.sessionId, this.sq)
             .pipe(
                 finalize(() => this.submitLoading = false)
             )
@@ -157,7 +153,7 @@ export class CommonSearchComponent implements OnInit {
               //() => {this.submitLoading = false}
             );
     
-            this.searchService.searchCount(this.typeId,this.authenticationService.sessionId, this.searchQuery)
+            this.searchService.searchCount(this.typeId,this.authenticationService.sessionId, this.sq.Query)
             .pipe(
                 //finalize(() => this.submitLoading = false)
             )

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Injectable()
 export class SortService {
@@ -15,6 +16,10 @@ export class SortService {
         if (sortedColumn)
             this._columns.splice(this._columns.indexOf(sortedColumn), 1);
         this.columnSortedSource.next(this._columns);
+    }
+
+    setInitSorted(event: Array<ColumnSortedEvent>) {
+        this._columns = event.filter( i => i.Column != 1);
     }
 
     setSorted(event: ColumnSortedEvent) {

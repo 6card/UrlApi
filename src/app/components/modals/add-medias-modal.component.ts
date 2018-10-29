@@ -6,6 +6,8 @@ import { finalize } from 'rxjs/operators';
 
 import { AuthenticationService } from '../../services/auth.service';
 import { SearchService } from '../../services/search.service';
+import { PathService } from '../../services/path.service';
+import { AlertService } from '../../services/alert.service';
 import { MetaService } from '../../services/meta.service';
 import { SortService } from '../../components/search-table/sort.service';
 
@@ -24,7 +26,7 @@ export class AddMediasModal implements OnInit, OnDestroy, AfterViewInit {
 
     public medias: Array<CheckedMedia>;
     public searchItems: Array<any>;
-    public searchItemsCount: number = 0;
+    public searchItemsCount: number;
     public loading: boolean = false;
     public sq = new SearchQuery();
 
@@ -32,7 +34,9 @@ export class AddMediasModal implements OnInit, OnDestroy, AfterViewInit {
 
     @Input() objectSq: SearchQuery;
     @Input() mode;
-    @Output() selectedQuery = new EventEmitter();
+    @Input() objectId: number;
+    @Input() objectTypeId: number;
+    @Output() finishQuery = new EventEmitter();
 
     private _columnSortedSubscription: Subscription;    
 
@@ -42,6 +46,8 @@ export class AddMediasModal implements OnInit, OnDestroy, AfterViewInit {
         private metaService: MetaService,
         private sortService: SortService, 
         private searchService: SearchService,
+        private pathService: PathService,
+        private alertService: AlertService,
         private authenticationService: AuthenticationService,
     ) {}
 
@@ -99,7 +105,44 @@ export class AddMediasModal implements OnInit, OnDestroy, AfterViewInit {
     }
 
     public pushQuery() {
-        this.selectedQuery.emit({mode: this.mode, query: this.sq});
-        this.activeModal.close();
+        //this.finishQuery.emit({mode: this.mode, query: this.sq});
+
+        switch(this.mode) {
+            case this.config.ADD: { 
+                this.addMedias(this.sq.Query);
+                break; 
+            }
+            case this.config.DELETE: { 
+                this.deleteMedias(this.sq.Query);
+                break; 
+            } 
+        }
+        //this.activeModal.close();
     }
+
+    public addMedias(query: any) {
+        this.loading = true;
+        this.pathService.mediasAdd(this.authenticationService.sessionId, this.objectTypeId, this.objectId, query)
+        .pipe( finalize( () => this.loading = false ) )
+        .subscribe(
+            data => {
+                this.alertService.success('Ролики добавлены', 2000);
+                this.activeModal.close();
+                this.finishQuery.emit(true);
+            }
+        );
+	}
+
+    public deleteMedias(query: any) {
+        this.loading = true;
+        this.pathService.mediasRemove(this.authenticationService.sessionId, this.objectTypeId, this.objectId, query)
+        .pipe( finalize( () => this.loading = false ) )
+        .subscribe(
+            data => {
+                this.alertService.success('Ролики удалены', 2000);
+                this.activeModal.close();
+                this.finishQuery.emit(true);
+            }
+        );
+	}
 }

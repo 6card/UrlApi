@@ -87,7 +87,7 @@ export class SearchTableComponent implements OnInit, OnDestroy {
     }
 
     pageChange(pageNumber: number) {
-       this.pushPage.emit(pageNumber);        
+        this.pushPage.emit(pageNumber);        
     }
 
     setObject(obj: any) {

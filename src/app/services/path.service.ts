@@ -101,13 +101,24 @@ export class PathService {
   }
 
   mediasRemove(sessionId: string, typeId: any, objectId: any, data: any) {
-    const url = `https://api.newstube.ru/urldev/Path/MediasAdd`;
+    const url = `https://api.newstube.ru/urldev/Path/MediasRemove`;
     const params = new HttpParams()
       .set('sessionId', sessionId)
       .set('typeId', typeId)
       .set('objectId', objectId);
 
       return this.http.post<any>(url, data, {params})
+        .pipe( catchError(this.handleError(url)));
+  }
+
+  mediasClear(sessionId: string, typeId: any, objectId: any) {
+    const url = `https://api.newstube.ru/urldev/Path/MediasClear`;
+    const params = new HttpParams()
+      .set('sessionId', sessionId)
+      .set('typeId', typeId)
+      .set('objectId', objectId);
+
+      return this.http.post<any>(url, {params})
         .pipe( catchError(this.handleError(url)));
   }
 

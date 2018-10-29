@@ -21,8 +21,8 @@
                 <thead class="thead-dark">
                     <tr>
                         <th>ID</th>
-                        <th sortable-column="8" [sort-direction]="sq.getCoulumnDirection(8)">Название</th>
-                        <th sortable-column="32" [sort-direction]="sq.getCoulumnDirection(32)">Описание</th>
+                        <th sortable-column="8" [sort-direction]="sq.getColumnDirection(8)">Название</th>
+                        <th sortable-column="32" [sort-direction]="sq.getColumnDirection(32)">Описание</th>
                         <th>URL</th>
                     </tr>
                 </thead>
@@ -37,7 +37,7 @@
             </table>
         </div>
         <div class="card-footer">
-            <ngb-pagination class="d-flex justify-content-end" 
+            <ngb-pagination class="d-flex justify-content-end" *ngIf="searchItemsCount"
                 [maxSize]="7" 
                 [rotate]="true" 
                 [collectionSize]="searchItemsCount" 
