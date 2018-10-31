@@ -27,6 +27,8 @@ export class MetaColumn {
     Filter: boolean;
     ValueObjectType: number;
     Values: Array<any>;
+    MediaListEditable: boolean;
+    MediaListEnable: boolean;
 
     constructor( obj: {
         Operations?: Array<number>;
@@ -41,6 +43,8 @@ export class MetaColumn {
         Filter: boolean;
         ValueObjectType: number;
         Values?: Array<any>;
+        MediaListEditable?: boolean;
+        MediaListEnable?: boolean;
     } ) {
         this.Operations = obj.Operations.length == 0 ? null : obj.Operations;
         this.Id = obj.Id;
@@ -54,5 +58,7 @@ export class MetaColumn {
         this.Filter = obj.Filter;
         this.ValueObjectType = obj.ValueObjectType;
         this.Values = obj.Values.length == 0 ? null : obj.Values;
+        this.MediaListEditable = obj.MediaListEditable;
+        this.MediaListEnable = obj.MediaListEnable;
     }
 }

@@ -27,18 +27,22 @@ export class MetaService {
     }
 
     loadMeta(typeId: number){
-        this.lastMeta = null;
-        const url = `https://api.newstube.ru/urldev/Meta/GetMeta`
-        const params = new HttpParams().set('typeId', String(typeId));    
-        this.http.get(url, {params})
-        .pipe( catchError(this.handleError(url)))
+        this.lastMeta = null; 
+        this.getMeta(typeId)
         .subscribe(            
-            (data: Meta) => {                
+            (data: Meta) => {
                 this._meta.next(new Meta(data));
                 this.lastMeta = new Meta(data);
             },
             error => {}
         );
+    }
+
+    getMeta(typeId: number) { 
+        const url = `https://api.newstube.ru/urldev/Meta/GetMeta`
+        const params = new HttpParams().set('typeId', String(typeId));    
+        return this.http.get(url, {params})
+        .pipe( catchError(this.handleError(url)) );
     }
 
 

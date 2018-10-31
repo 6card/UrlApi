@@ -11,7 +11,7 @@
         [firstQuery]="sq.Query"
     ></search-form>
 
-    <div class="card" *ngIf="searchItems && searchItems.length == 0"> 
+    <div class="card card-body" *ngIf="searchItems && searchItems.length == 0" [appLoading]="loading"> 
         Нет результатов
     </div>
 
@@ -37,14 +37,17 @@
             </table>
         </div>
         <div class="card-footer">
-            <ngb-pagination class="d-flex justify-content-end" *ngIf="searchItemsCount"
-                [maxSize]="7" 
-                [rotate]="true" 
-                [collectionSize]="searchItemsCount" 
-                [(page)]="sq.currentPage" 
-                size="sm" 
-                (pageChange)="onPageChange($event)"
-            ></ngb-pagination>
+            <div class="d-flex justify-content-end">
+                <div class="total-items">Найдено {{searchQueryCount}} роликов, можно {{mode == 0 ? 'добавить' : 'удалить'}} {{searchItemsCount}} роликов</div>
+                <ngb-pagination *ngIf="searchItemsCount"
+                    [maxSize]="7" 
+                    [rotate]="true" 
+                    [collectionSize]="searchItemsCount" 
+                    [(page)]="sq.currentPage" 
+                    size="sm" 
+                    (pageChange)="onPageChange($event)"
+                ></ngb-pagination>
+            </div>
             <div>
                 <button *ngIf="mode == 0" class="btn btn-success" (click)="pushQuery()">Добавить ролики по заданному условию</button>
                 <button *ngIf="mode == 1" class="btn btn-danger" (click)="pushQuery()">Удалить ролики по заданному условию</button>

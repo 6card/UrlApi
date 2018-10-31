@@ -2,12 +2,16 @@
 (pushQuery)="onQuery($event)" 
 [(loading)]="submitLoading"
 [firstQuery]="sq.Query"
-[typeId]="typeId"
 ></search-form>
 
-<div class="card card-table">
+
+<div class="card card-body" *ngIf="searchResult && searchResult.length == 0" [appLoading]="submitLoading"> 
+    Нет результатов
+</div>
+
+<div class="card card-table" *ngIf="searchResult && searchResult.length > 0">
     <div class="card-body">
-        <table class="table table-bordered" [appLoading]="loading">
+        <table class="table table-bordered" [appLoading]="submitLoading">
             <thead class="thead-dark">
                 <tr>
                     <th>ID</th>
@@ -32,8 +36,9 @@
             </tbody>
         </table>
     </div>
-    <div class="card-footer">
-        <ngb-pagination class="d-flex justify-content-end" *ngIf="searchItemsResult"
+    <div class="card-footer d-flex justify-content-end">
+        <div class="total-items">Найдено {{searchItemsResult}} элементов</div>
+        <ngb-pagination *ngIf="searchItemsResult"
             [maxSize]="7" 
             [rotate]="true" 
             [collectionSize]="searchItemsResult" 

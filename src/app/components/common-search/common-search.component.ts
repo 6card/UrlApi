@@ -12,9 +12,11 @@ import { SortService } from '../../components/search-table/sort.service';
 import { Meta, MetaColumn } from '../../models/meta.model';
 import { SearchQuery, SimpleQuery, PageQuery } from '../../models/search-query.model';
 
+/*
 export const START_SQ = [{ Operation:0, Columns:[] }];
 export const START_SS = [{ Column: 1, Desc: false }];
 export const START_SP = { Start: 1, Length: 10, Sort: START_SS};
+*/
 
 @Component({
     selector: 'common-search',
@@ -162,5 +164,5 @@ export class CommonSearchComponent implements OnInit, OnDestroy {
                 error => { },
                 //() => {this.submitLoading = false}
             );
-      }
+    }
 }

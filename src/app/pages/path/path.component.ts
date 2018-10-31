@@ -7,6 +7,7 @@ import { SetObjectModal } from '../../components/modals/set-object-modal.compone
 
 import { AuthenticationService } from '../../services/auth.service';
 import { PathService } from '../../services/path.service';
+import { AlertService } from '../../services/alert.service';
 
 import { finalize } from 'rxjs/operators';
 
@@ -26,6 +27,7 @@ export class EditPathComponent implements OnInit {
     constructor(
         private pathService: PathService,
         private authenticationService: AuthenticationService,
+        private alertService: AlertService,
         private activeRoute: ActivatedRoute,
         private modalService: NgbModal
       ) {}
@@ -51,16 +53,14 @@ export class EditPathComponent implements OnInit {
       this.pathService.deleteObject(this.authenticationService.sessionId, this.item.Id)
         .subscribe(
             data => {
+              this.alertService.success('Объект удален', 2000);
               this.loadItem(this.item.Id);
             });    
     }
 
-    public openDialog(content) {
-      this.modalService.open(content, {size: 'lg', ariaLabelledBy: 'modal-set-object'});
-    }
 
-    open() {
-      const modalRef = this.modalService.open(SetObjectModal, {size: 'lg', ariaLabelledBy: 'modal-set-object'});
+    public openDialog() {
+      const modalRef = this.modalService.open(SetObjectModal, {size: 'lg', ariaLabelledBy: 'modal-set-object', backdrop: 'static'});
       modalRef.componentInstance.pathId = this.item.Id;
       modalRef.componentInstance.selectObject
         .subscribe(
@@ -68,9 +68,9 @@ export class EditPathComponent implements OnInit {
       );
     }
 
-    public setObject(obj: any) {
-      console.log(obj);
-      //this.modalService.dismissAll();
+    public setObject(success: boolean) {
+      if (success)
+        this.loadItem(this.item.Id);
     }
 
     ngOnInit() {

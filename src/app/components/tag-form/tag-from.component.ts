@@ -6,6 +6,7 @@ import { Subject } from 'rxjs/index';
 import { debounceTime, distinctUntilChanged, takeUntil, first, filter } from 'rxjs/operators';
 
 import { PathService } from '../../services/path.service';
+import { AuthenticationService } from '../../services/auth.service';
 
 import { ObjectBase } from '../../models/object-base';
 
@@ -21,12 +22,15 @@ export class TagFormComponent implements OnInit, OnDestroy {
     newTag: ObjectBase = new ObjectBase();
     formSubmitted: boolean = false;
 
+    public parents: Array<any>;
+
     private unsubscribe: Subject<void> = new Subject();
 
     @Input() currentObject: ObjectBase;
 
     constructor(
         private pathService: PathService,
+        private authenticationService: AuthenticationService,
     ) {}
 
     @Output() newTagEvent = new EventEmitter<ObjectBase>();
@@ -44,6 +48,16 @@ export class TagFormComponent implements OnInit, OnDestroy {
             )
             .subscribe( val => {
                 this.setPathLatin(val);
+            });
+
+        this.pathService.getParents(this.authenticationService.sessionId)
+        .subscribe( 
+            data => {
+                this.parents = data;
+                if (!data.find( i => i.Id == this.tagForm.get('ParentPathId').value)) {
+                    this.parents.push({Id: this.tagForm.get('ParentPathId').value, PathLatin: this.tagForm.get('ParentPathLatin').value})
+                }
+                
             });
     }
 
@@ -172,7 +186,7 @@ class TagFormGroup extends FormGroup {
             ParentPathId: new TagFormControl("ParentPathId", "ParentPathId", CONTROL_INPUT, ""),
 
             Url: new TagFormControl("Url", "Url", CONTROL_INPUT, ""),
-            GenerateLatin: new TagFormControl("Не изменять путь при изменение названия", "GenerateLatin", CONTROL_CHECKBOX, false),
+            GenerateLatin: new TagFormControl("зафиксировать", "GenerateLatin", CONTROL_CHECKBOX, false),
             Name: new TagFormControl("Название", "Name", CONTROL_INPUT, "", Validators.compose([Validators.required])),
             Description: new TagFormControl("Описание", "Description", CONTROL_TEXTAREA, ""),
             SeoNoIndex: new TagFormControl("Запрет индексации", "SeoNoIndex", CONTROL_CHECKBOX, false),

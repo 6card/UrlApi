@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -18,6 +18,8 @@ import { CheckedMedia } from '../../models/media';
 import { SearchQuery, SimpleQuery } from '../../models/search-query.model';
 
 import { APP_CONST } from '../../config/const';
+import { Meta } from '../../models/meta.model';
+import { MetaService } from '../../services/meta.service';
 
 @Component({
     selector: 'app-object',
@@ -30,23 +32,32 @@ export class ObjectComponent implements OnInit {
 	public searchMediasQuery: SearchQuery;
 	public searchMedias: Array<CheckedMedia>;
   public searchMediasCount: number;
+  public meta: Meta;
   
   public loading: boolean = false;
     
     constructor(
         @Inject(APP_CONST) private config,
+        @Inject(MetaService) private metaService,
         private pathService: PathService,
         private searchService: SearchService,
         private authenticationService: AuthenticationService,
         private activeRoute: ActivatedRoute,
         private alertService: AlertService,
-        private modalService: NgbModal
+        private modalService: NgbModal,
+        private router: Router,
     ) {}
 
     ngOnInit() {
       this.activeRoute.params.subscribe(routeParams => {
         this.loadItem(routeParams.typeid, routeParams.id);
-      });        
+        this.getMeta(routeParams.typeid);
+      });
+    }
+
+    public getMeta(typeId: number) {
+      this.metaService.getMeta(typeId)
+      .subscribe( (data: Meta) => this.meta = data );
     }
 
     public updateCheckedMedias(media, event) {
@@ -58,7 +69,7 @@ export class ObjectComponent implements OnInit {
     }
 
     get checkedCheckboxAll() {
-      if (!this.searchMedias)
+      if (!this.searchMedias || this.searchMedias.length == 0)
         return false;
       return this.searchMedias.filter( i => i.checked == true).length == this.searchMedias.length;
     }
@@ -131,6 +142,8 @@ export class ObjectComponent implements OnInit {
         .subscribe(
             data => {
               this.alertService.success('Данные сохранены', 2000);
+              //this.router.navigate([]);
+              //this.loadItem(this.item.ObjectTypeId, this.item.ObjectId);
         });
     }
 

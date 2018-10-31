@@ -1,0 +1,69 @@
+<div class="modal-header">
+    <h4 id="modal-set-object">Выберите объект</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item"><a href="javascript:void(0)" (click)="setType(0)" [class.active]="isActive(0)" class="nav-link">Путь</a></li>    
+        <li class="nav-item"><a href="javascript:void(0)" (click)="setType(1)" [class.active]="isActive(1)" class="nav-link">Канал</a></li>
+        <li class="nav-item"><a href="javascript:void(0)" (click)="setType(3)" [class.active]="isActive(3)" class="nav-link">Ролик</a></li>  
+        <li class="nav-item"><a href="javascript:void(0)" (click)="setType(4)" [class.active]="isActive(4)" class="nav-link">Тема</a></li>
+        <li class="nav-item"><a href="javascript:void(0)" (click)="setType(5)" [class.active]="isActive(5)" class="nav-link">Персона</a></li> 
+        <li class="nav-item"><a href="javascript:void(0)" (click)="setType(6)" [class.active]="isActive(6)" class="nav-link">Тег</a></li> 
+        <li class="nav-item"><a href="javascript:void(0)" (click)="setType(7)" [class.active]="isActive(7)" class="nav-link">Раздел</a></li>
+        <li class="nav-item"><a href="javascript:void(0)" (click)="setType(8)" [class.active]="isActive(8)" class="nav-link">Передача</a></li>
+    </ul>
+
+    <div class="tabs-body">
+
+        <search-form 
+            (pushQuery)="onQuery($event)" 
+            [(loading)]="submitLoading"
+            [firstQuery]="sq.Query"
+        ></search-form>
+
+        <div class="card card-body" *ngIf="searchResult && searchResult.length == 0" [appLoading]="loading"> 
+                Нет результатов
+        </div>
+
+        <div class="card card-table"  *ngIf="searchResult && searchResult.length > 0">
+            <div class="card-body">
+                <table class="table table-bordered" [appLoading]="submitLoading">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th sortable-column="8" [sort-direction]="sq.getColumnDirection(8)">Название</th>
+                            <th sortable-column="32" [sort-direction]="sq.getColumnDirection(32)">Описание</th>
+                            <th>URL</th>
+                            <th>Set Object</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let res of searchResult">
+                            <td>{{res.Id}}</td>
+                            <td>{{res.Name}}</td>
+                            <td>{{res.Description}}</td>
+                            <td>{{res.Url}}</td>
+                            <td><button class="btn btn-primary" (click)="setObject(res.Id, typeId)">Выбрать</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer d-flex justify-content-end">
+                <div class="total-items">Найдено {{searchItemsResult}} элементов</div>
+                <ngb-pagination *ngIf="searchItemsResult"
+                    [maxSize]="7" 
+                    [rotate]="true" 
+                    [collectionSize]="searchItemsResult" 
+                    [(page)]="sq.currentPage" 
+                    size="sm" 
+                    (pageChange)="onPageChange($event)"
+                ></ngb-pagination>
+            </div>
+        </div>
+    </div>
+
+</div>

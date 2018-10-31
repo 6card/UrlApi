@@ -1,28 +1,120 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
+import { finalize, takeWhile } from 'rxjs/operators'
+
+import { AuthenticationService } from '../../services/auth.service';
+import { PathService } from '../../services/path.service';
+import { SearchService } from '../../services/search.service';
+import { AlertService } from '../../services/alert.service';
+import { MetaService } from '../../services/meta.service';
+import { SortService } from '../../components/search-table/sort.service';
+
+import { SearchQuery, SimpleQuery, PageQuery } from '../../models/search-query.model';
 
 @Component({
   selector: 'set-object-modal',
-  template: `
-      <div class="modal-header">
-        <h4 id="modal-set-object">Выберите объект</h4>
-        <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
-            <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <app-search [pathId]="pathId" (selectObject)="setObject($event)"></app-search>
-      </div>
-  `
+  templateUrl: './set-object-modal.component.html',
+  providers: [ MetaService, SortService ]
 })
-export class SetObjectModal {
-  @Input() pathId;
-  @Output() selectObject = new EventEmitter();
 
-  constructor(public activeModal: NgbActiveModal) {}
+export class SetObjectModal implements OnInit, OnDestroy {
 
-  public setObject(obj: any) {
-    this.selectObject.emit(obj);
-    this.activeModal.close();
-  }
+    private alive: boolean = true;
+    public submitLoading: boolean = false;
+    public searchResult: Array<any>;
+    public searchItemsResult: number;
+
+    public typeId = 0;
+    public sq = new SearchQuery();
+
+    @Input() pathId;
+    @Output() selectObject = new EventEmitter();
+
+    constructor(
+        public activeModal: NgbActiveModal,
+        private searchService: SearchService,
+        private pathService: PathService,
+        private authenticationService: AuthenticationService,
+        private alertService: AlertService,
+        private metaService: MetaService,
+        private sortService: SortService
+    ) {}
+
+
+    ngOnInit() {
+        this.sortService.columnSorted$
+        .pipe(takeWhile(() => this.alive))
+        .subscribe(columns => {            
+            this.onSortChange(columns);
+        });
+    }
+
+    ngOnDestroy() {
+        this.alive = false;
+    }
+
+    public setType(id: number): void {
+        this.typeId = id;
+        this.sq = new SearchQuery();
+
+        this.getResults();
+
+        if (id != 0)
+            this.metaService.loadMeta(id);        
+    }
+
+    public isActive(id: number): boolean{
+        return this.typeId == id;
+    }
+
+    public onQuery(searchQuery: Array<SimpleQuery>) {
+        console.log('onQuery');     
+        this.sq.setQuery(searchQuery);
+        this.getResults();
+    }
+
+    public onPageChange(pageNumber: number) {
+        console.log('onPageChange');
+        this.sq.setPage(pageNumber);
+        this.getResults();
+    }
+
+    public onSortChange(columns) {   
+        console.log('onSortChange');     
+        this.sq.setSort(columns);
+        this.getResults();
+    }
+
+    getResults() {
+        this.submitLoading = true;
+
+        this.searchService.search(this.typeId, this.authenticationService.sessionId, this.sq)
+        .pipe( finalize(() => this.submitLoading = false) )
+        .subscribe(data => this.searchResult = data );
+
+        this.searchService.searchCount(this.typeId,this.authenticationService.sessionId, this.sq.Query)
+        .subscribe( data => this.searchItemsResult = data );
+    }
+    
+    public setObject(objectId: number, objectTypeId: number) {
+
+        const obj = {
+            "ObjectTypeId": objectTypeId,
+            "ObjectId": objectId
+        };
+
+        this.submitLoading = true;
+        this.pathService.setObject(this.authenticationService.sessionId, this.pathId, obj)
+        .pipe( finalize(() => this.submitLoading = false) )
+        .subscribe( _ => {
+            this.alertService.success('Объект выставлен', 2000);
+            this.activeModal.close();
+            this.selectObject.emit(true);
+        });
+
+
+        
+        
+    }
 }

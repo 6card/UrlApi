@@ -27,6 +27,7 @@ export class AddMediasModal implements OnInit, OnDestroy, AfterViewInit {
     public medias: Array<CheckedMedia>;
     public searchItems: Array<any>;
     public searchItemsCount: number;
+    public searchQueryCount: number;
     public loading: boolean = false;
     public sq = new SearchQuery();
 
@@ -82,6 +83,10 @@ export class AddMediasModal implements OnInit, OnDestroy, AfterViewInit {
         this.searchService.searchCount(3, this.authenticationService.sessionId, search.Query)
             .pipe()
             .subscribe( data => this.searchItemsCount = data );
+
+        this.searchService.searchCount(3, this.authenticationService.sessionId, this.sq.Query)
+            .pipe()
+            .subscribe( data => this.searchQueryCount = data );
     }
 
 

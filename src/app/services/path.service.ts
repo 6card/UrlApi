@@ -122,6 +122,14 @@ export class PathService {
         .pipe( catchError(this.handleError(url)));
   }
 
+  getParents(sessionId: string) {
+    const url = `https://api.newstube.ru/urldev/Path/Parents`;
+    const params = new HttpParams()
+      .set('sessionId', sessionId);
+      return this.http.get<any>(url, {params})
+        .pipe( catchError(this.handleError(url)));
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
 
     return (error: any): Observable<T> => {

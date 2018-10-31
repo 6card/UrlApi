@@ -2,7 +2,7 @@
     <div class="row mb-4">
         <div class="col-sm-12">
             <div class="form-group">
-                Url: http://newstube.ru/{{item.Url}}
+                Url: https://newstube.ru/{{item.Url}}
                     <a href="http://newstube.ru/{{item.Url}}" target="_blank">Открыть на newstube.ru</a>
             </div>
             <div class="form-group">
@@ -10,8 +10,8 @@
                 <div>
                     {{item.ObjectTypeName}}
                     <div class="btn-group" role="group" aria-label="Basic example">
-                        <a [routerLink]="['/object', item.ObjectTypeId, item.ObjectId]" class="btn btn-outline-primary btn-sm">Редактировать</a>
-                        <button class="btn btn-outline-success btn-sm" (click)="open()">Выставить объект</button>
+                        <button [disabled]="!item.ObjectTypeId && !item.ObjectId" [routerLink]="['/object', item.ObjectTypeId, item.ObjectId]" class="btn btn-outline-primary btn-sm">Редактировать</button>
+                        <button class="btn btn-outline-success btn-sm" (click)="openDialog()">Выставить объект</button>
                         <button class="btn btn-outline-warning btn-sm">Выставить Redirect</button>
                         <button class="btn btn-outline-danger btn-sm" (click)="deleteObject()">Удалить</button>
                     </div>
@@ -141,16 +141,3 @@
         </div>
     </div>
 </div>
-
-
-<ng-template #modalSetObject let-modal>
-    <div class="modal-header">
-        <h4 id="modal-set-object">Выберите объект</h4>
-        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        <app-search [pathId]="item?.Id" (selectObject)="setObject($event)"></app-search>
-    </div>
-</ng-template>

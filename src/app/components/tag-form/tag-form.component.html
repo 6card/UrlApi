@@ -2,20 +2,33 @@
 
     <div class="form-group">
         <label>Url <a *ngIf="currentObject && currentObject.PathId" [routerLink]="['/path', currentObject.PathId]" class="btn btn-outline-primary btn-sm" title="Редактировать">Редактировать</a></label>
-        <div class="mb-2">
-            http://newstube.ru/{{tagForm.get('ParentPathLatin').value ? tagForm.get('ParentPathLatin').value+'/' : ''}}<input type="text" class="form-control simple" formControlName="{{controlProperty('PathLatin')}}" [ngClass]="{'is-invalid' : controlIsInvalid('PathLatin')}">{{tagForm.get('PathSuffix').value && tagForm.get('PathSuffix').value > 1 ? '--'+tagForm.get('PathSuffix').value : ''}}{{!tagForm.get('PathId').value ? '--*  (ближайший свободный)' : ''}}
-            <a *ngIf="currentObject && tagForm.get('PathId').value && currentObject.Url" href="http://newstube.ru/{{currentObject.Url}}" target="_blank">Открыть на newstube.ru <i class="fas fa-external-link-alt"></i></a>    
-        </div>
-        <div>
-            <button type="button" class="btn btn-outline-secondary btn-sm">Выбрать родительский путь</button>&nbsp;
-            <button type="button" class="btn btn-outline-secondary btn-sm">Выбрать путь размещения</button>
-        </div>
-    </div>
-
-    <div class="form-check label-first">
-        <label class="form-check-label" for="{{controlProperty('GenerateLatin')}}">{{controlLabel('GenerateLatin')}}</label>
-        <input type="checkbox" class="form-check-input" id="{{controlProperty('GenerateLatin')}}" formControlName="{{controlProperty('GenerateLatin')}}" [ngClass]="{'is-invalid' : controlIsInvalid('GenerateLatin')}"  >
-        <div class="invalid-feedback" *ngIf="controlIsInvalid('GenerateLatin')">{{controlValidationMessage('GenerateLatin')}}</div>
+        <table>
+            <tr class="mb-1">
+                <td>https://newstube.ru/</td>
+                <td>
+                    <select class="form-control" formControlName="{{controlProperty('ParentPathId')}}">
+                        <option *ngFor="let p of parents" [value]="p.Id">{{p.PathLatin}}</option>
+                    </select>
+                </td>
+                <td>/</td>
+                <td><input type="text" class="form-control simple" formControlName="{{controlProperty('PathLatin')}}" [ngClass]="{'is-invalid' : controlIsInvalid('PathLatin')}"></td>
+                <td>{{tagForm.get('PathSuffix').value && tagForm.get('PathSuffix').value > 1 ? '--'+tagForm.get('PathSuffix').value : ''}}{{!tagForm.get('PathId').value ? '--*  (ближайший свободный)' : ''}}</td>
+                <td><a *ngIf="currentObject && tagForm.get('PathId').value && currentObject.Url" href="http://newstube.ru/{{currentObject.Url}}" target="_blank">Открыть на newstube.ru <i class="fas fa-external-link-alt"></i></a></td>
+            </tr>
+            <tr class="mb-1">
+                <td colspan="3"></td>
+                <td class="form-check label-first mb-0">
+                    <label class="form-check-label" for="{{controlProperty('GenerateLatin')}}">{{controlLabel('GenerateLatin')}}</label>
+                    <input type="checkbox" class="form-check-input label-first" id="{{controlProperty('GenerateLatin')}}" formControlName="{{controlProperty('GenerateLatin')}}" [ngClass]="{'is-invalid' : controlIsInvalid('GenerateLatin')}"  >
+                </td>
+                <td colspan="2"></td>
+            </tr>
+            <tr class="mb-1">
+                <td colspan="3"></td>
+                <td><button type="button" class="btn btn-outline-secondary btn-sm">Выбрать путь размещения</button></td>
+                <td colspan="2"></td>
+            </tr>
+        </table>
     </div>
 
     <div class="form-group">
