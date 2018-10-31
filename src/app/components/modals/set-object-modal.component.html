@@ -4,7 +4,7 @@
         <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body">
+  <div class="modal-body" [appLoading]="loading">
 
     <ul class="nav nav-tabs">
         <li class="nav-item"><a href="javascript:void(0)" (click)="setType(0)" [class.active]="isActive(0)" class="nav-link">Путь</a></li>    
@@ -25,13 +25,13 @@
             [firstQuery]="sq.Query"
         ></search-form>
 
-        <div class="card card-body" *ngIf="searchResult && searchResult.length == 0" [appLoading]="loading"> 
+        <div class="card card-body" *ngIf="searchResult && searchResult.length == 0"> 
                 Нет результатов
         </div>
 
         <div class="card card-table"  *ngIf="searchResult && searchResult.length > 0">
             <div class="card-body">
-                <table class="table table-bordered" [appLoading]="submitLoading">
+                <table class="table table-bordered">
                     <thead class="thead-dark">
                         <tr>
                             <th>ID</th>
@@ -47,7 +47,7 @@
                             <td>{{res.Name}}</td>
                             <td>{{res.Description}}</td>
                             <td>{{res.Url}}</td>
-                            <td><button class="btn btn-primary" (click)="setObject(res.Id, typeId)">Выбрать</button></td>
+                            <td><button class="btn btn-primary" (click)="setObject(res, typeId)">Выбрать</button></td>
                         </tr>
                     </tbody>
                 </table>

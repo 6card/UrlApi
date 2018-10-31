@@ -61,7 +61,7 @@ export class EditPathComponent implements OnInit {
 
     public openDialog() {
       const modalRef = this.modalService.open(SetObjectModal, {size: 'lg', ariaLabelledBy: 'modal-set-object', backdrop: 'static'});
-      modalRef.componentInstance.pathId = this.item.Id;
+      modalRef.componentInstance.currentItem = this.item;
       modalRef.componentInstance.selectObject
         .subscribe(
           data => this.setObject(data),

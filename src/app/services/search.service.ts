@@ -30,6 +30,19 @@ export class SearchService {
     return types[index] || null;
   }
 
+  public getSerachTypeName(index: number): string{
+    const types = {
+        1: "Канал",
+        3: "Ролик",
+        4: "Тема",
+        5: "Персона",
+        6: "Тег",
+        7: "Раздел",
+        8: "Передача"
+    };
+    return types[index] || null;
+  }
+
   search(typeId: number, sessionId: string, data: any) {
     const method = this.getSerachType(typeId);
     const url = `https://api.newstube.ru/urldev/${method}/Search`

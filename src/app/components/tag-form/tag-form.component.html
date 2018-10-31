@@ -13,7 +13,7 @@
                 <td>/</td>
                 <td><input type="text" class="form-control simple" formControlName="{{controlProperty('PathLatin')}}" [ngClass]="{'is-invalid' : controlIsInvalid('PathLatin')}"></td>
                 <td>{{tagForm.get('PathSuffix').value && tagForm.get('PathSuffix').value > 1 ? '--'+tagForm.get('PathSuffix').value : ''}}{{!tagForm.get('PathId').value ? '--*  (ближайший свободный)' : ''}}</td>
-                <td><a *ngIf="currentObject && tagForm.get('PathId').value && currentObject.Url" href="http://newstube.ru/{{currentObject.Url}}" target="_blank">Открыть на newstube.ru <i class="fas fa-external-link-alt"></i></a></td>
+                <td><a *ngIf="currentObject && tagForm.get('PathId').value && currentObject.Url" href="https://newstube.ru/{{currentObject.Url}}" target="_blank">Открыть на newstube.ru <i class="fas fa-external-link-alt"></i></a></td>
             </tr>
             <tr class="mb-1">
                 <td colspan="3"></td>

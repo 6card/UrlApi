@@ -59,6 +59,8 @@ export class AddMediasModal implements OnInit, OnDestroy, AfterViewInit {
         this._columnSortedSubscription = this.sortService.columnSorted$.subscribe(columns => {
             this.onSortChange(columns);
         });
+
+        this.loadMedias(this.sq);
     }
 
     ngOnDestroy() {

@@ -28,7 +28,7 @@ export class SetObjectModal implements OnInit, OnDestroy {
     public typeId = 0;
     public sq = new SearchQuery();
 
-    @Input() pathId;
+    @Input() currentItem;
     @Output() selectObject = new EventEmitter();
 
     constructor(
@@ -97,24 +97,24 @@ export class SetObjectModal implements OnInit, OnDestroy {
         .subscribe( data => this.searchItemsResult = data );
     }
     
-    public setObject(objectId: number, objectTypeId: number) {
+    public setObject(item: any, objectTypeId: number) {
+        if(confirm(
+            `Вы уверены что хотите заменить объект "${this.currentItem.ObjectTypeName}: ${this.currentItem.Name}" на "${this.searchService.getSerachTypeName(objectTypeId)}: ${item.Name}"?`
+        )) {
+            const obj = {
+                "ObjectTypeId": objectTypeId,
+                "ObjectId": item.Id
+            };
+    
+            this.submitLoading = true;
+            this.pathService.setObject(this.authenticationService.sessionId, this.currentItem.pathId, obj)
+            .pipe( finalize(() => this.submitLoading = false) )
+            .subscribe( _ => {
+                this.alertService.success('Объект выставлен', 2000);
+                this.activeModal.close();
+                this.selectObject.emit(true);
+            });
+        }
 
-        const obj = {
-            "ObjectTypeId": objectTypeId,
-            "ObjectId": objectId
-        };
-
-        this.submitLoading = true;
-        this.pathService.setObject(this.authenticationService.sessionId, this.pathId, obj)
-        .pipe( finalize(() => this.submitLoading = false) )
-        .subscribe( _ => {
-            this.alertService.success('Объект выставлен', 2000);
-            this.activeModal.close();
-            this.selectObject.emit(true);
-        });
-
-
-        
-        
     }
 }

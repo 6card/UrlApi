@@ -4,20 +4,20 @@
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-<div class="modal-body">
+<div class="modal-body" [appLoading]="loading">
     <search-form 
         (pushQuery)="onQuery($event)" 
         [loading]="loading"
         [firstQuery]="sq.Query"
     ></search-form>
 
-    <div class="card card-body" *ngIf="searchItems && searchItems.length == 0" [appLoading]="loading"> 
+    <div class="card card-body" *ngIf="searchItems && searchItems.length == 0"> 
         Нет результатов
     </div>
 
     <div class="card card-table" *ngIf="searchItems && searchItems.length > 0">
         <div class="card-body">            
-            <table class="table table-bordered" [appLoading]="loading">
+            <table class="table table-bordered">
                 <thead class="thead-dark">
                     <tr>
                         <th>ID</th>
