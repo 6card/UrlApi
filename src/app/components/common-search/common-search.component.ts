@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter  } from '@angular/core';
 import { Router, ActivatedRoute, Params } from "@angular/router";
 
-import { filter, finalize, first, takeWhile } from 'rxjs/operators'
+import { forkJoin } from 'rxjs';
+import { filter, finalize, first, takeWhile, map } from 'rxjs/operators'
 
 import { AuthenticationService } from '../../services/auth.service';
 import { SearchService } from '../../services/search.service';
@@ -89,19 +90,19 @@ export class CommonSearchComponent implements OnInit, OnDestroy {
     }
 
     public onPageChange(pageNumber: number) {
-        console.log('onPageChange');
+        //console.log('onPageChange');
         this.sq.setPage(pageNumber);
         this.navigate();
     }
 
     public onSortChange(columns) {   
-        console.log('onSortChange');     
+        //console.log('onSortChange');     
         this.sq.setSort(columns);
         this.navigate();
     }
     
     public onQuery(searchQuery: Array<SimpleQuery>) {
-        console.log('onQuery');     
+        //console.log('onQuery');     
         this.sq.setQuery(searchQuery);
         this.navigate();
     }
@@ -143,26 +144,19 @@ export class CommonSearchComponent implements OnInit, OnDestroy {
     getResults() {
         this.submitLoading = true;
 
-            this.searchService.search(this.typeId, this.authenticationService.sessionId, this.sq)
-            .pipe(
-                finalize(() => this.submitLoading = false)
-            )
-            .subscribe(
-              data => {
-                  this.searchResult = data; 
-                },
-              error => {},
-              //() => {this.submitLoading = false}
-            );
-    
-            this.searchService.searchCount(this.typeId,this.authenticationService.sessionId, this.sq.Query)
-            .pipe(
-                //finalize(() => this.submitLoading = false)
-            )
-            .subscribe(
-                data => { this.searchItemsResult = data; },
-                error => { },
-                //() => {this.submitLoading = false}
-            );
+        forkJoin (
+            this.searchService.search(this.typeId, this.authenticationService.sessionId, this.sq),
+            this.searchService.searchCount(this.typeId,this.authenticationService.sessionId, this.sq.Query),
+        )
+        .pipe( 
+            finalize(() => this.submitLoading = false),
+            map( ([items, count]) => {
+                return {Items: items, Count: count};
+            })            
+        )
+        .subscribe( data => {
+            this.searchResult = data.Items;
+            this.searchItemsResult = data.Count;
+        });
     }
 }

@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { finalize, takeWhile } from 'rxjs/operators'
+import { forkJoin } from 'rxjs';
+import { finalize, takeWhile, map } from 'rxjs/operators'
 
 import { AuthenticationService } from '../../services/auth.service';
 import { PathService } from '../../services/path.service';
@@ -69,19 +70,19 @@ export class SetObjectModal implements OnInit, OnDestroy {
     }
 
     public onQuery(searchQuery: Array<SimpleQuery>) {
-        console.log('onQuery');     
+        //console.log('onQuery');     
         this.sq.setQuery(searchQuery);
         this.getResults();
     }
 
     public onPageChange(pageNumber: number) {
-        console.log('onPageChange');
+        //console.log('onPageChange');
         this.sq.setPage(pageNumber);
         this.getResults();
     }
 
     public onSortChange(columns) {   
-        console.log('onSortChange');     
+        //console.log('onSortChange');     
         this.sq.setSort(columns);
         this.getResults();
     }
@@ -89,12 +90,21 @@ export class SetObjectModal implements OnInit, OnDestroy {
     getResults() {
         this.submitLoading = true;
 
-        this.searchService.search(this.typeId, this.authenticationService.sessionId, this.sq)
-        .pipe( finalize(() => this.submitLoading = false) )
-        .subscribe(data => this.searchResult = data );
+        forkJoin (
+            this.searchService.search(this.typeId, this.authenticationService.sessionId, this.sq),
+            this.searchService.searchCount(this.typeId,this.authenticationService.sessionId, this.sq.Query),
+        )
+        .pipe( 
+            finalize(() => this.submitLoading = false),
+            map( ([items, count]) => {
+                return {Items: items, Count: count};
+            })            
+        )
+        .subscribe( data => {
+            this.searchResult = data.Items;
+            this.searchItemsResult = data.Count;
+        });
 
-        this.searchService.searchCount(this.typeId,this.authenticationService.sessionId, this.sq.Query)
-        .subscribe( data => this.searchItemsResult = data );
     }
     
     public setObject(item: any, objectTypeId: number) {

@@ -3,17 +3,20 @@
     <div class="form-group">
         <label>Url <a *ngIf="currentObject && currentObject.PathId" [routerLink]="['/path', currentObject.PathId]" class="btn btn-outline-primary btn-sm" title="Редактировать">Редактировать</a></label>
         <table>
+            <tr>
+                <td colspan="7"><label>{{tagForm.get('PathId').value ? 'Путь размещения' : 'Желаемый путь размещения'}}</label></td>
+            </tr>
             <tr class="mb-1">
-                <td>https://newstube.ru/</td>
+                <td>https://www.newstube.ru/</td>
                 <td>
-                    <select class="form-control" formControlName="{{controlProperty('ParentPathId')}}">
+                    <select class="form-control" formControlName="{{controlProperty('ParentPathId')}}" (change)="resetPath()">
                         <option *ngFor="let p of parents" [value]="p.Id">{{p.PathLatin}}</option>
                     </select>
                 </td>
                 <td>/</td>
-                <td><input type="text" class="form-control simple" formControlName="{{controlProperty('PathLatin')}}" [ngClass]="{'is-invalid' : controlIsInvalid('PathLatin')}"></td>
+                <td><input type="text" (input)="resetPath()" class="form-control simple" formControlName="{{controlProperty('PathLatin')}}" [ngClass]="{'is-invalid' : controlIsInvalid('PathLatin')}"></td>
                 <td>{{tagForm.get('PathSuffix').value && tagForm.get('PathSuffix').value > 1 ? '--'+tagForm.get('PathSuffix').value : ''}}{{!tagForm.get('PathId').value ? '--*  (ближайший свободный)' : ''}}</td>
-                <td><a *ngIf="currentObject && tagForm.get('PathId').value && currentObject.Url" href="https://newstube.ru/{{currentObject.Url}}" target="_blank">Открыть на newstube.ru <i class="fas fa-external-link-alt"></i></a></td>
+                <td><a *ngIf="currentObject && tagForm.get('PathId').value && currentObject.Url" href="https://www.newstube.ru/{{currentObject.Url}}" target="_blank">Открыть на newstube.ru <i class="fas fa-external-link-alt"></i></a></td>
             </tr>
             <tr class="mb-1">
                 <td colspan="3"></td>

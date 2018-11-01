@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, AfterViewInit, Inject } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { Subscription } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { Subscription, forkJoin } from 'rxjs';
+import { finalize, map } from 'rxjs/operators';
 
 import { AuthenticationService } from '../../services/auth.service';
 import { SearchService } from '../../services/search.service';
@@ -76,19 +76,24 @@ export class AddMediasModal implements OnInit, OnDestroy, AfterViewInit {
             search.addExceptTableQuery(this.objectSq);
         else if (this.mode == this.config.DELETE)
             search.addIntersectTableQuery(this.objectSq);
+
         this.loading = true;
-
-        this.searchService.search(3, this.authenticationService.sessionId, search)
-            .pipe( finalize(() => this.loading = false))
-            .subscribe( data => this.searchItems = data );
-
-        this.searchService.searchCount(3, this.authenticationService.sessionId, search.Query)
-            .pipe()
-            .subscribe( data => this.searchItemsCount = data );
-
-        this.searchService.searchCount(3, this.authenticationService.sessionId, this.sq.Query)
-            .pipe()
-            .subscribe( data => this.searchQueryCount = data );
+        forkJoin (
+            this.searchService.search(3, this.authenticationService.sessionId, search),
+            this.searchService.searchCount(3, this.authenticationService.sessionId, search.Query),
+            this.searchService.searchCount(3, this.authenticationService.sessionId, this.sq.Query),
+        )
+        .pipe( 
+            finalize(() => this.loading = false),
+            map( ([items, count, countAll]) => {
+                return {Items: items, Count: count, CountAll: countAll};
+            })            
+        )
+        .subscribe( data => {
+            this.searchItems = data.Items;
+            this.searchItemsCount = data.Count;
+            this.searchQueryCount = data.CountAll;
+        });
     }
 
 

@@ -11,6 +11,7 @@ export class ObjectBase {
     SeoDescription: string;
     SeoKeywords: string;     
     Id: number;
+    PathId: number;
     PathLatin: string;
     PathSuffix: number;
     ParentPathId: number;
@@ -34,6 +35,7 @@ export class ObjectBase {
         SeoDescription?: string,
         SeoKeywords?: string,        
         Id?: number,
+        PathId?: number,
         PathLatin?: string,
         PathSuffix?: number,
         ParentPathId?: number,
@@ -57,6 +59,7 @@ export class ObjectBase {
         this.SeoDescription = obj.SeoDescription  || '';
         this.SeoKeywords = obj.SeoKeywords || '';        
         this.Id = obj.Id;
+        this.PathId = obj.PathId;
         this.PathLatin = obj.PathLatin || '';
         this.PathSuffix = obj.PathSuffix;
         this.ParentPathId = obj.ParentPathId;

@@ -4,7 +4,8 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { finalize } from 'rxjs/operators';
+import { forkJoin } from 'rxjs';
+import { finalize, map } from 'rxjs/operators';
 
 import { AddMediasModal } from '../../components/modals/add-medias-modal.component';
 
@@ -112,17 +113,24 @@ export class ObjectComponent implements OnInit {
       this.getMediasItem();    
     }
     
-    public getMediasItem() {
+    public getMediasItem() {    
       this.loading = true;
-      this.searchService.searchCount(3, this.authenticationService.sessionId, this.searchMediasQuery.Query) //Media
-          .subscribe(data => {
-            this.searchMediasCount = data;
+
+      forkJoin (
+          this.searchService.search(3, this.authenticationService.sessionId, this.searchMediasQuery),
+          this.searchService.searchCount(3,this.authenticationService.sessionId, this.searchMediasQuery.Query),
+      )
+      .pipe( 
+          finalize(() => this.loading = false),
+          map( ([items, count]) => {
+              return {Items: items, Count: count};
+          })            
+      )
+      .subscribe( data => {
+          this.searchMedias = data.Items.map(item => new CheckedMedia(item));
+          this.searchMediasCount = data.Count;
       });
-      this.searchService.search(3, this.authenticationService.sessionId, this.searchMediasQuery) //Media
-        .pipe( finalize( () => this.loading = false ) )
-          .subscribe(data => {
-            this.searchMedias = data.map(item => new CheckedMedia(item));
-      });
+      
     }
 
     public loadItem(typeid: number, id: number) {

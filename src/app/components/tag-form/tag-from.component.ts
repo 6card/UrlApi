@@ -66,6 +66,11 @@ export class TagFormComponent implements OnInit, OnDestroy {
         this.unsubscribe.complete();
     }
 
+    public resetPath() {
+        this.tagForm.get('PathId').setValue('');
+        this.tagForm.get('PathSuffix').setValue('');
+    }
+
     setPathLatin(text: string) {
         if (text.length == 0) {
             this.tagForm.get('PathLatin').setValue('')
@@ -76,8 +81,7 @@ export class TagFormComponent implements OnInit, OnDestroy {
         .subscribe( 
             data => {
                 this.tagForm.get('PathLatin').setValue(data);
-                this.tagForm.get('PathId').setValue('');
-                this.tagForm.get('PathSuffix').setValue('');
+                this.resetPath();
         });
     }
 
