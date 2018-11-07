@@ -151,7 +151,7 @@ export class ObjectComponent implements OnInit {
             data => {
               this.alertService.success('Данные сохранены', 2000);
               //this.router.navigate([]);
-              //this.loadItem(this.item.ObjectTypeId, this.item.ObjectId);
+              this.loadItem(this.item.ObjectTypeId, this.item.ObjectId);
         });
     }
 

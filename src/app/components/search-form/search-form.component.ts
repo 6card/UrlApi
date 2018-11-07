@@ -57,14 +57,16 @@ export class SearchFormComponent implements OnInit, OnDestroy, OnChanges  {
 
     generateForm() {
         this.clearSearchForm();
-        if (this.firstQuery[0].Columns.length > 0) {
+        if (this.firstQuery[0] && this.firstQuery[0].Columns.length > 0) {
             this.firstQuery.forEach( item => {
                 this.addItem(Number(item.Operation), item.Columns[0]);
             })
         }
+        /*
         else {
             this.addItem(0);
         }
+        */
     }
 
     clearSearchForm() {
@@ -96,6 +98,11 @@ export class SearchFormComponent implements OnInit, OnDestroy, OnChanges  {
         let searchItems: FormArray;    
         searchItems = this.searchForm.get('items') as FormArray;
         searchItems.removeAt(index);
+
+        if (searchItems.at(0))
+            searchItems.at(0).get('queryOperation').setValue(0); // set first "Operation" to 0         
+            
+        this.onSubmit();
     }
 
     public controlIsInvalid(control) {
@@ -106,6 +113,12 @@ export class SearchFormComponent implements OnInit, OnDestroy, OnChanges  {
         let searchItems: FormArray;
         searchItems = this.searchForm.get('items') as FormArray;
         return (<any>Object).values(searchItems.controls);
+    }
+
+    get issetControls(): boolean {
+        let searchItems: FormArray;
+        searchItems = this.searchForm.get('items') as FormArray;
+        return searchItems.length > 0 ? true : false;
     }
 
     public markFormGroupTouched(formGroup: FormGroup) {

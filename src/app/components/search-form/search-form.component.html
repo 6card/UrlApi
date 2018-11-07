@@ -2,7 +2,7 @@
     <div formArrayName="items" *ngFor="let controls of getGroupControls(); let i = index;" class="row">
         <ng-container [formGroupName]="i">
             <div class="form-group col-md-1 text-center">
-                <span *ngIf="i > 0" class="badge badge-primary" (click)="deleteSearchItem(i)">{{getCondition(controls.get('queryOperation').value)}}</span>
+                <span class="badge badge-primary" (click)="deleteSearchItem(i)">{{getCondition(controls.get('queryOperation').value)}}</span>
             </div>
             <search-sub-form class="col-md-11" [subForm]="controls" [typeId]="typeId"></search-sub-form>
         </ng-container>
@@ -10,18 +10,18 @@
     <div class="row">
         <div class="form-group col-md-12">
             <div ngbDropdown>
-                <button class="btn btn-sm btn-outline-primary" id="dropdownAddForm" ngbDropdownToggle type="button">Добавить условие <i class="fa fa-plus"></i></button>
+                <button class="btn btn-sm btn-outline-primary" id="dropdownAddForm" ngbDropdownToggle type="button">Добавить фильтр <i class="fa fa-plus"></i></button>
                 <div ngbDropdownMenu aria-labelledby="dropdownAddForm">
                     <button class="dropdown-item" type="button" (click)="addItem(0)">ИЛИ</button>
-                    <button class="dropdown-item" type="button" (click)="addItem(1)">И</button>
-                    <button class="dropdown-item" type="button" (click)="addItem(2)">НЕ</button>
+                    <button class="dropdown-item" type="button" (click)="addItem(1)" *ngIf="issetControls">И</button>
+                    <button class="dropdown-item" type="button" (click)="addItem(2)" *ngIf="issetControls">НЕ</button>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row" *ngIf="issetControls">
         <div class="form-group col-md-12 text-center">
-            <button type="submit" class="btn btn-primary" [disabled]="loading">Поиск</button>
+            <button type="submit" class="btn btn-primary" [disabled]="loading">Применить фильтр</button>
         </div>
     </div>
 </form>
