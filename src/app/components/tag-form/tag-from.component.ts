@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter, Input } from "@angular/core";
+import { Component, OnInit, OnDestroy, Output, EventEmitter, Input, OnChanges, SimpleChanges, SimpleChange } from "@angular/core";
 import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 
 import { Subject } from 'rxjs/index';
@@ -15,7 +15,7 @@ import { ObjectBase } from '../../models/object-base';
     templateUrl: "./tag-form.component.html"
 })
 
-export class TagFormComponent implements OnInit, OnDestroy {
+export class TagFormComponent implements OnInit, OnDestroy, OnChanges {
 
     tagForm = new TagFormGroup();
 
@@ -35,9 +35,15 @@ export class TagFormComponent implements OnInit, OnDestroy {
 
     @Output() newTagEvent = new EventEmitter<ObjectBase>();
 
+    ngOnChanges(changes: SimpleChanges) {
+        const object: SimpleChange = changes.currentObject;
+
+        if (object)
+            this.tagForm.patchValue(object.currentValue);
+    }
+
     ngOnInit() {
-        if (this.currentObject)
-            this.tagForm.patchValue(this.currentObject);
+        
 
         this.tagForm.get('Name').valueChanges
             .pipe( 
