@@ -10,6 +10,7 @@ import { filter, finalize } from 'rxjs/operators'
 export class SearchComponent implements OnInit {
 
   typeId: number = 0;
+  error: any = null;
   @Input("pathId") pathId: number;
   @Output() selectObject = new EventEmitter();
 
@@ -50,6 +51,14 @@ export class SearchComponent implements OnInit {
 
   public setObject(obj: any) {
     this.selectObject.emit(obj);
+  }
+
+  public navigateToPath(obj: any | boolean) {
+    if (obj)
+      this.router.navigate(['/path', obj.Id]);
+    else {
+      this.error = "Путь не найден";
+    }
   }
 
 }

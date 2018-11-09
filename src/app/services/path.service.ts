@@ -130,6 +130,15 @@ export class PathService {
         .pipe( catchError(this.handleError(url)));
   }
 
+  createRedirect(sessionId: string, pathId: any, object: any) {
+    const url = `https://api.newstube.ru/urldev/Path/CreateRedirect`;
+    const params = new HttpParams()
+      .set('sessionId', sessionId)
+      .set('id', pathId);
+    return this.http.post<any>(url, object, {params})
+      .pipe( catchError(this.handleError(url)));
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
 
     return (error: any): Observable<T> => {

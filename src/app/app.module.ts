@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { SetObjectModal } from './components/modals/set-object-modal.component';
 import { AddMediasModal } from './components/modals/add-medias-modal.component';
+import { AddRedirectModal } from './components/modals/add-redirect-modal.component';
 //import { ModalModule } from './components/modals/modal.module';
 
 import { LoginComponent } from './pages/login/login.component';
@@ -70,6 +71,7 @@ import { APP_CONST, Constants } from './config/const';
     
     SetObjectModal,
     AddMediasModal,
+    AddRedirectModal,
     //AutocompleteWindowComponent,
     NgbDateTimePicker,
     SortableColumnComponent,
@@ -97,7 +99,7 @@ import { APP_CONST, Constants } from './config/const';
 
     //PathService
   ],
-  entryComponents: [SetObjectModal, AddMediasModal],
+  entryComponents: [SetObjectModal, AddMediasModal, AddRedirectModal],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

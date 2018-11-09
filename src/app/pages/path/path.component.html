@@ -12,7 +12,7 @@
                     <div class="btn-group" role="group" aria-label="Basic example">
                         <button [disabled]="!item.ObjectTypeId && !item.ObjectId" [routerLink]="['/object', item.ObjectTypeId, item.ObjectId]" class="btn btn-outline-primary btn-sm">Редактировать</button>
                         <button class="btn btn-outline-success btn-sm" (click)="openDialog()">Выставить объект</button>
-                        <button class="btn btn-outline-warning btn-sm">Выставить Redirect</button>
+                        <button class="btn btn-outline-warning btn-sm" (click)="openRedirectDialog()">Выставить Redirect</button>
                         <button class="btn btn-outline-danger btn-sm" (click)="deleteObject()">Удалить</button>
                     </div>
                 </div>

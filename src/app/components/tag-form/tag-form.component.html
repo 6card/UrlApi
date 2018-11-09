@@ -1,5 +1,4 @@
 <form [formGroup]="tagForm" (ngSubmit)="submitForm(tagForm)">
-
     <div class="form-group">
         <label>Url <a *ngIf="currentObject && currentObject.PathId" [routerLink]="['/path', currentObject.PathId]" class="btn btn-outline-primary btn-sm" title="Редактировать">Редактировать</a></label>
         <table>
@@ -24,11 +23,6 @@
                     <label class="form-check-label" for="{{controlProperty('GenerateLatin')}}">{{controlLabel('GenerateLatin')}}</label>
                     <input type="checkbox" class="form-check-input label-first" id="{{controlProperty('GenerateLatin')}}" formControlName="{{controlProperty('GenerateLatin')}}" [ngClass]="{'is-invalid' : controlIsInvalid('GenerateLatin')}"  >
                 </td>
-                <td colspan="2"></td>
-            </tr>
-            <tr class="mb-1">
-                <td colspan="3"></td>
-                <td><button type="button" class="btn btn-outline-secondary btn-sm">Выбрать путь размещения</button></td>
                 <td colspan="2"></td>
             </tr>
         </table>

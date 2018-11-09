@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { SetObjectModal } from '../../components/modals/set-object-modal.component';
+import { AddRedirectModal } from '../../components/modals/add-redirect-modal.component';
 
 import { AuthenticationService } from '../../services/auth.service';
 import { PathService } from '../../services/path.service';
@@ -37,14 +38,6 @@ export class EditPathComponent implements OnInit {
         .subscribe(
             data => {
               this.item = data;
-              //console.log(data);
-            },
-            error => {
-                //console.log(error);
-                //this.alertService.error(error);                
-            },
-            () => {
-              //this.submitLoading = false;
             });
 
     }
@@ -66,6 +59,18 @@ export class EditPathComponent implements OnInit {
         .subscribe(
           data => this.setObject(data),
       );
+    }
+
+    public openRedirectDialog() {
+      const modalRef = this.modalService.open(AddRedirectModal, {size: 'lg', ariaLabelledBy: 'modal-add-redirect', backdrop: 'static'});
+      modalRef.componentInstance.pathId = this.item.Id;
+      modalRef.componentInstance.onSetRedirect
+        .subscribe(
+          data => {
+            this.setObject(data);
+          }
+      );
+      
     }
 
     public setObject(success: boolean) {

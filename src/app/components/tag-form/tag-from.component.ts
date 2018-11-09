@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@ang
 
 import { Subject } from 'rxjs/index';
 
-import { debounceTime, distinctUntilChanged, takeUntil, first, filter } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, takeUntil, first, filter, startWith } from 'rxjs/operators';
 
 import { PathService } from '../../services/path.service';
 import { AuthenticationService } from '../../services/auth.service';
@@ -37,9 +37,8 @@ export class TagFormComponent implements OnInit, OnDestroy, OnChanges {
 
     ngOnChanges(changes: SimpleChanges) {
         const object: SimpleChange = changes.currentObject;
-
         if (object)
-            this.tagForm.patchValue(object.currentValue);
+            this.tagForm.patchValue(object.currentValue, {emitEvent: false});
     }
 
     ngOnInit() {

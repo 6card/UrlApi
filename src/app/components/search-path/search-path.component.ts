@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 
 import { Router, ActivatedRoute, Params } from "@angular/router";
@@ -19,6 +19,9 @@ export class SearchPathComponent implements OnInit {
   submitLoading: boolean = false;
   item: Object = null;
   error: any = null;
+
+  @Input() buttonLabel: string = "Перейти";
+  @Output() onFound = new EventEmitter();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -45,16 +48,22 @@ export class SearchPathComponent implements OnInit {
     this.pathService.getByUrl(this.authenticationService.sessionId, this.pathByUrlForm.controls.url.value)
       .pipe( finalize(() => this.submitLoading = false))
         .subscribe(
-            data => {
-              if(data) {
-                this.item = data;
-                this.router.navigate(['/path', data['Id']]);
-              }
-              else 
-                this.error = "Путь не найден";
-            },
-            error => {}
-            );
+          data => {
+            let result: any = false;            
+            if (data)
+              result = data;
+            this.onFound.emit(result);
+
+            /*
+            if(data) {
+              this.item = data;
+              this.router.navigate(['/path', data['Id']]);
+            }
+            else 
+              this.error = "Путь не найден";
+
+            */
+        });
     }
 
 }
