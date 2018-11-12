@@ -22,7 +22,7 @@ export class AddRedirectModal implements OnInit, OnDestroy{
     public loading: boolean = false;
     private alive: boolean = true;
 
-    @Input() pathId: number;
+    @Input() item: any;
     @Output() onSetRedirect = new EventEmitter();
 
     constructor(
@@ -56,26 +56,15 @@ export class AddRedirectModal implements OnInit, OnDestroy{
 
 
     public showObject(obj: any | boolean) {
-        if (obj) {   
+        if (obj) 
             this.itemRedirect = obj;
-            //this.error = null;
-            /*
-            if(confirm(
-                `Вы уверены что хотите установить Redirect на объект "${obj.ObjectTypeName}: ${obj.Name}"?`
-            )) {
-                this.setRedirect(obj);
-            }
-            */            
-        }
-        else {
+        else 
             this.itemRedirect = null;
-            //this.error = "Путь не найден";
-        }
     }
 
     public setRedirect(url: any) {
         this.loading = true;
-        this.pathService.createRedirect(this.authenticationService.sessionId, this.pathId, {Url: url})
+        this.pathService.createRedirect(this.authenticationService.sessionId, this.item.Id, {Url: url})
         .pipe( finalize( () => this.loading = false ) )
         .subscribe(
             data => {
@@ -85,7 +74,7 @@ export class AddRedirectModal implements OnInit, OnDestroy{
             }
         );
     }
-
+    
     public getUrl(url) {
         this.loading = true;
         this.itemRedirect = null;
@@ -93,17 +82,33 @@ export class AddRedirectModal implements OnInit, OnDestroy{
         .pipe( finalize(() => this.loading = false))
         .subscribe(data => this.itemRedirect = data);
     }
+    
+
+    private confirmRedirect(): boolean {
+        if(confirm(
+            `Создать Redirect объекта "${this.item.ObjectTypeName}: ${this.item.Name}" на ${this.urlForm.controls.url.value} который занимает объект "${this.itemRedirect.ObjectTypeName}: ${this.itemRedirect.Name}"?`
+            //`Вы уверены что хотите установить Redirect на Url "${this.urlForm.controls.url.value}"?`
+        )) {
+            return true;
+            
+        }
+        else
+            return false;
+    }
 
     onSubmit() {    
         if (this.urlForm.invalid) {
             return;
         }
 
-        if(confirm(
-            `Вы уверены что хотите установить Redirect на Url "${this.urlForm.controls.url.value}"?`
-        )) {
-            this.setRedirect(this.urlForm.controls.url.value);
+        if (this.itemRedirect) {
+            if (!this.confirmRedirect())
+                return;                    
         }
+        this.setRedirect(this.urlForm.controls.url.value);
+
+
+        
 
     }
 }

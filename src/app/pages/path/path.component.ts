@@ -63,7 +63,7 @@ export class EditPathComponent implements OnInit {
 
     public openRedirectDialog() {
       const modalRef = this.modalService.open(AddRedirectModal, {size: 'lg', ariaLabelledBy: 'modal-add-redirect', backdrop: 'static'});
-      modalRef.componentInstance.pathId = this.item.Id;
+      modalRef.componentInstance.item = this.item;
       modalRef.componentInstance.onSetRedirect
         .subscribe(
           data => {
