@@ -18,7 +18,7 @@ export class SearchPathComponent implements OnInit {
   pathByUrlForm: FormGroup;
   submitLoading: boolean = false;
   item: Object = null;
-  error: any = null;
+  error: string = null;
 
   @Input() buttonLabel: string = "Перейти";
   @Output() onFound = new EventEmitter();
@@ -53,16 +53,6 @@ export class SearchPathComponent implements OnInit {
             if (data)
               result = data;
             this.onFound.emit(result);
-
-            /*
-            if(data) {
-              this.item = data;
-              this.router.navigate(['/path', data['Id']]);
-            }
-            else 
-              this.error = "Путь не найден";
-
-            */
         });
     }
 

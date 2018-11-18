@@ -26,7 +26,8 @@ export class SetObjectModal implements OnInit, OnDestroy {
     public searchResult: Array<any>;
     public searchItemsResult: number;
 
-    public typeId = 0;
+    public typeId: number = 0;
+    public error: string = null;
     public sq = new SearchQuery();
 
     @Input() currentItem;
@@ -57,12 +58,12 @@ export class SetObjectModal implements OnInit, OnDestroy {
 
     public setType(id: number): void {
         this.typeId = id;
-        this.sq = new SearchQuery();
+        if (id) {
+            this.sq = new SearchQuery();
 
-        this.getResults();
-
-        if (id != 0)
-            this.metaService.loadMeta(id);        
+            this.getResults();
+            this.metaService.loadMeta(id);    
+        }    
     }
 
     public isActive(id: number): boolean{
@@ -126,5 +127,15 @@ export class SetObjectModal implements OnInit, OnDestroy {
             });
         }
 
+    }
+
+    public navigateToPath(obj: any | boolean) {
+        if (!obj) {
+            this.error = "Путь не найден";
+            return;
+        } else {
+            this.error = null;
+            this.setObject(obj, obj.ObjectTypeId)
+        }
     }
 }
