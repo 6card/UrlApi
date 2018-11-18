@@ -27,7 +27,7 @@ export class AddRedirectModal implements OnInit, OnDestroy{
 
     constructor(
         private formBuilder: FormBuilder,
-        private activeModal: NgbActiveModal,
+        public activeModal: NgbActiveModal,
         private searchService: SearchService,
         private pathService: PathService,
         private alertService: AlertService,

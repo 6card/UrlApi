@@ -43,7 +43,7 @@ export class AddMediasModal implements OnInit, OnDestroy, AfterViewInit {
 
     constructor(
         @Inject(APP_CONST) private config,
-        private activeModal: NgbActiveModal,
+        public activeModal: NgbActiveModal,
         private metaService: MetaService,
         private sortService: SortService, 
         private searchService: SearchService,
