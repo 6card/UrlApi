@@ -6,8 +6,10 @@
             <input type="text" id="inputUsername" class="form-control mb-3" placeholder="Username" autofocus formControlName="username">
             <label for="inputPassword" class="sr-only">Password</label>
             <input type="password" id="inputPassword" class="form-control mb-3" placeholder="Password" formControlName="password">
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Вход</button>
-            <div *ngIf="loginError" class="invalid-feedback" style="display: block">&nbsp;&nbsp;Invalid user name or password</div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="submitLoading">Вход <span [hidden]="!submitLoading" class="loader loader-20 inverse"></span></button>            
+        </div>
+        <div *ngIf="loginError" @error class="alert alert-danger" role="alert">
+            Invalid user name or password
         </div>
     </form>
 </div>

@@ -11,6 +11,7 @@ export class LoadingDirective implements OnInit {
         const loader = this.renderer.createElement('div');
         this.loaderCotainer = this.renderer.createElement('div');
         this.renderer.addClass(this.loaderCotainer, 'loader-container');
+        this.renderer.addClass(loader, 'loader');
         this.renderer.addClass(loader, 'loader-60');
         this.renderer.appendChild(this.loaderCotainer, loader);
         //this.renderer.appendChild(el.nativeElement, loaderCotainer);
