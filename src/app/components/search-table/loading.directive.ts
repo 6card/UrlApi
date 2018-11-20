@@ -34,3 +34,52 @@ export class LoadingDirective implements OnInit {
         }
     }
 }
+
+@Directive({
+    selector: '[btnLoading]'
+  })
+  export class BtnLoadingDirective implements OnInit {
+      private loaderCotainer: ElementRef;
+      private btnText: string;
+      private loader;
+      @Input() btnLoading: boolean;
+      
+      constructor(private el: ElementRef, private renderer: Renderer2) {
+        
+          this.loader = this.renderer.createElement('span');
+          this.renderer.addClass(this.loader, 'loader');
+          this.renderer.addClass(this.loader, 'loader-20');
+          this.renderer.addClass(this.loader, 'loader-inverse');
+          this.renderer.appendChild(this.el.nativeElement, this.loader);
+          
+          
+          //this.renderer.appendChild(el.nativeElement, loaderCotainer);
+      }
+  
+      ngOnInit() {
+        this.btnText = this.renderer.createText(this.el.nativeElement.innerText);
+        this.el.nativeElement.innerText = '';
+        this.renderer.appendChild(this.el.nativeElement, this.btnText);
+        
+      }
+  
+      pasteLoader() {
+          if (this.btnLoading) {
+            this.renderer.setAttribute(this.el.nativeElement, 'disabled', '');
+            this.renderer.appendChild(this.el.nativeElement, this.loader);
+            this.renderer.removeChild(this.el.nativeElement, this.btnText);
+          }              
+          else {
+            this.renderer.removeAttribute(this.el.nativeElement, 'disabled');
+            this.renderer.removeChild(this.el.nativeElement, this.loader);
+            if (this.btnText)
+                this.renderer.appendChild(this.el.nativeElement, this.btnText);
+          }
+      }
+  
+      ngOnChanges(changes: SimpleChanges){
+          if(changes.btnLoading){
+            this.pasteLoader();
+          }
+      }
+  }

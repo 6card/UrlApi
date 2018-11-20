@@ -38,7 +38,7 @@ import { TagFormComponent } from './components/tag-form/tag-from.component';
 //import { AutocompleteComponent } from './components/test/autocomplete.component';
 import { NgbDateTimePicker } from './components/datetimepiker/datetimepicker.component';
 import { SortableColumnComponent } from './components/search-table/sortable-column.component';
-import { LoadingDirective } from './components/search-table/loading.directive';
+import { LoadingDirective, BtnLoadingDirective } from './components/search-table/loading.directive';
 
 import { CookieService } from 'ngx-cookie-service';
 import { AuthenticationService } from './services/auth.service';
@@ -75,7 +75,8 @@ import { APP_CONST, Constants } from './config/const';
     //AutocompleteWindowComponent,
     NgbDateTimePicker,
     SortableColumnComponent,
-    LoadingDirective
+    LoadingDirective,
+    BtnLoadingDirective
   ],
   imports: [
     NgbModule.forRoot(),
