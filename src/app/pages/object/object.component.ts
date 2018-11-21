@@ -1,13 +1,14 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { forkJoin } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { finalize, map, delay } from 'rxjs/operators';
 
 import { AddMediasModal } from '../../components/modals/add-medias-modal.component';
+import { MoveTagModal } from '../../components/modals/move-tag-modal.component';
 
 import { AuthenticationService } from '../../services/auth.service';
 import { PathService } from '../../services/path.service';
@@ -27,7 +28,7 @@ import { MetaService } from '../../services/meta.service';
     templateUrl: './object.component.html'
   })
 
-export class ObjectComponent implements OnInit {
+export class ObjectComponent implements OnInit, AfterViewInit {
   
 	public item: ObjectBase;
 	public searchMediasQuery: SearchQuery;
@@ -36,6 +37,8 @@ export class ObjectComponent implements OnInit {
   public meta: Meta;
   
   public loading: boolean = false;
+  public updateLoading: boolean = false;
+  public deleteLoading: boolean = false;
     
     constructor(
         @Inject(APP_CONST) private config,
@@ -51,10 +54,13 @@ export class ObjectComponent implements OnInit {
 
     ngOnInit() {
       this.activeRoute.params.subscribe(routeParams => {
+        window.scroll(0,0);
         this.loadItem(routeParams.typeid, routeParams.id);
         this.getMeta(routeParams.typeid);
       });
     }
+
+    ngAfterViewInit() { }
 
     public getMeta(typeId: number) {
       this.metaService.getMeta(typeId)
@@ -146,7 +152,12 @@ export class ObjectComponent implements OnInit {
 
     public updateItem(obj: ObjectBase) {
       const item = Object.assign(this.item, obj);
+      this.updateLoading = true;
       this.pathService.updatePath(this.authenticationService.sessionId, item)
+      .pipe (
+        //delay(1000),
+        finalize(() => this.updateLoading = false)        
+      )
         .subscribe(
             data => {
               this.alertService.success('Данные сохранены', 2000);
@@ -165,15 +176,38 @@ export class ObjectComponent implements OnInit {
       return new FormGroup(group);
     }
 
-    openModal(mode) {
-    const modalRef = this.modalService.open(AddMediasModal, {size: 'lg', ariaLabelledBy: 'modal-add-medias', backdrop: 'static'});
-    modalRef.componentInstance.mode = mode;
-    modalRef.componentInstance.objectId = this.item.ObjectId;
-		modalRef.componentInstance.objectTypeId = this.item.ObjectTypeId;
-		modalRef.componentInstance.objectSq = [ {Table: this.item.ObjectTypeId, Values:[this.item.ObjectId]}];
-		modalRef.componentInstance.finishQuery
-		  .subscribe( data => this.getMediasItem());
-	}
+    public deleteTag() {
+      if(confirm(
+        `Вы уверены что хотите удалить объект "${this.item.ObjectTypeName}: ${this.item.Name}"?`
+      )) {
+        this.deleteLoading = true;
+        this.pathService.deleteTag(this.authenticationService.sessionId, this.item.ObjectId)
+        .pipe ( finalize(() => this.deleteLoading = false) )
+        .subscribe(
+              data => {
+                this.alertService.success('Тег удален', 2000, true);
+                this.router.navigate(['/']);
+          });        
+      }
+    }
+
+
+    public openMoveModal() {
+      const modalRef = this.modalService.open(MoveTagModal, {size: 'lg', ariaLabelledBy: 'modal-move-tag', backdrop: 'static'});
+      modalRef.componentInstance.currentItem = this.item;
+      modalRef.componentInstance.finishQuery
+        .subscribe( obj => this.router.navigate(['/object', obj.ObjectTypeId, obj.ObjectId]));
+    }
+
+    public openModal(mode) {
+      const modalRef = this.modalService.open(AddMediasModal, {size: 'lg', ariaLabelledBy: 'modal-add-medias', backdrop: 'static'});
+      modalRef.componentInstance.mode = mode;
+      modalRef.componentInstance.objectId = this.item.ObjectId;
+      modalRef.componentInstance.objectTypeId = this.item.ObjectTypeId;
+      modalRef.componentInstance.objectSq = [ {Table: this.item.ObjectTypeId, Values:[this.item.ObjectId]}];
+      modalRef.componentInstance.finishQuery
+        .subscribe( data => this.getMediasItem());
+    }
   
   /*
 	public addMedias(query: any) {

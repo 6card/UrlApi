@@ -89,6 +89,24 @@ export class PathService {
       .pipe( catchError(this.handleError(url)));
   }
 
+  deleteTag(sessionId: string, tagId: any) {
+    const url = `https://api.newstube.ru/urldev/Tag/Delete`;
+    const params = new HttpParams()
+      .set('sessionId', sessionId)
+      .set('id', tagId);
+    return this.http.post<any>(url, {}, {params})
+      .pipe( catchError(this.handleError(url)));
+  }
+
+  moveAndDeleteTag(sessionId: string, tagId: any, newTag: any) {
+    const url = `https://api.newstube.ru/urldev/Tag/MoveAndDelete`;
+    const params = new HttpParams()
+      .set('sessionId', sessionId)
+      .set('id', tagId);
+    return this.http.post<any>(url, newTag, {params})
+      .pipe( catchError(this.handleError(url)));
+  }
+
   mediasAdd(sessionId: string, typeId: any, objectId: any, data: any) {
     const url = `https://api.newstube.ru/urldev/Path/MediasAdd`;
     const params = new HttpParams()

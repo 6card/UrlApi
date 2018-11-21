@@ -1,7 +1,16 @@
-<div *ngIf="item">  
+<div *ngIf="item">    
     <div class="row mb-4">
         <div class="col-sm-12">
-            <app-tag-form *ngIf="item" (newTagEvent)="updateItem($event)" [currentObject]="item"></app-tag-form>
+            <app-tag-form *ngIf="item" (newTagEvent)="updateItem($event)" [currentObject]="item" [formSubmitted]="updateLoading"></app-tag-form>
+        </div>
+    </div>
+
+    <div class="row mb-4" *ngIf="meta && meta.Id == 6">
+        <div class="col-sm-12">
+            <div class="btn-group" role="group">
+                <button class="btn btn-danger" [btnLoading]="deleteLoading" (click)="deleteTag()">Удалить Тег</button>
+                <button class="btn btn-info" (click)="openMoveModal()">Перенести Тег</button>
+            </div>
         </div>
     </div>
 

@@ -1,4 +1,4 @@
-import { Directive, OnInit, Input, Renderer2, ElementRef, SimpleChanges } from '@angular/core';
+import { Directive, OnInit, AfterViewInit, Input, Renderer2, ElementRef, SimpleChanges } from '@angular/core';
 
 @Directive({
   selector: '[appLoading]'
@@ -38,33 +38,31 @@ export class LoadingDirective implements OnInit {
 @Directive({
     selector: '[btnLoading]'
   })
-  export class BtnLoadingDirective implements OnInit {
+  export class BtnLoadingDirective implements OnInit, AfterViewInit {
       private loaderCotainer: ElementRef;
       private btnText: string;
       private loader;
       @Input() btnLoading: boolean;
       
-      constructor(private el: ElementRef, private renderer: Renderer2) {
-        
+      constructor(private el: ElementRef, private renderer: Renderer2) {        
           this.loader = this.renderer.createElement('span');
           this.renderer.addClass(this.loader, 'loader');
           this.renderer.addClass(this.loader, 'loader-20');
           this.renderer.addClass(this.loader, 'loader-inverse');
           this.renderer.appendChild(this.el.nativeElement, this.loader);
-          
-          
-          //this.renderer.appendChild(el.nativeElement, loaderCotainer);
       }
-  
-      ngOnInit() {
+      ngOnInit() {}
+
+      ngAfterViewInit() {
         this.btnText = this.renderer.createText(this.el.nativeElement.innerText);
         this.el.nativeElement.innerText = '';
         this.renderer.appendChild(this.el.nativeElement, this.btnText);
-        
       }
   
       pasteLoader() {
+        
           if (this.btnLoading) {
+            this.setExplicitButtonWidth();
             this.renderer.setAttribute(this.el.nativeElement, 'disabled', '');
             this.renderer.appendChild(this.el.nativeElement, this.loader);
             this.renderer.removeChild(this.el.nativeElement, this.btnText);
@@ -75,6 +73,13 @@ export class LoadingDirective implements OnInit {
             if (this.btnText)
                 this.renderer.appendChild(this.el.nativeElement, this.btnText);
           }
+      }
+
+      private setExplicitButtonWidth() {
+        if (this.el.nativeElement && this.el.nativeElement.getBoundingClientRect) {
+          const boundingClientRect = this.el.nativeElement.getBoundingClientRect();
+          this.renderer.setStyle(this.el.nativeElement, 'width', `${boundingClientRect.width}px`);
+        }
       }
   
       ngOnChanges(changes: SimpleChanges){

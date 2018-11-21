@@ -1,2 +1,2 @@
 <h2>Создание тега</h2>
-<app-tag-form (newTagEvent)="addProduct($event)"></app-tag-form>
+<app-tag-form (newTagEvent)="addProduct($event)" [formSubmitted]="createLoading"></app-tag-form>

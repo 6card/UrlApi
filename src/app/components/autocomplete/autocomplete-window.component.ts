@@ -5,7 +5,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit, Output, EventEmitter, Inpu
     exportAs: 'AutocompleteWindowComponent',
     host: {'class': 'dropdown-menu show', 'style': 'left: 14px;'},
     template: `
-    <div class="loader-20" *ngIf="loading"></div>
+    <div class="loader loader-20" *ngIf="loading"></div>
     <div *ngIf="searchResults && searchResults.length == 0">Нет результатов</div>
     <button type="button" class="dropdown-item" *ngFor="let item of searchResults; let i = index"
         (click)="select(item)"

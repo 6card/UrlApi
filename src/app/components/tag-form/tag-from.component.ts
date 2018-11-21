@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@ang
 
 import { Subject } from 'rxjs/index';
 
-import { debounceTime, distinctUntilChanged, takeUntil, first, filter, startWith } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, takeUntil, first, filter, startWith, delay } from 'rxjs/operators';
 
 import { PathService } from '../../services/path.service';
 import { AuthenticationService } from '../../services/auth.service';
@@ -20,13 +20,14 @@ export class TagFormComponent implements OnInit, OnDestroy, OnChanges {
     tagForm = new TagFormGroup();
 
     newTag: ObjectBase = new ObjectBase();
-    formSubmitted: boolean = false;
+    //formSubmitted: boolean = false;
 
     public parents: Array<any>;
 
     private unsubscribe: Subject<void> = new Subject();
 
     @Input() currentObject: ObjectBase;
+    @Input() formSubmitted: boolean = false;;
 
     constructor(
         private pathService: PathService,
@@ -116,14 +117,14 @@ export class TagFormComponent implements OnInit, OnDestroy, OnChanges {
         if (!this.tagForm.valid)
             return;
 
-        this.formSubmitted = true;
+        //this.formSubmitted = true;
         if (form.valid) {
             //this.newTag = new ObjectBase(this.tagForm.value);
             this.newTagEvent.emit(this.tagForm.value);
             //this.newTag = new ObjectBase();
             //this.tagForm.reset();            
         }
-        this.formSubmitted = false;
+        //this.formSubmitted = false;
     }
 }
 
@@ -150,7 +151,7 @@ class TagFormControl extends FormControl {
             for (let errorName in this.errors) {
                 switch (errorName) {
                     case "required":
-                        messages.push(`You must enter a ${this.label}`);
+                        messages.push(`Заполните ${this.label}`);
                     break;
                     case "minlength":
                         messages.push(`A ${this.label} must be at least ${this.errors['minlength'].requiredLength} characters`);

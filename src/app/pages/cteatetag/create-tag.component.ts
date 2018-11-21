@@ -5,6 +5,7 @@ import { AuthenticationService } from '../../services/auth.service';
 import { PathService } from '../../services/path.service';
 
 import { ObjectBase } from '../../models/object-base';
+import { finalize } from 'rxjs/operators';
 
 
 @Component({
@@ -15,6 +16,7 @@ import { ObjectBase } from '../../models/object-base';
 export class CreateTagComponent implements OnInit { 
 
     tag = new ObjectBase;
+    public createLoading: boolean = false;
     
     constructor(
         private router: Router,
@@ -26,7 +28,10 @@ export class CreateTagComponent implements OnInit {
 
     addProduct(tag: ObjectBase) {
         let newTag = new ObjectBase(tag);
+
+        this.createLoading = true;
         this.pathService.createTag(this.authenticationService.sessionId, newTag)
+        .pipe ( finalize( () => this.createLoading = false ) )
         .subscribe( data => {
             this.router.navigate(['/object', 6, data]);
             

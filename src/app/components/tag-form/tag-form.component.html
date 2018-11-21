@@ -93,5 +93,5 @@
     </ng-container>
 -->
 
-    <button type="submit" class="btn btn-primary" [disabled]="formSubmitted">{{currentObject ? 'Обновить' : 'Создать'}}</button>
+    <button type="submit" class="btn btn-primary" [btnLoading]="formSubmitted">{{currentObject ? 'Обновить' : 'Создать'}}</button>
 </form>
