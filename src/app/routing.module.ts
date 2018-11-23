@@ -8,6 +8,7 @@ import { ObjectComponent } from './pages/object/object.component';
 import { CreateTagComponent } from './pages/cteatetag/create-tag.component';
 import { SetObjectComponent } from './pages/set-object/set-object.component';
 import { TestComponent } from './pages/test.component';
+import { MoveTagsComponent } from './pages/movetags/move-tags.component';
 
 import { AuthGuard } from './guards/auth.guard';
 
@@ -34,6 +35,11 @@ const appRoutes: Routes = [
     {
       path: 'createtag',
       component: CreateTagComponent,
+      canActivate: [AuthGuard],
+    },
+    {
+      path: 'movetags',
+      component: MoveTagsComponent,
       canActivate: [AuthGuard],
     },
     {

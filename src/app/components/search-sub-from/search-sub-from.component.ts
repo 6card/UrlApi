@@ -168,10 +168,12 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
             {id: 14, name: "не с конца текста"},
             {id: 15, name: "в начале слова"},
             {id: 16, name: "в конце слова"},
-            {id: 17, name: "регулярное выражение"},
+            {id: 17, name: "слово"},
             {id: 18, name: "не в начале слова"},
             {id: 19, name: "не в конце слова"},
-            {id: 20, name: "регулярное выражение исключить"},            
+            {id: 20, name: "исключить слово"},
+            {id: 21, name: "регулярное выражение"},
+            {id: 22, name: "регулярное выражение исключить"}                 
         ];
 
         const op = this.metaColumn.Operations;

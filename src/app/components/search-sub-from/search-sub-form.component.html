@@ -27,10 +27,10 @@
                 <option *ngFor="let v of getColumnValues();" [value]="v.Key">{{v.Value}}</option>
             </select>
 
-            <app-test *ngIf="isAutocomplete()" formControlName="value" class="autocomplete form-control" [ngClass]="{'is-invalid' : controlIsInvalid('value')}"
+            <app-autocomplete *ngIf="isAutocomplete()" formControlName="value" class="autocomplete form-control" [ngClass]="{'is-invalid' : controlIsInvalid('value')}"
                 [multiValue]="true" 
                 [typeId]="metaColumn.ValueObjectType"
-            ></app-test>
+            ></app-autocomplete>
 
             <dt-picker *ngIf="isDateTime()" formControlName="value" dtTemplate="DD.MM.YYYY HH:mm" [invalidClass]="controlIsInvalid('value') ? 'is-invalid' : ''"></dt-picker>
             

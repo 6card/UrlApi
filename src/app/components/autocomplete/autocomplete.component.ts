@@ -10,7 +10,7 @@ import { AuthenticationService } from '../../services/auth.service';
 import { AutocompleteWindowComponent } from './autocomplete-window.component';
 
 @Component({
-    selector: "app-test",
+    selector: "app-autocomplete",
     templateUrl: './autocomplete.component.html',
     providers: [
         { 
