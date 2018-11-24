@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit, Output, EventEmitter, Inpu
 @Component({
     selector: "autocomplete-window",
     exportAs: 'AutocompleteWindowComponent',
-    host: {'class': 'dropdown-menu show', 'style': 'left: 14px;'},
+    host: {'class': 'dropdown-menu show', 'style': 'max-height: 300px; overflow-y: scroll;'},
     template: `
     <div class="loader loader-20" *ngIf="loading"></div>
     <div *ngIf="searchResults && searchResults.length == 0">Нет результатов</div>

@@ -1,12 +1,15 @@
-import { Component, OnInit, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { Component, OnInit} from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 
-import { Router, ActivatedRoute, Params } from "@angular/router";
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+import { MoveTagsModal } from '../../components/modals/move-tags-modal.component';
 
 import { MetaService } from '../../services/meta.service';
 import { AuthenticationService } from '../../services/auth.service';
 import { PathService } from '../../services/path.service';
 import { SearchService } from '../../services/search.service';
+import { AlertService } from '../../services/alert.service';
 
 import { SearchQuery, SimpleQuery } from '../../models/search-query.model';
 
@@ -28,6 +31,7 @@ export class MoveTagsComponent implements OnInit{
     public searchMediasCount: number;
     public searchMediasQuery: SearchQuery;
     public loading: boolean = false;
+    public deleteLoading: boolean = false;
 
     /*
     selectTagsForm: FormGroup = this.formBuilder.group({
@@ -39,6 +43,9 @@ export class MoveTagsComponent implements OnInit{
         private pathService: PathService,
         private searchService: SearchService,
         private authenticationService: AuthenticationService,
+        private alertService: AlertService,
+        private modalService: NgbModal,
+        private router: Router,
     ) { }
 
     ngOnInit() {
@@ -46,6 +53,7 @@ export class MoveTagsComponent implements OnInit{
     }
 
     onChangeTagsIds(ids: string) {
+        console.log(this.tagIds);
         this._tagIds = ids.split(', ').map( i => Number(i));
         let query: SimpleQuery = { Operation: 0, Columns: [], Tables: [ {Table: 6, Values: this._tagIds}] };
         this.searchMediasQuery = new SearchQuery([query]);
@@ -77,15 +85,29 @@ export class MoveTagsComponent implements OnInit{
             this.searchMediasCount = data.Count;
         });
         
+    }
+
+    public deleteTags() {
+        if(confirm(
+          `Вы уверены что хотите удалить выбранные теги?`
+        )) {
+          this.deleteLoading = true;
+          this.pathService.deleteManyTags(this.authenticationService.sessionId, this._tagIds)
+          .pipe ( finalize(() => this.deleteLoading = false) )
+          .subscribe(
+                data => {
+                  this.alertService.success('Теги удалены', 2000, true);
+                  this.router.navigate(['/']);
+            });        
+        }
       }
 
-    /*
-    ngOnChanges(changes: SimpleChanges) {
-        const tagIds: SimpleChange = changes.tagIds;
-        console.log('prev value: ', tagIds.previousValue);
-        console.log('got tagIds: ', tagIds.currentValue);
+    public openMoveModal() {
+        const modalRef = this.modalService.open(MoveTagsModal, {size: 'lg', ariaLabelledBy: 'modal-move-tag', backdrop: 'static'});
+        modalRef.componentInstance.selectedIds = this._tagIds;
+        modalRef.componentInstance.finishQuery
+          .subscribe( obj => this.router.navigate(['/object', obj.ObjectTypeId, obj.ObjectId]));
     }
-    */
 
 
 }

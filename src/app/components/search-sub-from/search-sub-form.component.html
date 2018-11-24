@@ -27,7 +27,7 @@
                 <option *ngFor="let v of getColumnValues();" [value]="v.Key">{{v.Value}}</option>
             </select>
 
-            <app-autocomplete *ngIf="isAutocomplete()" formControlName="value" class="autocomplete form-control" [ngClass]="{'is-invalid' : controlIsInvalid('value')}"
+            <app-autocomplete *ngIf="isAutocomplete()" formControlName="value" [ngClass]="{'is-invalid' : controlIsInvalid('value')}"
                 [multiValue]="true" 
                 [typeId]="metaColumn.ValueObjectType"
             ></app-autocomplete>

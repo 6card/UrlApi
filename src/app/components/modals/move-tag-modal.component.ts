@@ -36,14 +36,14 @@ export class MoveTagModal implements OnInit, OnDestroy {
     @Output() finishQuery = new EventEmitter();
 
     constructor(
-        @Inject(APP_CONST) private config,
+        @Inject(APP_CONST) protected config,
         public activeModal: NgbActiveModal,
-        private metaService: MetaService,
-        private sortService: SortService, 
-        private searchService: SearchService,
-        private pathService: PathService,
-        private alertService: AlertService,
-        private authenticationService: AuthenticationService,
+        protected metaService: MetaService,
+        protected sortService: SortService, 
+        protected searchService: SearchService,
+        protected pathService: PathService,
+        protected alertService: AlertService,
+        protected authenticationService: AuthenticationService,
     ) {}
 
     ngOnInit() {        

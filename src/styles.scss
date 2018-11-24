@@ -41,7 +41,7 @@ $badge-padding-x: .4em;
 .card-table .pagination {
     margin-bottom: 0;
 }
-
+/* autocomplete component */
 .autocomplete {
     height: auto;
     cursor: text;
@@ -57,11 +57,9 @@ $badge-padding-x: .4em;
     .badge {
         margin-right: .5rem;
     }
-    .dropdown-menu {
-        left: 14px;
-    }
 }
 
+/* fix text */
 .text-center {
     text-align: center;
 }
@@ -70,6 +68,7 @@ $badge-padding-x: .4em;
     text-align: right;
 }
 
+/* login form */
 .login-form-wrapper {
     -ms-flex-pack:center;
     -webkit-box-pack:center;
@@ -94,6 +93,7 @@ $badge-padding-x: .4em;
     }
 }
 
+/* loader spinner */
 .loader-container {
     display: block;
     position: absolute;
@@ -151,11 +151,7 @@ span.loader {
     100% { transform: rotate(360deg); }
 }
 
-autocomplete-window{
-    max-height: 300px;
-    overflow-y: scroll;
-}
-
+/* datepicker component */
 .datetimepicker.form-control {
     padding: 0 5px;    
     display: flex;

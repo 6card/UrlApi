@@ -1,60 +1,71 @@
     
     
-    
-<div>{{tagIds}}</div>
-<div class="col-md-4">
-    <app-autocomplete 
-        [(ngModel)]="tagIds"
-        (ngModelChange)="onChangeTagsIds($event)"
-        class="autocomplete form-control" 
-        [multiValue]="true" 
-        [typeId]="6"
-    ></app-autocomplete>
+<div class="row mb-4">
+    <div class="col-sm-12">
+        <h3>Выберите теги</h3>
+        <app-autocomplete 
+            [(ngModel)]="tagIds"
+            (ngModelChange)="onChangeTagsIds($event)"
+            [multiValue]="true" 
+            [typeId]="6"
+        ></app-autocomplete>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-sm-12">
+        <div class="btn-group" role="group">
+            <button class="btn btn-danger" [btnLoading]="deleteLoading" (click)="deleteTags()">Удалить Теги</button>
+            <button class="btn btn-info" (click)="openMoveModal()">Перенести Теги</button>
+        </div>
+    </div>
 </div>
 
 
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card card-table">
+            <div class="card-header">
+                <h4>Список роликов</h4>
+            </div>
+            <div class="card-body" [appLoading]="loading">
+                <table class="table table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>ChannelName</th>
+                            <th>SectionName</th>
+                            <th>StateName</th>
+                            <th>ShootDate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of searchMedias">
+                            <td>{{item.Id}}</td>
+                            <td>{{item.Name}}</td>
+                            <td>{{item.ChannelName}}</td>
+                            <td>{{item.SectionName}}</td>
+                            <td>{{item.StateName}}</td>
+                            <td>{{item.ShootDate | date: 'dd.MM.yyyy HH:mm:ss'}}</td>
+                        </tr>
 
+                    </tbody>
+                </table>
+            </div>
 
-<div class="card card-table">
-    <div class="card-header">
-        <h4>Список роликов</h4>
-    </div>
-    <div class="card-body" [appLoading]="loading">
-        <table class="table table-bordered">
-            <thead class="thead-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>ChannelName</th>
-                    <th>SectionName</th>
-                    <th>StateName</th>
-                    <th>ShootDate</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let item of searchMedias">
-                    <td>{{item.Id}}</td>
-                    <td>{{item.Name}}</td>
-                    <td>{{item.ChannelName}}</td>
-                    <td>{{item.SectionName}}</td>
-                    <td>{{item.StateName}}</td>
-                    <td>{{item.ShootDate | date: 'dd.MM.yyyy HH:mm:ss'}}</td>
-                </tr>
-
-            </tbody>
-        </table>
-    </div>
-
-    <div class="card-footer">
-        <div class="d-flex justify-content-end">
-            <div class="total-items">Найдено {{searchMediasCount}} элементов</div>
-            <ngb-pagination *ngIf="searchMediasCount"
-                [maxSize]="7" 
-                [rotate]="true" 
-                [collectionSize]="searchMediasCount"
-                size="sm" 
-                (pageChange)="pageChange($event)"
-            ></ngb-pagination>    
-        </div>          
+            <div class="card-footer">
+                <div class="d-flex justify-content-end">
+                    <div class="total-items">Найдено {{searchMediasCount}} элементов</div>
+                    <ngb-pagination *ngIf="searchMediasCount"
+                        [maxSize]="7" 
+                        [rotate]="true" 
+                        [collectionSize]="searchMediasCount"
+                        size="sm" 
+                        (pageChange)="pageChange($event)"
+                    ></ngb-pagination>    
+                </div>          
+            </div>
+        </div>
     </div>
 </div>

@@ -1,4 +1,4 @@
-<div (click)="input.focus()">
+<div (click)="input.focus()" class="">
     <a class="badge badge-primary" *ngFor="let tag of tags; let i = index;" href="javascript:void(0)">
         {{tag.title}}
         <i class="fa fa-times"(click)="removeTag(i)"></i>

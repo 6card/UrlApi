@@ -12,6 +12,7 @@ import { AutocompleteWindowComponent } from './autocomplete-window.component';
 @Component({
     selector: "app-autocomplete",
     templateUrl: './autocomplete.component.html',
+    host: {'class': 'autocomplete dropdown form-control'},
     providers: [
         { 
           provide: NG_VALUE_ACCESSOR,

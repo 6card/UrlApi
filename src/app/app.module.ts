@@ -17,6 +17,7 @@ import { SetObjectModal } from './components/modals/set-object-modal.component';
 import { AddMediasModal } from './components/modals/add-medias-modal.component';
 import { AddRedirectModal } from './components/modals/add-redirect-modal.component';
 import { MoveTagModal } from './components/modals/move-tag-modal.component';
+import { MoveTagsModal } from './components/modals/move-tags-modal.component';
 //import { ModalModule } from './components/modals/modal.module';
 
 import { LoginComponent } from './pages/login/login.component';
@@ -76,6 +77,7 @@ import { APP_CONST, Constants } from './config/const';
     AddMediasModal,
     AddRedirectModal,
     MoveTagModal,
+    MoveTagsModal,
     //AutocompleteWindowComponent,
     NgbDateTimePicker,
     SortableColumnComponent,
@@ -104,7 +106,7 @@ import { APP_CONST, Constants } from './config/const';
 
     //PathService
   ],
-  entryComponents: [SetObjectModal, AddMediasModal, AddRedirectModal, MoveTagModal],
+  entryComponents: [SetObjectModal, AddMediasModal, AddRedirectModal, MoveTagModal, MoveTagsModal],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
