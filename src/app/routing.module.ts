@@ -9,6 +9,7 @@ import { CreateTagComponent } from './pages/cteatetag/create-tag.component';
 import { SetObjectComponent } from './pages/set-object/set-object.component';
 import { TestComponent } from './pages/test.component';
 import { MoveTagsComponent } from './pages/movetags/move-tags.component';
+import { BatchRedirectComponent } from './pages/batch-redirect/batch-redirect.component';
 
 import { AuthGuard } from './guards/auth.guard';
 
@@ -40,6 +41,11 @@ const appRoutes: Routes = [
     {
       path: 'movetags',
       component: MoveTagsComponent,
+      canActivate: [AuthGuard],
+    },
+    {
+      path: 'batch-redirect',
+      component: BatchRedirectComponent,
       canActivate: [AuthGuard],
     },
     {

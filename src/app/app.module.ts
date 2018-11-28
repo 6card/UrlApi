@@ -29,6 +29,7 @@ import { CreateTagComponent } from './pages/cteatetag/create-tag.component';
 import { SetObjectComponent } from './pages/set-object/set-object.component';
 import { TestComponent } from './pages/test.component';
 import { MoveTagsComponent } from './pages/movetags/move-tags.component';
+import { BatchRedirectComponent } from './pages/batch-redirect/batch-redirect.component';
 
 import { CommonSearchComponent } from './components/common-search/common-search.component';
 import { NavigationComponent } from "./components/navigation/navigation.component";
@@ -62,6 +63,7 @@ import { APP_CONST, Constants } from './config/const';
     SetObjectComponent,
     TestComponent,
     MoveTagsComponent,
+    BatchRedirectComponent,
     
     CommonSearchComponent,
     ObjectComponent,
