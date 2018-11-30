@@ -148,4 +148,9 @@ export class SearchQuery {
         else
             return '';
     }
+
+    get queryWithoutPage() {
+        delete this.Page;
+        return this;
+    }
 }

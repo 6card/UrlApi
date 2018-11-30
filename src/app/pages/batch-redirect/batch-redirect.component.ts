@@ -19,7 +19,7 @@ import { SearchQuery, SimpleQuery, PageQuery } from '../../models/search-query.m
 })
 export class BatchRedirectComponent implements OnInit, OnDestroy {
 
-    public typeId;
+    public typeId = 0;
     public submitLoading: boolean = false;
     public urlListLoading: boolean = false;
     public searchResult: Array<any>;
@@ -28,6 +28,7 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
     private alive: boolean = true;
 
     public selectedMediaIds: number[] = [];
+    public selectedMedias: any[] = [];
 
     constructor(
         protected router: Router,
@@ -49,11 +50,10 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
 
             }
             else {
-                console.log(this.parseParam(param.sm));
                 this.metaService.loadMeta(Number(param.typeId));
                 this.setSearchParams(Number(param.typeId), this.parseParam(param.q), this.parseParam(param.p), this.parseParam(param.sm));                
                 this.getResults();
-                
+                this.getSelectedMedias();            
             }
         }); 
 
@@ -71,7 +71,7 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
 
     setSearchParams(t: number, q: Array<SimpleQuery>, p: PageQuery, sm: Array<number>) {
         this.sq = new SearchQuery(q, p);
-        this.selectedMediaIds = sm;
+        this.selectedMediaIds = sm || [];
         this.typeId = t;
         this.sortService.setInitSorted(this.sq.Page.Sort);
     }
@@ -98,7 +98,10 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
 
     public setType(id: number): void {
         this.typeId = id;
-        this.router.navigate([], { queryParams: {typeId: id}});
+        if (id)
+            this.router.navigate([], { queryParams: {typeId: id}});
+        else  
+            this.router.navigate([]);
     }
 
     public isActive(id: number): boolean{
@@ -142,15 +145,45 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
         });
     }
 
-    public selectMedia(id: number) {
-        this.selectedMediaIds.push(id);
-        const srl = this.serialize(this.sq.Query, this.sq.Page, this.selectedMediaIds);
-        const params = {
-            q: srl.q,
-            p: srl.p,
-            sm: srl.sm,
-            typeId: this.typeId
-        }; 
-        this.router.navigate([], { relativeTo: this.activatedRoute, queryParams: params });
+    public containInMediaIds(id: number): boolean {
+        if (this.selectedMediaIds.indexOf(id) != -1)
+            return true;
+
+        return false;
     }
+
+    public selectMedia(id: number) {
+        if (!this.containInMediaIds(id))
+            this.selectedMediaIds.push(id);
+
+        this.navigate();
+    }
+
+    public deleteMediaItem(id: number) {
+        this.selectedMediaIds.splice(this.selectedMediaIds.indexOf(id), 1);
+        this.navigate();
+    }
+
+    public getSelectedMedias() {
+        this.urlListLoading = true;
+        let query: SimpleQuery = { Operation: 0, Columns: [ { Column: 1, Operation: 9, Value: this.selectedMediaIds}], Tables: [ ] };
+        let pathSearchQuery = new SearchQuery([query]);
+
+        this.searchService.search(11, this.authenticationService.sessionId, pathSearchQuery.queryWithoutPage)
+        .pipe( 
+            finalize(() => this.urlListLoading = false),          
+        )
+        .subscribe( data => {
+            this.selectedMedias = data;
+        });
+    }
+
+    public addToMedias($event) {
+        console.log($event);
+    }
+
+    public openRedirectModal() {
+        alert('Тут будет окно выбора URL для редиректа');
+    }
+
 }

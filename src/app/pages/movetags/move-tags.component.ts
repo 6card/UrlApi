@@ -53,7 +53,6 @@ export class MoveTagsComponent implements OnInit{
     }
 
     onChangeTagsIds(ids: string) {
-        console.log(this.tagIds);
         this._tagIds = ids.split(', ').map( i => Number(i));
         let query: SimpleQuery = { Operation: 0, Columns: [], Tables: [ {Table: 6, Values: this._tagIds}] };
         this.searchMediasQuery = new SearchQuery([query]);
