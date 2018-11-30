@@ -21,10 +21,13 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
 
     public typeId;
     public submitLoading: boolean = false;
+    public urlListLoading: boolean = false;
     public searchResult: Array<any>;
     public searchItemsResult: number;
     public sq: SearchQuery;
     private alive: boolean = true;
+
+    public selectedMediaIds: number[] = [];
 
     constructor(
         protected router: Router,
@@ -46,8 +49,9 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
 
             }
             else {
+                console.log(this.parseParam(param.sm));
                 this.metaService.loadMeta(Number(param.typeId));
-                this.setSearchParams(Number(param.typeId), this.parseParam(param.q), this.parseParam(param.p));                
+                this.setSearchParams(Number(param.typeId), this.parseParam(param.q), this.parseParam(param.p), this.parseParam(param.sm));                
                 this.getResults();
                 
             }
@@ -65,8 +69,9 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
         this.alive = false;
     }
 
-    setSearchParams(t: number, q: Array<SimpleQuery>, p: PageQuery) {
+    setSearchParams(t: number, q: Array<SimpleQuery>, p: PageQuery, sm: Array<number>) {
         this.sq = new SearchQuery(q, p);
+        this.selectedMediaIds = sm;
         this.typeId = t;
         this.sortService.setInitSorted(this.sq.Page.Sort);
     }
@@ -82,7 +87,6 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
     }
 
     public onQuery(searchQuery: Array<SimpleQuery>) {
-        console.log('query');
         this.sq.setQuery(searchQuery);
         this.navigate();
     }
@@ -94,24 +98,26 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
 
     public setType(id: number): void {
         this.typeId = id;
-        this.router.navigate([], { replaceUrl: true, queryParams: {typeId: id}});
+        this.router.navigate([], { queryParams: {typeId: id}});
     }
 
     public isActive(id: number): boolean{
         return this.typeId == id;
     }
 
-    public serialize(query, page) {
+    public serialize(query, page, selm) {
         const q: string = encodeURIComponent(JSON.stringify(query));
         const p: string = encodeURIComponent(JSON.stringify(page));
-        return {q: q, p: p};
+        const sm: string = encodeURIComponent(JSON.stringify(selm));
+        return {q: q, p: p, sm: sm};
     }
 
     public navigate(replaceUrl?: boolean) {
-        const srl = this.serialize(this.sq.Query, this.sq.Page);
+        const srl = this.serialize(this.sq.Query, this.sq.Page, this.selectedMediaIds);
         const params = {
             q: srl.q,
             p: srl.p,
+            sm: srl.sm,
             typeId: this.typeId
         };        
         this.router.navigate([], { replaceUrl: replaceUrl || false, queryParams: params });
@@ -134,5 +140,17 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
             this.searchResult = data.Items;
             this.searchItemsResult = data.Count;
         });
+    }
+
+    public selectMedia(id: number) {
+        this.selectedMediaIds.push(id);
+        const srl = this.serialize(this.sq.Query, this.sq.Page, this.selectedMediaIds);
+        const params = {
+            q: srl.q,
+            p: srl.p,
+            sm: srl.sm,
+            typeId: this.typeId
+        }; 
+        this.router.navigate([], { relativeTo: this.activatedRoute, queryParams: params });
     }
 }
