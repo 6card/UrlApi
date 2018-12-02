@@ -5,34 +5,48 @@
                 Url: https://www.newstube.ru/{{item.Url}}
                     <a href="https://www.newstube.ru/{{item.Url}}" target="_blank">Открыть на newstube.ru</a>
             </div>
+
+            <div class="form-group" *ngIf="isRedirect()">
+                Redirect: https://www.newstube.ru/{{item.Redirect.Url}}
+                    <a href="https://www.newstube.ru/{{item.Redirect.Url}}" target="_blank">Открыть на newstube.ru</a>
+            </div>
             <div class="form-group">
                 <label>Объект</label>
                 <div>
                     {{item.ObjectTypeName}}
                     <div class="btn-group" role="group" aria-label="Basic example">
-                        <button [disabled]="!item.ObjectTypeId && !item.ObjectId" [routerLink]="['/object', item.ObjectTypeId, item.ObjectId]" class="btn btn-outline-primary btn-sm">Редактировать</button>
+                        <button *ngIf="!isRedirect()" [routerLink]="['/object', item.ObjectTypeId, item.ObjectId]" class="btn btn-outline-primary btn-sm">Редактировать</button>
                         <button class="btn btn-outline-success btn-sm" (click)="openDialog()">Выставить объект</button>
                         <button class="btn btn-outline-warning btn-sm" (click)="openRedirectDialog()">Выставить Redirect</button>
                         <button class="btn btn-outline-danger btn-sm" (click)="deleteObject()">Удалить</button>
                     </div>
                 </div>
             </div>
+            <div class="form-group" *ngIf="isRedirect()">
+                <label>Объект Redirect</label>
+                <div>
+                    {{item.Redirect.ObjectTypeName}}
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button [routerLink]="['/object', item.Redirect.ObjectTypeId, item.Redirect.ObjectId]" class="btn btn-outline-primary btn-sm">Редактировать</button>
+                    </div>
+                </div>
+            </div>
             <div class="form-group">
                 <label>Название</label>
-                <div>{{item.Name}}</div>
+                <div>{{isRedirect() ? item.Redirect.Name : item.Name}}</div>
             </div>
             <div class="form-group">
                 <label>Описание</label>
-                <div>{{item.Description}}</div>
+                <div>{{isRedirect() ? item.Redirect.Description : item.Description}}</div>
             </div>
-            <div class="form-group">
+            <div *ngIf="!isRedirect()" class="form-group">
                 <label>Запрет индексации</label>
                 <div>{{item.SeoNoIndex ? 'установлен' : 'не установлен'}}</div>
             </div>
 
-            <div class="form-group" [ngClass]="!item.SeoEnable ? 'text-secondary' : ''"><label>Title</label><div>{{item.SeoTitle}}</div></div>
-            <div class="form-group" [ngClass]="!item.SeoEnable ? 'text-secondary' : ''"><label>Description</label><div>{{item.SeoDescription}}</div></div>
-            <div class="form-group" [ngClass]="!item.SeoEnable ? 'text-secondary' : ''"><label>Keywords</label><div>{{item.SeoKeywords}}</div></div>
+            <div *ngIf="!isRedirect()" class="form-group" [ngClass]="!item.SeoEnable ? 'text-secondary' : ''"><label>Title</label><div>{{item.SeoTitle}}</div></div>
+            <div *ngIf="!isRedirect()" class="form-group" [ngClass]="!item.SeoEnable ? 'text-secondary' : ''"><label>Description</label><div>{{item.SeoDescription}}</div></div>
+            <div *ngIf="!isRedirect()" class="form-group" [ngClass]="!item.SeoEnable ? 'text-secondary' : ''"><label>Keywords</label><div>{{item.SeoKeywords}}</div></div>
 
         </div>
     </div>

@@ -9,7 +9,7 @@
     <li class="nav-item"><a href="javascript:void(0)" (click)="setType(8)" [class.active]="isActive(8)" class="nav-link">Передача</a></li>
 </ul>
 <div class="tabs-body">
-    <app-search-path *ngIf="!typeId" (onFound)="addToMedias($event)" buttonLabel="Добавить"></app-search-path>
+    <app-search-path *ngIf="!typeId" (onFound)="addToMedias($event)" buttonLabel="Добавить" [returnInputOnError]="true"></app-search-path>
 
     <div style="position: relative" [appLoading]="submitLoading" *ngIf="typeId">        
         <search-form
@@ -75,17 +75,17 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of selectedMedias">
-                    <td>{{item.Id}}</td>
-                    <td>{{item.Name}}</td>
-                    <td>{{item.Url}}</td>
-                    <td><button class="btn btn-danger" title="удалить" (click)="deleteMediaItem(item.Id)"><i class="far fa-trash-alt"></i></button></td>
+                <tr *ngFor="let item of resultSelectedArray">
+                    <td>{{item.Id ? item.Id : ''}}</td>
+                    <td>{{item.Name ? item.Name : ''}}</td>
+                    <td>{{item.Url ? item.Url : item}}</td>
+                    <td><button class="btn btn-danger" title="удалить" (click)="deleteMediaItem(item)"><i class="far fa-trash-alt"></i></button></td>
                 </tr>
             </tbody>
         </table>
     </div>
 
     <div class="card-footer">
-        <button *ngIf="selectedMediaIds.length > 0" class="btn btn-success" (click)="openRedirectModal()">Выставить Redirect</button>     
+        <button *ngIf="resultSelectedArray.length" class="btn btn-success" (click)="openRedirectModal()">Выставить Redirect</button>     
     </div>
 </div>

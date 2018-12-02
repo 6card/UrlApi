@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ActivatedRoute, Params } from "@angular/router";
 
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 import { forkJoin } from 'rxjs';
 import { filter, finalize, takeWhile, map } from 'rxjs/operators'
 
@@ -11,6 +13,8 @@ import { MetaService } from '../../services/meta.service';
 import { SortService } from '../../components/search-table/sort.service';
 
 import { SearchQuery, SimpleQuery, PageQuery } from '../../models/search-query.model';
+
+import { BatchRedirectModal } from '../../components/modals/batch-redirect-modal.component';
 
 @Component({
   selector: 'app-batch-redirect',
@@ -27,6 +31,7 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
     public sq: SearchQuery;
     private alive: boolean = true;
 
+    public selectedMediaUrls: string[] = [];
     public selectedMediaIds: number[] = [];
     public selectedMedias: any[] = [];
 
@@ -37,7 +42,8 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
         protected authenticationService: AuthenticationService,
         protected pathService: PathService,
         private metaService: MetaService,
-        private sortService: SortService
+        private sortService: SortService,
+        private modalService: NgbModal,
     ) { }
     
     ngOnInit() {
@@ -51,7 +57,7 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
             }
             else {
                 this.metaService.loadMeta(Number(param.typeId));
-                this.setSearchParams(Number(param.typeId), this.parseParam(param.q), this.parseParam(param.p), this.parseParam(param.sm));                
+                this.setSearchParams(Number(param.typeId), this.parseParam(param.q), this.parseParam(param.p), this.parseParam(param.sm), this.parseParam(param.smu));                
                 this.getResults();
                 this.getSelectedMedias();            
             }
@@ -69,9 +75,10 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
         this.alive = false;
     }
 
-    setSearchParams(t: number, q: Array<SimpleQuery>, p: PageQuery, sm: Array<number>) {
+    setSearchParams(t: number, q: Array<SimpleQuery>, p: PageQuery, sm: Array<number>, smu: Array<string>) {
         this.sq = new SearchQuery(q, p);
         this.selectedMediaIds = sm || [];
+        this.selectedMediaUrls = smu || [];
         this.typeId = t;
         this.sortService.setInitSorted(this.sq.Page.Sort);
     }
@@ -98,35 +105,39 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
 
     public setType(id: number): void {
         this.typeId = id;
-        if (id)
-            this.router.navigate([], { queryParams: {typeId: id}});
-        else  
-            this.router.navigate([]);
+        this.navigate(false, {typeId: id});
     }
 
     public isActive(id: number): boolean{
         return this.typeId == id;
     }
 
-    public serialize(query, page, selm) {
+    public serialize(query, page, selm, selmu) {
         const q: string = encodeURIComponent(JSON.stringify(query));
         const p: string = encodeURIComponent(JSON.stringify(page));
         const sm: string = encodeURIComponent(JSON.stringify(selm));
-        return {q: q, p: p, sm: sm};
+        const smu: string = encodeURIComponent(JSON.stringify(selmu));
+        return {q: q, p: p, sm: sm, smu: smu};
     }
 
-    public navigate(replaceUrl?: boolean) {
-        const srl = this.serialize(this.sq.Query, this.sq.Page, this.selectedMediaIds);
-        const params = {
-            q: srl.q,
-            p: srl.p,
-            sm: srl.sm,
-            typeId: this.typeId
-        };        
-        this.router.navigate([], { replaceUrl: replaceUrl || false, queryParams: params });
+    public navigate(replaceUrl?: boolean, params?: Object) {
+        let prm = { typeId: this.typeId };
+        const srl = this.serialize(this.sq.Query, this.sq.Page, this.selectedMediaIds, this.selectedMediaUrls);
+        if (this.typeId) {            
+            prm['q']= srl.q;
+            prm['p'] = srl.p;
+        }
+        if (this.selectedMediaIds.length)
+            prm['sm'] = srl.sm;
+        if (this.selectedMediaUrls.length)
+            prm['smu'] = srl.smu;
+
+        this.router.navigate([], { replaceUrl: replaceUrl || false, queryParams: params ? params : prm });
     }
 
     getResults() {
+        if (!this.typeId)
+            return;
         this.submitLoading = true;
 
         forkJoin (
@@ -156,13 +167,17 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
         if (!this.containInMediaIds(id))
             this.selectedMediaIds.push(id);
 
+        this.navigate(true);
+    }
+
+    public deleteMediaItem(item: any) {        
+        if (typeof item === 'string')
+            this.selectedMediaUrls.splice(this.selectedMediaUrls.indexOf(item), 1);
+        else
+            this.selectedMediaIds.splice(this.selectedMediaIds.indexOf(item), 1);
         this.navigate();
     }
 
-    public deleteMediaItem(id: number) {
-        this.selectedMediaIds.splice(this.selectedMediaIds.indexOf(id), 1);
-        this.navigate();
-    }
 
     public getSelectedMedias() {
         this.urlListLoading = true;
@@ -178,12 +193,29 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
         });
     }
 
+    get resultSelectedArray() {
+        return this.selectedMedias.concat(this.selectedMediaUrls);
+    }
+
     public addToMedias($event) {
-        console.log($event);
+        if ($event){
+            if (typeof $event === 'string') {
+                if (!this.selectedMediaUrls.find( i => i == $event))
+                    this.selectedMediaUrls.push($event);
+                    this.navigate(true);
+            }
+            else {            
+                this.selectMedia($event.PathId);
+            }
+        }
+
     }
 
     public openRedirectModal() {
-        alert('Тут будет окно выбора URL для редиректа');
+        const modalRef = this.modalService.open(BatchRedirectModal, {size: 'lg', ariaLabelledBy: 'modal-batch-redirect', backdrop: 'static'});
+        modalRef.componentInstance.objectsFromRedirect = {pathIds: this.selectedMediaIds, urls: this.selectedMediaUrls};
+        modalRef.componentInstance.finishQuery
+            .subscribe( pathId => this.router.navigate(['/path', pathId]));
     }
 
 }

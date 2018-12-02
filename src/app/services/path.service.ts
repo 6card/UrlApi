@@ -173,6 +173,14 @@ export class PathService {
       .pipe( catchError(this.handleError(url)));
   }
 
+  createManyRedirect(sessionId: string, object: any) {
+    const url = `https://api.newstube.ru/urldev/Path/CreateRedirectMany`;
+    const params = new HttpParams()
+      .set('sessionId', sessionId);
+    return this.http.post<any>(url, object, {params})
+      .pipe( catchError(this.handleError(url)));
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
 
     return (error: any): Observable<T> => {

@@ -31,8 +31,10 @@ export class MetaService {
         this.getMeta(typeId)
         .subscribe(            
             (data: Meta) => {
-                this._meta.next(new Meta(data));
-                this.lastMeta = new Meta(data);
+                if (data !== null) {
+                    this._meta.next(new Meta(data));
+                    this.lastMeta = new Meta(data);
+                }
             },
             error => {}
         );

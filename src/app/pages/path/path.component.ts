@@ -78,10 +78,14 @@ export class EditPathComponent implements OnInit {
         this.loadItem(this.item.Id);
     }
 
+    public isRedirect(): boolean {
+      return this.item.ObjectTypeId == 11 ? true : false;
+    }
+
     ngOnInit() {
         this.activeRoute.params.subscribe(routeParams => {
           this.loadItem(routeParams.id);
         });
         
-      }
+    }
 }

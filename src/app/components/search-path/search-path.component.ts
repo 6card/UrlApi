@@ -21,6 +21,7 @@ export class SearchPathComponent implements OnInit {
   error: string = null;
 
   @Input() buttonLabel: string = "Перейти";
+  @Input() returnInputOnError: boolean = false;
   @Output() onFound = new EventEmitter();
 
   constructor(
@@ -49,9 +50,16 @@ export class SearchPathComponent implements OnInit {
       .pipe( finalize(() => this.submitLoading = false))
         .subscribe(
           data => {
-            let result: any = false;            
-            if (data)
+            let result: any | boolean = false;        
+            if (data){
               result = data;
+            }
+            else {
+              if (this.returnInputOnError) {
+                result = this.pathByUrlForm.controls.url.value;
+                //this.pathByUrlForm.reset();
+              }
+            }
             this.onFound.emit(result);
         });
     }
