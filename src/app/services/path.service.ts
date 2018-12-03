@@ -3,7 +3,8 @@ import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http'
 
 import { AlertService } from './alert.service'
 
-import { ObjectBase } from '../models/object-base';
+import { ObjectBase, MoveObject, Path, Tag } from '../models/object-base';
+import { SimpleQuery } from '../models/search-query.model'
 
 import {Observable, of, throwError} from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -27,26 +28,26 @@ export class PathService {
       .pipe( catchError(this.handleError(url)));
   }
 
-  getByPathIdDetail(sessionId: string, id: any) {
+  getByPathIdDetail(sessionId: string, id: number) {
     const url = `https://api.newstube.ru/urldev/Path/GetByPathIdDetail`;
     const params = new HttpParams()
     .set('sessionId', sessionId)
-    .set('id', id);
+    .set('id', String(id));
     return this.http.get(url, {params})
       .pipe( catchError(this.handleError(url)));
   }
 
-  getByObjectDetail(sessionId: string, typeId: any, objectId: any) {
+  getByObjectDetail(sessionId: string, typeId: number, objectId: number) {
     const url = `https://api.newstube.ru/urldev/Path/GetByObjectDetail`;
     const params = new HttpParams()
     .set('sessionId', sessionId)
-    .set('objectId', objectId)
-    .set('typeId', typeId);
-    return this.http.get<ObjectBase>(url, {params})
+    .set('objectId', String(objectId))
+    .set('typeId', String(typeId));
+    return this.http.get<Path>(url, {params})
       .pipe( catchError(this.handleError(url)));
   }
 
-  updatePath(sessionId: string, data: any) {
+  updatePath(sessionId: string, data: Path) {
     const url = `https://api.newstube.ru/urldev/Path/Update`;
     const params = new HttpParams()
       .set('sessionId', sessionId);
@@ -55,20 +56,20 @@ export class PathService {
 
   }
 
-  setObject(sessionId: string, id: any, object: any) {
+  setObject(sessionId: string, id: number, object: MoveObject) {
     const url = `https://api.newstube.ru/urldev/Path/SetObject`;
     const params = new HttpParams()
       .set('sessionId', sessionId)
-      .set('id', id);
+      .set('id', String(id));
       return this.http.post<any>(url, object, {params})
         .pipe( catchError(this.handleError(url)));
   }
 
-  deleteObject(sessionId: string, id: any) {
+  deleteObject(sessionId: string, id: number) {
     const url = `https://api.newstube.ru/urldev/Path/Delete`;
     const params = new HttpParams()
       .set('sessionId', sessionId)
-      .set('id', id);
+      .set('id', String(id));
       return this.http.post<any>(url, {}, {params})
         .pipe( catchError(this.handleError(url)));
   }
@@ -77,37 +78,37 @@ export class PathService {
     const url = `https://api.newstube.ru/urldev/Path/Latin`;
     const params = new HttpParams()
     .set('text', text);
-    return this.http.get<ObjectBase>(url, {params})
+    return this.http.get<string>(url, {params})
       .pipe( catchError(this.handleError(url)));
   }
 
-  createTag(sessionId: string, tag: any) {
+  createTag(sessionId: string, tag: Tag) {
     const url = `https://api.newstube.ru/urldev/Tag/Create`;
     const params = new HttpParams()
       .set('sessionId', sessionId);
-    return this.http.post<any>(url, tag, {params})
+    return this.http.post<number>(url, tag, {params})
       .pipe( catchError(this.handleError(url)));
   }
 
-  deleteTag(sessionId: string, tagId: any) {
+  deleteTag(sessionId: string, tagId: number) {
     const url = `https://api.newstube.ru/urldev/Tag/Delete`;
     const params = new HttpParams()
       .set('sessionId', sessionId)
-      .set('id', tagId);
+      .set('id', String(tagId));
     return this.http.post<any>(url, {}, {params})
       .pipe( catchError(this.handleError(url)));
   }
 
-  moveAndDeleteTag(sessionId: string, tagId: any, newTag: any) {
+  moveAndDeleteTag(sessionId: string, tagId: Number, newTag: MoveObject) {
     const url = `https://api.newstube.ru/urldev/Tag/MoveAndDelete`;
     const params = new HttpParams()
       .set('sessionId', sessionId)
-      .set('id', tagId);
+      .set('id', String(tagId));
     return this.http.post<any>(url, newTag, {params})
       .pipe( catchError(this.handleError(url)));
   }
 
-  deleteManyTags(sessionId: string, tagIds: any) {
+  deleteManyTags(sessionId: string, tagIds: Array<number>) {
     const url = `https://api.newstube.ru/urldev/Tag/DeleteMany`;
     const params = new HttpParams()
       .set('sessionId', sessionId);
@@ -115,7 +116,7 @@ export class PathService {
       .pipe( catchError(this.handleError(url)));
   }
 
-  moveAndDeleteManyTags(sessionId: string, newTag: any) {
+  moveAndDeleteManyTags(sessionId: string, newTag: MoveObject) {
     const url = `https://api.newstube.ru/urldev/Tag/MoveAndDeleteMany`;
     const params = new HttpParams()
       .set('sessionId', sessionId);
@@ -123,34 +124,34 @@ export class PathService {
       .pipe( catchError(this.handleError(url)));
   }
 
-  mediasAdd(sessionId: string, typeId: any, objectId: any, data: any) {
+  mediasAdd(sessionId: string, typeId: number, objectId: number, data: Array<SimpleQuery>) {
     const url = `https://api.newstube.ru/urldev/Path/MediasAdd`;
     const params = new HttpParams()
       .set('sessionId', sessionId)
-      .set('typeId', typeId)
-      .set('objectId', objectId);
+      .set('typeId', String(typeId))
+      .set('objectId', String(objectId));
 
       return this.http.post<any>(url, data, {params})
         .pipe( catchError(this.handleError(url)));
   }
 
-  mediasRemove(sessionId: string, typeId: any, objectId: any, data: any) {
+  mediasRemove(sessionId: string, typeId: number, objectId: number, data: Array<SimpleQuery>) {
     const url = `https://api.newstube.ru/urldev/Path/MediasRemove`;
     const params = new HttpParams()
       .set('sessionId', sessionId)
-      .set('typeId', typeId)
-      .set('objectId', objectId);
+      .set('typeId', String(typeId))
+      .set('objectId', String(objectId));
 
       return this.http.post<any>(url, data, {params})
         .pipe( catchError(this.handleError(url)));
   }
 
-  mediasClear(sessionId: string, typeId: any, objectId: any) {
+  mediasClear(sessionId: string, typeId: number, objectId: number) {
     const url = `https://api.newstube.ru/urldev/Path/MediasClear`;
     const params = new HttpParams()
       .set('sessionId', sessionId)
-      .set('typeId', typeId)
-      .set('objectId', objectId);
+      .set('typeId', String(typeId))
+      .set('objectId', String(objectId));
 
       return this.http.post<any>(url, {params})
         .pipe( catchError(this.handleError(url)));
@@ -164,12 +165,12 @@ export class PathService {
         .pipe( catchError(this.handleError(url)));
   }
 
-  createRedirect(sessionId: string, pathId: any, object: any) {
+  createRedirect(sessionId: string, pathId: number, object: any) {
     const url = `https://api.newstube.ru/urldev/Path/CreateRedirect`;
     const params = new HttpParams()
       .set('sessionId', sessionId)
-      .set('id', pathId);
-    return this.http.post<any>(url, object, {params})
+      .set('id', String(pathId));
+    return this.http.post<number>(url, object, {params})
       .pipe( catchError(this.handleError(url)));
   }
 
@@ -177,7 +178,7 @@ export class PathService {
     const url = `https://api.newstube.ru/urldev/Path/CreateRedirectMany`;
     const params = new HttpParams()
       .set('sessionId', sessionId);
-    return this.http.post<any>(url, object, {params})
+    return this.http.post<number>(url, object, {params})
       .pipe( catchError(this.handleError(url)));
   }
 

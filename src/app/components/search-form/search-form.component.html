@@ -9,12 +9,13 @@
     </div>
     <div class="row">
         <div class="form-group col-md-12">
-            <div ngbDropdown>
+            <button *ngIf="!issetControls" class="btn btn-sm btn-outline-primary" id="dropdownAddForm" type="button" (click)="addItem(0)">Добавить фильтр <i class="fa fa-plus"></i></button>
+            <div ngbDropdown *ngIf="issetControls">
                 <button class="btn btn-sm btn-outline-primary" id="dropdownAddForm" ngbDropdownToggle type="button">Добавить фильтр <i class="fa fa-plus"></i></button>
                 <div ngbDropdownMenu aria-labelledby="dropdownAddForm">
                     <button class="dropdown-item" type="button" (click)="addItem(0)">ИЛИ</button>
-                    <button class="dropdown-item" type="button" (click)="addItem(1)" *ngIf="issetControls">И</button>
-                    <button class="dropdown-item" type="button" (click)="addItem(2)" *ngIf="issetControls">НЕ</button>
+                    <button class="dropdown-item" type="button" (click)="addItem(1)">И</button>
+                    <button class="dropdown-item" type="button" (click)="addItem(2)">НЕ</button>
                 </div>
             </div>
         </div>

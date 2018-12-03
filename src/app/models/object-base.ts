@@ -71,3 +71,187 @@ export class ObjectBase {
         this.Redirects = obj.Redirects;
     }
   }
+
+export interface MoveObject {
+    Ids?: Array<number>,
+    ObjectTypeId: number,
+    ObjectId: number
+}
+
+interface Channel {        
+    IconId: number,
+    LogoId: number,
+    Name: string,
+    Description: string,
+    SeoKeywords: string,
+    SeoNoIndex: boolean,
+    SeoEnable: boolean,
+    Id: number,
+    PathId: number,
+    PathLatin: string,
+    PathSuffix: number,
+    ParentPathId: number,
+    ParentPathLatin: string,
+    ParentPathSuffix: number,
+    Url: string,
+    ParentPath: string,
+    Path: string
+}
+
+export interface Tag {
+    Name: string,
+    SeoTitle: string,
+    SeoDescription: string,
+    SeoKeywords: string,
+    SeoNoIndex: boolean,
+    SeoEnable: boolean,
+    Description: string,
+    Id: number,
+    PathId: number,
+    PathLatin: string,
+    PathSuffix: number,
+    ParentPathId: number,
+    ParentPathLatin: string,
+    ParentPathSuffix: number,
+    Url: string,
+    ParentPath: string,
+    Path: string
+}
+
+interface Theme {
+    IconId: number,
+    LogoId: number,
+    Name: string,
+    SeoKeywords: string,
+    SeoNoIndex: boolean,
+    SeoEnable: boolean,
+    Description: string,
+    Id: number,
+    PathId: number,
+    PathLatin: string,
+    PathSuffix: number,
+    ParentPathId: number,
+    ParentPathLatin: string,
+    ParentPathSuffix: number,
+    Url: string,
+    ParentPath: string,
+    Path: string
+}
+
+interface Person {
+    IconId: number,
+    LogoId: number,
+    Name: string,
+    SeoKeywords: string,
+    SeoNoIndex: boolean,
+    SeoEnable: boolean,
+    Description: string,
+    Id: number,
+    PathId: number,
+    PathLatin: string,
+    PathSuffix: number,
+    ParentPathId: number,
+    ParentPathLatin: string,
+    ParentPathSuffix: number,
+    Url: string,
+    ParentPath: string,
+    Path: string
+}
+
+interface Section {
+    ParentId: number,
+    IconId: number,
+    LogoId: number,
+    Name: string,
+    FullName: string,
+    ParentName: string,
+    SeoTitle: string,
+    SeoDescription: string,
+    SeoKeywords: string,
+    SeoNoIndex: boolean,
+    SeoEnable: boolean,
+    Description: string,
+    Id: number,
+    PathId: number,
+    PathLatin: string,
+    PathSuffix: number,
+    ParentPathId: number,
+    ParentPathLatin: string,
+    ParentPathSuffix: number,
+    Url: string,
+    ParentPath: string,
+    Path: string
+}
+
+interface Media {
+    Name: string,
+    ShootDate: Date,
+    PubDate: Date,
+    StateId: number,
+    StateName: string,
+    Duration: number,
+    ChannelId: number,
+    ChannelName: string,
+    SectionId: number,
+    SectionName: string,
+    SeriesId: number,
+    SeriesName: string,
+    KeyFrameId: number,
+    Tags: Array<Tag>,
+    Sections: Array<Section>,
+    Persons: Array<Person>,    
+    Themes: Array<Theme>,    
+    Description: string,
+    Id: number,
+    PathId: number,
+    PathLatin: string,
+    PathSuffix: number,
+    ParentPathId: number,
+    ParentPathLatin: string,
+    ParentPathSuffix: number,
+    Url: string,
+    ParentPath: string,
+    Path: string
+}
+
+
+export interface Path {
+      SeoDescription: string,
+      GlobalId: number,
+      ObjectId: number,
+      ObjectTypeId: number,
+      ObjectTypeName: string,
+      Redirect: Path | Channel | Tag | Theme | Person | Section | Media,      
+      Name: string,
+      Description: string,
+      SeoTitle: string,
+      SeoKeywords: string,
+      SeoNoIndex: boolean,
+      SeoEnable: boolean,
+      Id: number,
+      PathId: number,
+      PathLatin: string,
+      PathSuffix: number,
+      ParentPathId: number,
+      ParentPathLatin: string,
+      ParentPathSuffix: number,
+      Url: string,
+      ParentPath: string,
+      Path: string,
+      HistoryPath: Array<HistoryPath>,
+      HistoryObject: Array<HistoryObject>,
+      Redirects: Array<Path>,
+      
+}
+
+interface HistoryPath {
+    Id: number,
+    Item: Path,
+    CreateTime: Date
+}
+
+interface HistoryObject {
+    Id: number,
+    Item: Path | Channel | Tag | Theme | Person | Section | Media,
+    CreateTime: Date
+}

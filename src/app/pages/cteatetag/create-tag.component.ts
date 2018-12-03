@@ -4,7 +4,7 @@ import { Router, ActivatedRoute, Params } from "@angular/router";
 import { AuthenticationService } from '../../services/auth.service';
 import { PathService } from '../../services/path.service';
 
-import { ObjectBase } from '../../models/object-base';
+import { Tag } from '../../models/object-base';
 import { finalize } from 'rxjs/operators';
 
 
@@ -15,7 +15,7 @@ import { finalize } from 'rxjs/operators';
 
 export class CreateTagComponent implements OnInit { 
 
-    tag = new ObjectBase;
+    tag: Tag;
     public createLoading: boolean = false;
     
     constructor(
@@ -26,8 +26,8 @@ export class CreateTagComponent implements OnInit {
     
     ngOnInit() { }
 
-    addProduct(tag: ObjectBase) {
-        let newTag = new ObjectBase(tag);
+    addProduct(tag: Tag) {
+        let newTag = tag;
 
         this.createLoading = true;
         this.pathService.createTag(this.authenticationService.sessionId, newTag)

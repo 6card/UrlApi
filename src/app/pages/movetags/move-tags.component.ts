@@ -1,5 +1,5 @@
 import { Component, OnInit} from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -14,7 +14,7 @@ import { AlertService } from '../../services/alert.service';
 import { SearchQuery, SimpleQuery } from '../../models/search-query.model';
 
 import { forkJoin } from 'rxjs';
-import { finalize, map, delay } from 'rxjs/operators';
+import { finalize, map, delay, filter } from 'rxjs/operators';
 
 
 @Component({
@@ -26,7 +26,6 @@ import { finalize, map, delay } from 'rxjs/operators';
 export class MoveTagsComponent implements OnInit{ 
 
     public tagIds: string;
-    private _tagIds: Array<number>;
     public searchMedias: Array<any>;
     public searchMediasCount: number;
     public searchMediasQuery: SearchQuery;
@@ -46,18 +45,47 @@ export class MoveTagsComponent implements OnInit{
         private alertService: AlertService,
         private modalService: NgbModal,
         private router: Router,
+        protected activatedRoute: ActivatedRoute,
     ) { }
 
     ngOnInit() {
         //this.metaService.loadMeta(6);
+        this.activatedRoute.queryParams
+        .pipe(filter( param => param.tagIds ))
+        .subscribe( (param: Params) => {
+            if (param && Object.keys(param).length === 0) { // empty params
+
+            }
+            else {
+                this.tagIds = this.parseParam(param.tagIds);                
+                let query: SimpleQuery = { Operation: 0, Columns: [], Tables: [ {Table: 6, Values: this.numberTagIds}] };
+                this.searchMediasQuery = new SearchQuery([query]);
+                this.getMediasItem();
+            }
+        }); 
     }
 
+    private parseParam(param: string) {
+        if (typeof param === "undefined") return false;
+        return JSON.parse(decodeURIComponent(param))
+    }
+
+    onChangeTagsIds(ids: string) {
+        this.navigate(true);
+    }
+
+    get numberTagIds(): Array<number> {
+        return this.tagIds.split(', ').map(i => Number(i));
+    }
+
+    /*
     onChangeTagsIds(ids: string) {
         this._tagIds = ids.split(', ').map( i => Number(i));
         let query: SimpleQuery = { Operation: 0, Columns: [], Tables: [ {Table: 6, Values: this._tagIds}] };
         this.searchMediasQuery = new SearchQuery([query]);
         this.getMediasItem();
     }
+    */
 
 
     public pageChange(page: number) {    
@@ -91,7 +119,7 @@ export class MoveTagsComponent implements OnInit{
           `Вы уверены что хотите удалить выбранные теги?`
         )) {
           this.deleteLoading = true;
-          this.pathService.deleteManyTags(this.authenticationService.sessionId, this._tagIds)
+          this.pathService.deleteManyTags(this.authenticationService.sessionId, this.numberTagIds)
           .pipe ( finalize(() => this.deleteLoading = false) )
           .subscribe(
                 data => {
@@ -103,9 +131,19 @@ export class MoveTagsComponent implements OnInit{
 
     public openMoveModal() {
         const modalRef = this.modalService.open(MoveTagsModal, {size: 'lg', ariaLabelledBy: 'modal-move-tag', backdrop: 'static'});
-        modalRef.componentInstance.selectedIds = this._tagIds;
+        modalRef.componentInstance.selectedIds = this.numberTagIds;
         modalRef.componentInstance.finishQuery
           .subscribe( obj => this.router.navigate(['/object', obj.ObjectTypeId, obj.ObjectId]));
+    }
+
+    public navigate(replaceUrl?: boolean) {
+        if (this.tagIds) {
+            const params = { tagIds: encodeURIComponent(JSON.stringify(this.tagIds)) };
+            this.router.navigate([], { replaceUrl: replaceUrl || false, queryParams: params});
+        }
+        else {
+            this.router.navigate([], { replaceUrl: replaceUrl || false});
+        }
     }
 
 

@@ -32,8 +32,8 @@ export class MetaService {
         .subscribe(            
             (data: Meta) => {
                 if (data !== null) {
-                    this._meta.next(new Meta(data));
-                    this.lastMeta = new Meta(data);
+                    this._meta.next(data);
+                    this.lastMeta = data;
                 }
             },
             error => {}

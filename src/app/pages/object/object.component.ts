@@ -15,7 +15,7 @@ import { PathService } from '../../services/path.service';
 import { SearchService } from '../../services/search.service';
 import { AlertService } from '../../services/alert.service';
 
-import { ObjectBase } from '../../models/object-base';
+import { Path } from '../../models/object-base';
 import { CheckedMedia } from '../../models/media';
 import { SearchQuery, SimpleQuery } from '../../models/search-query.model';
 
@@ -30,7 +30,7 @@ import { MetaService } from '../../services/meta.service';
 
 export class ObjectComponent implements OnInit, AfterViewInit {
   
-	public item: ObjectBase;
+	public item: Path;
 	public searchMediasQuery: SearchQuery;
 	public searchMedias: Array<CheckedMedia>;
   public searchMediasCount: number;
@@ -142,7 +142,7 @@ export class ObjectComponent implements OnInit, AfterViewInit {
     public loadItem(typeid: number, id: number) {
       this.pathService.getByObjectDetail(this.authenticationService.sessionId, typeid, id)
         .subscribe(
-            (data: ObjectBase) => {
+            (data: Path) => {
               this.item = data;
               let query: SimpleQuery = { Operation: 0, Columns: [], Tables: [ {Table: this.item.ObjectTypeId, Values:[this.item.ObjectId]}] };
               this.searchMediasQuery = new SearchQuery([query]);
@@ -150,7 +150,7 @@ export class ObjectComponent implements OnInit, AfterViewInit {
             });
     }
 
-    public updateItem(obj: ObjectBase) {
+    public updateItem(obj: Path) {
       const item = Object.assign(this.item, obj);
       this.updateLoading = true;
       this.pathService.updatePath(this.authenticationService.sessionId, item)
@@ -166,7 +166,7 @@ export class ObjectComponent implements OnInit, AfterViewInit {
         });
     }
 
-    toFormGroup(item: ObjectBase ) {
+    toFormGroup(item: Path ) {
       let group: any = {};
 
       for (let key in item) {

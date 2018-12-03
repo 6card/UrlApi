@@ -19,7 +19,7 @@ export class TagFormComponent implements OnInit, OnDestroy, OnChanges {
 
     tagForm = new TagFormGroup();
 
-    newTag: ObjectBase = new ObjectBase();
+    newTag: ObjectBase;
     //formSubmitted: boolean = false;
 
     public parents: Array<any>;
@@ -119,9 +119,8 @@ export class TagFormComponent implements OnInit, OnDestroy, OnChanges {
 
         //this.formSubmitted = true;
         if (form.valid) {
-            //this.newTag = new ObjectBase(this.tagForm.value);
             this.newTagEvent.emit(this.tagForm.value);
-            //this.newTag = new ObjectBase();
+
             //this.tagForm.reset();            
         }
         //this.formSubmitted = false;

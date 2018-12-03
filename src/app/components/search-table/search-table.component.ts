@@ -49,7 +49,7 @@ export class SearchTableComponent implements OnInit, OnDestroy {
         )
         .subscribe(
             (meta: Meta) => { 
-                this.meta = new Meta(meta);
+                this.meta = meta;
                 this.sortService.clearAllColumns();
                 this.setCortingColumns();
         });

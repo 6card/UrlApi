@@ -26,21 +26,42 @@ $badge-padding-y: .4em;
 $badge-padding-x: .4em;
 @import "~bootstrap/scss/bootstrap.scss";
 
+
+/* search table */
 .tabs-body{
-    padding: 1.5rem;
+    padding: 1.5rem 0;
 }
 
 .card-table .card-body {
     padding: 0;
-}
+    table {
+        margin-bottom: 0;
+        border: none;
+        &.table-bordered thead th, &.table-bordered thead td, &.table thead th, &.table thead td {
+            border-bottom: none;
+        }
+        th:first-child, td:first-child{
+            border-left: none;
+        }
+        th:last-child, td:last-child{
+            border-right: none;
+        }
 
-.card-table .card-body table{
-    margin-bottom: 0;
+        tr:last-child th, tr:last-child rd{
+            border-top: none;
+        }
+
+        tr:last-child th, tr:last-child td{
+            border-bottom: none;
+        }
+    }    
 }
 
 .card-table .pagination {
     margin-bottom: 0;
 }
+
+
 /* autocomplete component */
 .autocomplete {
     height: auto;

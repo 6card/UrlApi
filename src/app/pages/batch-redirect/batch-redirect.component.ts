@@ -99,28 +99,37 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
     }
 
     private parseParam(param: string) {
-        if (typeof param === "undefined") return;
+        if (typeof param === "undefined") return false;
         return JSON.parse(decodeURIComponent(param))
     }
 
     public setType(id: number): void {
         this.typeId = id;
-        this.navigate(false, {typeId: id});
+        let params = { typeId: this.typeId };
+        if (this.selectedMediaIds.length)
+            params['sm'] = this.encodeUri(this.selectedMediaIds);
+        if (this.selectedMediaUrls.length)
+            params['smu'] = this.encodeUri(this.selectedMediaUrls);
+        this.navigate(false, params);
     }
 
     public isActive(id: number): boolean{
         return this.typeId == id;
     }
 
+    private encodeUri(value: any): string {
+        return encodeURIComponent(JSON.stringify(value));
+    }
+
     public serialize(query, page, selm, selmu) {
-        const q: string = encodeURIComponent(JSON.stringify(query));
-        const p: string = encodeURIComponent(JSON.stringify(page));
-        const sm: string = encodeURIComponent(JSON.stringify(selm));
-        const smu: string = encodeURIComponent(JSON.stringify(selmu));
+        const q: string = this.encodeUri(query);
+        const p: string = this.encodeUri(page);
+        const sm: string = this.encodeUri(selm);
+        const smu: string = this.encodeUri(selmu);
         return {q: q, p: p, sm: sm, smu: smu};
     }
 
-    public navigate(replaceUrl?: boolean, params?: Object) {
+    public navigate(replaceUrl?: boolean, params?: any) {
         let prm = { typeId: this.typeId };
         const srl = this.serialize(this.sq.Query, this.sq.Page, this.selectedMediaIds, this.selectedMediaUrls);
         if (this.typeId) {            
@@ -175,7 +184,7 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
             this.selectedMediaUrls.splice(this.selectedMediaUrls.indexOf(item), 1);
         else
             this.selectedMediaIds.splice(this.selectedMediaIds.indexOf(item), 1);
-        this.navigate();
+        this.navigate(true);
     }
 
 

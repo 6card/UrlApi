@@ -19,7 +19,7 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
     @Input() subForm: FormGroup;
     @Input() typeId: number;
 
-    public meta;
+    public meta: Meta;
     public metaLoading: boolean = false;
     public metaSubscription: Subscription;
 
@@ -41,7 +41,7 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
         .subscribe(
             (meta: Meta) => {
                 //if (meta)
-                    this.meta = new Meta(meta);
+                    this.meta = meta;
                 //this.setValueValidators();
         });
     }

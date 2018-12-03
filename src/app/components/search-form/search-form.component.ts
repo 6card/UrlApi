@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@ang
 import { Subscription } from 'rxjs';
 
 import { MetaService } from '../../services/meta.service';
+import { Meta, MetaColumn } from '../../models/meta.model';
 
 @Component({
     selector: 'search-form',
@@ -12,6 +13,7 @@ import { MetaService } from '../../services/meta.service';
 
 export class SearchFormComponent implements OnInit, OnDestroy, OnChanges  {
 
+    public meta: Meta;
     public metaSubscription: Subscription;
 
     @Input() typeId: any;
@@ -31,7 +33,10 @@ export class SearchFormComponent implements OnInit, OnDestroy, OnChanges  {
 
     ngOnInit() {
         this.metaSubscription = this.metaService.meta
-        .subscribe(_ => this.generateForm());
+        .subscribe( (meta: Meta) => {
+            this.meta = meta;
+            this.generateForm();
+        });
     }
 
     ngOnDestroy(): void {
@@ -78,7 +83,7 @@ export class SearchFormComponent implements OnInit, OnDestroy, OnChanges  {
     addItem(qop? : number, obj?: any): void {
         let searchItems: FormArray;
         searchItems = this.searchForm.get('items') as FormArray;
-        searchItems.push(this.createSearchItem(qop, obj));
+        searchItems.push(this.createSearchItem(qop, obj || this.meta.DefaultFilter));
     }
 
     createSearchItem(qop: number = 0, obj?: any) {
@@ -86,7 +91,7 @@ export class SearchFormComponent implements OnInit, OnDestroy, OnChanges  {
           queryOperation: [qop, Validators.required],
           column: [obj? obj.Column: null, Validators.required],
           operation: [obj? obj.Operation : null, Validators.required],
-          value: [obj? this.arrayToString(obj.Value) : '', Validators.required]
+          value: [obj && obj.Value ? this.arrayToString(obj.Value) : '', Validators.required]
         });
     }
 
