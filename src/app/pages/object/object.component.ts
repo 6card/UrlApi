@@ -5,7 +5,7 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { forkJoin } from 'rxjs';
-import { finalize, map, delay } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
 
 import { AddMediasModal } from '../../components/modals/add-medias-modal.component';
 import { MoveTagModal } from '../../components/modals/move-tag-modal.component';
@@ -155,7 +155,6 @@ export class ObjectComponent implements OnInit, AfterViewInit {
       this.updateLoading = true;
       this.pathService.updatePath(this.authenticationService.sessionId, item)
       .pipe (
-        //delay(1000),
         finalize(() => this.updateLoading = false)        
       )
         .subscribe(

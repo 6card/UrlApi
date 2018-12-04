@@ -22,14 +22,9 @@ export class SearchComponent implements OnInit {
   ngOnInit() {
     
     this.activatedRoute.queryParams
-        .pipe(filter( param => param.typeId))
+        //.pipe(filter( param => param.typeId))
         .subscribe( (param: Params) => {
-            if (param && Object.keys(param).length === 0) { // empty params
-
-            }
-            else {
-              this.typeId = Number(param.typeId);
-            }
+          this.typeId = Number(param.typeId) || 0;
       });
   }
 

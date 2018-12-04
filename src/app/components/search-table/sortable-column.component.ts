@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, OnDestroy, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
@@ -8,18 +8,15 @@ import { SortService } from './sort.service';
     selector: '[sortable-column]',
     templateUrl: './sortable-column.component.html'
 })
-export class SortableColumnComponent implements OnInit, OnDestroy {
+export class SortableColumnComponent {
 
-    private columnSortedSubscription: Subscription;
+    //private columnSortedSubscription: Subscription;
 
     constructor(private sortService: SortService) { }
 
     @Input('sortable-column') columnName: number;
-
     @Input('sort-direction') sortDirection: string = '';
 
-    //@ViewChild("sortLink") sortLink: ElementRef;
-    //@HostListener('click')
     sort() {
         if (this.sortDirection === '')
             this.sortDirection = 'asc'
@@ -28,27 +25,9 @@ export class SortableColumnComponent implements OnInit, OnDestroy {
         else if (this.sortDirection === 'desc')
             this.sortDirection = ''
 
-        //console.log(this.columnName, this.sortDirection);
         if (this.sortDirection)
             this.sortService.setSorted({ Column: this.columnName, Desc: this.sortDirection == 'desc' ? true : false });
         else
             this.sortService.clearSorted(this.columnName);
-    }
-
-    ngOnInit() { 
-        // subscribe to sort changes so we can react when other columns are sorted
-        /*
-        this.columnSortedSubscription = this.sortService.columnSorted$.subscribe(event => {
-            console.log(event);
-            // reset this column's sort direction to hide the sort icons
-            const column = event.find( i => i.sortColumn == this.columnName);
-            console.log(column);
-            //this.sortDirection = column.sortDirection;
-        });
-        */
-    }
-
-    ngOnDestroy() {
-        //this.columnSortedSubscription.unsubscribe();
     }
 }

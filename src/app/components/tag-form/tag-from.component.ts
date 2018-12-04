@@ -1,14 +1,14 @@
 import { Component, OnInit, OnDestroy, Output, EventEmitter, Input, OnChanges, SimpleChanges, SimpleChange } from "@angular/core";
-import { FormBuilder, FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { Subject } from 'rxjs/index';
 
-import { debounceTime, distinctUntilChanged, takeUntil, first, filter, startWith, delay } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, takeUntil, first, filter } from 'rxjs/operators';
 
 import { PathService } from '../../services/path.service';
 import { AuthenticationService } from '../../services/auth.service';
 
-import { ObjectBase } from '../../models/object-base';
+import { Tag } from '../../models/object-base';
 
 @Component({
     selector: "app-tag-form",
@@ -19,14 +19,14 @@ export class TagFormComponent implements OnInit, OnDestroy, OnChanges {
 
     tagForm = new TagFormGroup();
 
-    newTag: ObjectBase;
+    newTag: Tag;
     //formSubmitted: boolean = false;
 
     public parents: Array<any>;
 
     private unsubscribe: Subject<void> = new Subject();
 
-    @Input() currentObject: ObjectBase;
+    @Input() currentObject: Tag;
     @Input() formSubmitted: boolean = false;;
 
     constructor(
@@ -34,7 +34,7 @@ export class TagFormComponent implements OnInit, OnDestroy, OnChanges {
         private authenticationService: AuthenticationService,
     ) {}
 
-    @Output() newTagEvent = new EventEmitter<ObjectBase>();
+    @Output() newTagEvent = new EventEmitter<Tag>();
 
     ngOnChanges(changes: SimpleChanges) {
         const object: SimpleChange = changes.currentObject;

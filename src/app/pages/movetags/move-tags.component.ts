@@ -5,7 +5,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { MoveTagsModal } from '../../components/modals/move-tags-modal.component';
 
-import { MetaService } from '../../services/meta.service';
 import { AuthenticationService } from '../../services/auth.service';
 import { PathService } from '../../services/path.service';
 import { SearchService } from '../../services/search.service';
@@ -14,7 +13,7 @@ import { AlertService } from '../../services/alert.service';
 import { SearchQuery, SimpleQuery } from '../../models/search-query.model';
 
 import { forkJoin } from 'rxjs';
-import { finalize, map, delay, filter } from 'rxjs/operators';
+import { finalize, map, filter } from 'rxjs/operators';
 
 
 @Component({
@@ -53,15 +52,10 @@ export class MoveTagsComponent implements OnInit{
         this.activatedRoute.queryParams
         .pipe(filter( param => param.tagIds ))
         .subscribe( (param: Params) => {
-            if (param && Object.keys(param).length === 0) { // empty params
-
-            }
-            else {
-                this.tagIds = this.parseParam(param.tagIds);                
-                let query: SimpleQuery = { Operation: 0, Columns: [], Tables: [ {Table: 6, Values: this.numberTagIds}] };
-                this.searchMediasQuery = new SearchQuery([query]);
-                this.getMediasItem();
-            }
+            this.tagIds = this.parseParam(param.tagIds);                
+            let query: SimpleQuery = { Operation: 0, Columns: [], Tables: [ {Table: 6, Values: this.numberTagIds}] };
+            this.searchMediasQuery = new SearchQuery([query]);
+            this.getMediasItem();
         }); 
     }
 

@@ -1,5 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, Output, EventEmitter, Input, HostListener, ViewChild, ElementRef, HostBinding } from "@angular/core";
 
+import { Tag } from './autocomplete.component';
+
 @Component({
     selector: "autocomplete-window",
     exportAs: 'AutocompleteWindowComponent',
@@ -20,7 +22,7 @@ export class AutocompleteWindowComponent implements OnInit, OnDestroy, AfterView
 
     activeIdx = 0;
     @Input() loading: boolean;
-    @Input() searchResults: Array<any>;
+    @Input() searchResults: Array<Tag>;
     @Input() focusFirst = false;
 
     @Output() selectEvent = new EventEmitter();

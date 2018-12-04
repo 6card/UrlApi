@@ -51,16 +51,10 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
         this.activatedRoute.queryParams
         .pipe(filter( param => param.q || param.p || param.typeId))
         .subscribe( (param: Params) => {
-
-            if (param && Object.keys(param).length === 0) { // empty params
-
-            }
-            else {
-                this.metaService.loadMeta(Number(param.typeId));
-                this.setSearchParams(Number(param.typeId), this.parseParam(param.q), this.parseParam(param.p), this.parseParam(param.sm), this.parseParam(param.smu));                
-                this.getResults();
-                this.getSelectedMedias();            
-            }
+            this.metaService.loadMeta(Number(param.typeId));
+            this.setSearchParams(Number(param.typeId), this.parseParam(param.q), this.parseParam(param.p), this.parseParam(param.sm), this.parseParam(param.smu));                
+            this.getResults();
+            this.getSelectedMedias(); 
         }); 
 
         this.sortService.columnSorted$

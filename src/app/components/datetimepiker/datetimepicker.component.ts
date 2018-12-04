@@ -171,8 +171,7 @@ export class NgbDateTimePicker implements ControlValueAccessor {
             this.time = null;
         }
         if (!this.firstTimeAssign) {
-            //this.onChange(model);
-            //console.log(this.date, this.time);
+
             const value = this.preparationOutput(this.date, this.time);
             this.onChange(value);            
         } else {

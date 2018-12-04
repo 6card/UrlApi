@@ -38,8 +38,6 @@ export class AutocompleteComponent implements OnInit, ControlValueAccessor {
     @Input() multiValue: boolean;
     @Input() typeId: number;
 
-    @Output() pushInput = new EventEmitter<any>();
-
     private typeText: Subject<string> = new Subject();
     @ViewChild(AutocompleteWindowComponent) 
     private aWindow: AutocompleteWindowComponent;
@@ -55,7 +53,6 @@ export class AutocompleteComponent implements OnInit, ControlValueAccessor {
         private _elementRef: ElementRef
     ) {
         this.el = this.viewContainerRef.element.nativeElement;
-        //console.log(this.el);
     }
 
     @HostListener('click', ['$event.target'])
@@ -68,7 +65,7 @@ export class AutocompleteComponent implements OnInit, ControlValueAccessor {
         }
     }
 
-    writeValue(newModel: any) {
+    writeValue(newModel: string) {
         // Value is passed from outside via ngModel field
         this.setInputToTags(newModel);
     }
@@ -111,27 +108,6 @@ export class AutocompleteComponent implements OnInit, ControlValueAccessor {
         
     }
 
-    public showAutoCompleteDropdown = (event?: any): void => {
-        /*
-        if (!this.componentRef) {
-            const factory = this.resolver.resolveComponentFactory(AutocompleteWindowComponent);
-            this.componentRef = this.viewContainerRef.createComponent(factory);
-            this.componentRef.instance.selectEvent.subscribe((result: any) => this.addTag(result));
-            this.componentRef.instance.clickOutside.subscribe(result => this.hideAutoCompleteDropdown());
-        }
-        this.componentRef.instance.searchResults = this.searchResults;
-        */
-    }
-
-    public hideAutoCompleteDropdown = (event?: any): void => {
-        /*
-        if (this.componentRef) {
-            //this.componentRef.instance.selectEvent.unsubscribe();
-            this.componentRef.destroy();
-            this.componentRef = null;
-        }
-        */
-    }
 
     loadSearchResults(str?: string | number[]) {
         this.aContainerVisible = true;
@@ -161,10 +137,10 @@ export class AutocompleteComponent implements OnInit, ControlValueAccessor {
             );
     }
 
-    setInputToTags(value) {
-        if (!value)
-            return;
-        let tagsIds: any[] = [];
+    setInputToTags(value: string) {
+        let tagsIds: Array<string>;
+        if (!value) return;
+        
         if (Array.isArray(value))
             tagsIds = value;
         else
@@ -195,7 +171,6 @@ export class AutocompleteComponent implements OnInit, ControlValueAccessor {
         const values = this.tags.map( i => i.id).join(', ');
         this.tagInput.nativeElement.value = values;
         this.onChange(values);
-        //this.pushInput.emit(values);
     }
 
 
@@ -215,14 +190,7 @@ export class AutocompleteComponent implements OnInit, ControlValueAccessor {
     }
 
     handleKeyDown(event: KeyboardEvent) {
-        //console.log(event.which);
-
-        //40 - down
-        //38 - up
-        //13 - enter
-        //8 - backspace
-        //27 - escape
-        switch (event.which) {
+        switch (event.keyCode) {
             case 8: //backspace
                 this.removeLastTag(event);
                 break;
@@ -257,13 +225,11 @@ export class AutocompleteComponent implements OnInit, ControlValueAccessor {
     handleKeyUp($event) {
         if ($event.keyCode != 13 && $event.keyCode != 40 && $event.keyCode != 38) 
             this.typeText.next($event.target.value);
-
         /*
         if ($event.keyCode == 13) {
             this.addTag($event);            
         }
-        */
-        
+        */        
     }
 
     removeLastTag($event) {  
@@ -279,7 +245,7 @@ export class AutocompleteComponent implements OnInit, ControlValueAccessor {
 
 }
 
-class Tag {
+export class Tag {
     id: number;
     title: string;
 
