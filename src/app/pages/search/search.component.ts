@@ -1,7 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Router, ActivatedRoute, Params } from "@angular/router";
-
-import { filter, finalize } from 'rxjs/operators'
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-search',
@@ -9,9 +7,9 @@ import { filter, finalize } from 'rxjs/operators'
 })
 export class SearchComponent implements OnInit {
 
-  typeId: number = 0;
-  error: any = null;
-  @Input("pathId") pathId: number;
+  public typeId: number = 0;
+  public error: any = null;
+  @Input('pathId') pathId: number;
   @Output() selectObject = new EventEmitter();
 
   constructor(
@@ -20,9 +18,9 @@ export class SearchComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    
+
     this.activatedRoute.queryParams
-        //.pipe(filter( param => param.typeId))
+        // .pipe(filter( param => param.typeId))
         .subscribe( (param: Params) => {
           this.typeId = Number(param.typeId) || 0;
       });
@@ -30,14 +28,15 @@ export class SearchComponent implements OnInit {
 
   public setType(id: number): void {
     this.typeId = id;
-    if (id)
+    if (id) {
       this.navigate();
-    else  
+    } else {
       this.router.navigate([]);
+    }
   }
 
-  public isActive(id: number): boolean{
-    return this.typeId == id;
+  public isActive(id: number): boolean {
+    return this.typeId === id;
   }
 
   public navigate(replaceUrl?: boolean) {
@@ -49,10 +48,10 @@ export class SearchComponent implements OnInit {
   }
 
   public navigateToPath(obj: any | boolean) {
-    if (obj)
+    if (obj) {
       this.router.navigate(['/path', obj.Id]);
-    else {
-      this.error = "Путь не найден";
+    } else {
+      this.error = 'Путь не найден';
     }
   }
 

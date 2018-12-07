@@ -1,5 +1,5 @@
-import {NgModule}from '@angular/core';
-import {Routes, RouterModule}from '@angular/router';
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 
 import { LoginComponent } from './pages/login/login.component';
 import { EditPathComponent } from './pages/path/path.component';
@@ -15,7 +15,7 @@ import { AuthGuard } from './guards/auth.guard';
 
 const appRoutes: Routes = [
     { path: 'login', component: LoginComponent },
-    { path: 'object/:typeid/:id', component: ObjectComponent, canActivate: [AuthGuard] },    
+    { path: 'object/:typeid/:id', component: ObjectComponent, canActivate: [AuthGuard] },
     { path : 'path/:id', component: EditPathComponent, canActivate: [AuthGuard] },
     { path : 'path/set-object/:id', component: SetObjectComponent, canActivate: [AuthGuard] },
     { path: 'createtag', component: CreateTagComponent, canActivate: [AuthGuard] },

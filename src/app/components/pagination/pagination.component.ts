@@ -32,7 +32,7 @@ export class PaginationComponent {
 		this.pages = this.getPages(this.page, this.totalPages);
 	}
 	
-	private makePage(number:number, text:string, isActive:boolean):{number: number, text: string, active: boolean} {
+	private makePage(number:number, text:string, isActive:boolean): {number: number, text: string, active: boolean} {
         return {
             number: number,
             text: text,

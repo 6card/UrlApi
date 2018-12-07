@@ -25,16 +25,16 @@ import { delay, finalize } from 'rxjs/operators';
         animate(
           '200ms',
           keyframes([
-            style({transform: 'translateX(7%)', offset: 0}), 
-            style({transform: 'translateX(-7%)', offset: 0.25}), 
-            style({transform: 'translateX(3%)', offset: 0.5}), 
+            style({transform: 'translateX(7%)', offset: 0}),
+            style({transform: 'translateX(-7%)', offset: 0.25}),
+            style({transform: 'translateX(3%)', offset: 0.5}),
             style({transform: 'translateX(-3%)', offset: 1}),
           ])
         ),
       ]),
       /*
-      transition(':enter', [          
-        style({transform: 'translateX(5%)'}),    
+      transition(':enter', [
+        style({transform: 'translateX(5%)'}),
         animate('0.1s ease-in-out', style({transform: 'translateX(-5%)'}))
       ]),
       */
@@ -51,9 +51,9 @@ import { delay, finalize } from 'rxjs/operators';
           ])
         ),
       ]),
-      
-      transition(':leave', [          
-        style({transform: 'translateX(-5%)'}),    
+
+      transition(':leave', [
+        style({transform: 'translateX(-5%)'}),
         animate('0.1s ease-in-out', style({transform: 'translateX(100%)'}))
       ])
       */
@@ -62,7 +62,7 @@ import { delay, finalize } from 'rxjs/operators';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  //returnUrl: string;
+  // returnUrl: string;
   loginError: boolean = false;
   submitLoading: boolean = false;
 
@@ -81,12 +81,11 @@ export class LoginComponent implements OnInit {
 
     this.authenticationService.logout();
 
-    
   }
 
   onSubmit() {
-    this.submitLoading = true;  
-    this.loginError = false;  
+    this.submitLoading = true;
+    this.loginError = false;
 
     if (this.loginForm.invalid) {
         return;

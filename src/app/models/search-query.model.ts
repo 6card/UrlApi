@@ -84,18 +84,18 @@ export class SearchQuery {
 
     /*
     public setQueryPage(query?: Array<SimpleQuery>, page?: PageQuery) {
-        if (query)  
-            this.Query = query; 
-        else 
+        if (query)
+            this.Query = query;
+        else
             this.Query = [this._defaultQuery];
-        if (page)  
-            this.Page = page; 
-        else 
+        if (page)
+            this.Page = page;
+        else
             this.Page = { Start: 1, Length: 10, Sort: [ this._defaultSort ] };
     }
     */
 
-    public resetQuery(){
+    public resetQuery() {
         this.Query = [this._defaultQuery];
     }
 
@@ -109,11 +109,12 @@ export class SearchQuery {
     }
 
     public setSort(columns: Array<SortQuery>) {
-        if (columns.length == 0) 
+        if (columns.length === 0) {
             columns = [this._defaultSort];
+        }
         this.Page.Sort = columns;
         this.setPage(1);
-    }   
+    }
 
     get currentPage(): number {
         return (this.Page.Start - 1) / this.Page.Length + 1 || 1;
@@ -137,16 +138,17 @@ export class SearchQuery {
         this.addQuery(1, [], queryTable);
     }
 
-    public addExceptTableQuery(queryTable){
+    public addExceptTableQuery(queryTable) {
         this.addQuery(2, [], queryTable);
-    }   
+    }
 
     getColumnDirection(columnId: number) {
-        const sortCoulumn = this.Page.Sort.find( s => s.Column == columnId);
-        if (sortCoulumn)
+        const sortCoulumn = this.Page.Sort.find( s => s.Column === columnId);
+        if (sortCoulumn) {
             return sortCoulumn.Desc ? 'desc' : 'asc';
-        else
+        } else {
             return '';
+        }
     }
 
     get queryWithoutPage() {

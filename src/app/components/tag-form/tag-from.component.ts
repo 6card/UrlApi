@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter, Input, OnChanges, SimpleChanges, SimpleChange } from "@angular/core";
+import { Component, OnInit, OnDestroy, Output, EventEmitter, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { Subject } from 'rxjs/index';
@@ -11,8 +11,8 @@ import { AuthenticationService } from '../../services/auth.service';
 import { Tag } from '../../models/object-base';
 
 @Component({
-    selector: "app-tag-form",
-    templateUrl: "./tag-form.component.html"
+    selector: 'app-tag-form',
+    templateUrl: './tag-form.component.html'
 })
 
 export class TagFormComponent implements OnInit, OnDestroy, OnChanges {
@@ -149,19 +149,19 @@ class TagFormControl extends FormControl {
         if (this.errors) {
             for (let errorName in this.errors) {
                 switch (errorName) {
-                    case "required":
+                    case 'required':
                         messages.push(`Заполните ${this.label}`);
                     break;
-                    case "minlength":
+                    case 'minlength':
                         messages.push(`A ${this.label} must be at least ${this.errors['minlength'].requiredLength} characters`);
                     break;
-                    case "maxlength":
+                    case 'maxlength':
                         messages.push(`A ${this.label} must be no more than ${this.errors['maxlength'].requiredLength} characters`);
                     break;
-                    case "limit":
+                    case 'limit':
                         messages.push(`A ${this.label} cannot be more than ${this.errors['limit'].limit}`);
                     break;
-                    case "pattern":
+                    case 'pattern':
                         messages.push(`The ${this.label} containsillegal characters`);
                     break;
                 }
@@ -187,25 +187,25 @@ class TagFormGroup extends FormGroup {
 
     constructor() {
         super({
-            PathId: new TagFormControl("PathId", "PathId", CONTROL_INPUT, ""),
+            PathId: new TagFormControl('PathId', 'PathId', CONTROL_INPUT, ''),
             
-            PathLatin: new TagFormControl("PathLatin", "PathLatin", CONTROL_INPUT, ""),
-            PathSuffix: new TagFormControl("PathSuffix", "PathSuffix", CONTROL_INPUT, ""),
-            ParentPathLatin: new TagFormControl("ParentPathLatin", "ParentPathLatin", CONTROL_INPUT, ""),
-            ParentPathId: new TagFormControl("ParentPathId", "ParentPathId", CONTROL_INPUT, ""),
+            PathLatin: new TagFormControl('PathLatin', 'PathLatin', CONTROL_INPUT, ''),
+            PathSuffix: new TagFormControl('PathSuffix', 'PathSuffix', CONTROL_INPUT, ''),
+            ParentPathLatin: new TagFormControl('ParentPathLatin', 'ParentPathLatin', CONTROL_INPUT, ''),
+            ParentPathId: new TagFormControl('ParentPathId', 'ParentPathId', CONTROL_INPUT, ''),
 
-            Url: new TagFormControl("Url", "Url", CONTROL_INPUT, ""),
-            GenerateLatin: new TagFormControl("зафиксировать", "GenerateLatin", CONTROL_CHECKBOX, false),
-            Name: new TagFormControl("Название", "Name", CONTROL_INPUT, "", Validators.compose([Validators.required])),
-            Description: new TagFormControl("Описание", "Description", CONTROL_TEXTAREA, ""),
-            SeoNoIndex: new TagFormControl("Запрет индексации", "SeoNoIndex", CONTROL_CHECKBOX, false),
-            SeoEnable: new TagFormControl("Использовать данные SEO", "SeoEnable", CONTROL_CHECKBOX, false),
-            SeoTitle: new TagFormControl("Title", "SeoTitle", CONTROL_INPUT, ""),
-            SeoDescription: new TagFormControl("Description", "SeoDescription", CONTROL_TEXTAREA, ""),
-            SeoKeywords: new TagFormControl("Keywords", "SeoKeywords", CONTROL_INPUT, ""),            
+            Url: new TagFormControl('Url', 'Url', CONTROL_INPUT, ''),
+            GenerateLatin: new TagFormControl('зафиксировать', 'GenerateLatin', CONTROL_CHECKBOX, false),
+            Name: new TagFormControl('Название', 'Name', CONTROL_INPUT, '', Validators.compose([Validators.required])),
+            Description: new TagFormControl('Описание', 'Description', CONTROL_TEXTAREA, ''),
+            SeoNoIndex: new TagFormControl('Запрет индексации', 'SeoNoIndex', CONTROL_CHECKBOX, false),
+            SeoEnable: new TagFormControl('Использовать данные SEO', 'SeoEnable', CONTROL_CHECKBOX, false),
+            SeoTitle: new TagFormControl('Title', 'SeoTitle', CONTROL_INPUT, ''),
+            SeoDescription: new TagFormControl('Description', 'SeoDescription', CONTROL_TEXTAREA, ''),
+            SeoKeywords: new TagFormControl('Keywords', 'SeoKeywords', CONTROL_INPUT, ''),            
             /*
-            PathParentId: new TagFormControl("PathParentId", "PathParentId", CONTROL_INPUT, ""),
-            PathId: new TagFormControl("PathId", "PathId", CONTROL_INPUT, ""),
+            PathParentId: new TagFormControl('PathParentId', 'PathParentId', CONTROL_INPUT, ''),
+            PathId: new TagFormControl('PathId', 'PathId', CONTROL_INPUT, ''),
             */
         });
     }

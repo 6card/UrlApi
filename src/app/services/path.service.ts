@@ -4,10 +4,10 @@ import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http'
 import {Observable, of, throwError} from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import { AlertService } from './alert.service'
+import { AlertService } from './alert.service';
 
 import { ObjectBase, MoveObject, Path, Tag } from '../models/object-base';
-import { SimpleQuery } from '../models/search-query.model'
+import { SimpleQuery } from '../models/search-query.model';
 
 import { APP_API_URLS } from '../config/config';
 
@@ -36,7 +36,7 @@ export class PathService {
     const params = new HttpParams()
     .set('sessionId', sessionId)
     .set('id', String(id));
-    return this.http.get(url, {params})
+    return this.http.get<Path>(url, {params})
       .pipe( catchError(this.handleError(url)));
   }
 
@@ -193,8 +193,8 @@ export class PathService {
 
       return throwError(
         `Response ${operation} failed. ${error.message}`);
-    }
-  };
+    };
+  }
 
 
 }

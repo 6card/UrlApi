@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
 
-import { AlertService } from './alert.service'
+import { AlertService } from './alert.service';
 
 import {Observable, throwError, of} from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -19,7 +19,7 @@ export class SearchService {
     private alertService: AlertService
     ) { }
 
-  private getSerachType(index: number): string{
+  private getSerachType(index: number): string {
     const types = {
         1: this.API_URLS.CHANNEL_SEARCH,
         3: this.API_URLS.MEDIA_SEARCH,
@@ -33,7 +33,7 @@ export class SearchService {
     return types[index] || null;
   }
 
-  private getSerachCountType(index: number): string{
+  private getSerachCountType(index: number): string {
     const types = {
         1: this.API_URLS.CHANNEL_SEARCH_COUNT,
         3: this.API_URLS.MEDIA_SEARCH_COUNT,
@@ -47,22 +47,22 @@ export class SearchService {
     return types[index] || null;
   }
 
-  public getSerachTypeName(index: number): string{
+  public getSerachTypeName(index: number): string {
     const types = {
-        1: "Канал",
-        3: "Ролик",
-        4: "Тема",
-        5: "Персона",
-        6: "Тег",
-        7: "Раздел",
-        8: "Передача"
+        1: 'Канал',
+        3: 'Ролик',
+        4: 'Тема',
+        5: 'Персона',
+        6: 'Тег',
+        7: 'Раздел',
+        8: 'Передача'
     };
     return types[index] || null;
   }
 
   search(typeId: number, sessionId: string, data: any) {
     const method = this.getSerachType(typeId);
-    const url = `${this.API_URLS.ROOT}${method}`
+    const url = `${this.API_URLS.ROOT}${method}`;
     const params = new HttpParams()
     .set('sessionId', sessionId);
 
@@ -72,21 +72,19 @@ export class SearchService {
 
   searchCount(typeId: number, sessionId: string, data: any) {
       const method = this.getSerachCountType(typeId);
-      const url = `${this.API_URLS.ROOT}${method}`
+      const url = `${this.API_URLS.ROOT}${method}`;
       const params = new HttpParams()
       .set('sessionId', sessionId);
-  
       return this.http.post<any>(url, data, {params})
       .pipe( catchError(this.handleError(url)) );
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      
       this.alertService.error(`Response ${operation} failed. ${error.message}`);
 
       return of(result as T);
     };
-  };
+  }
 
 }

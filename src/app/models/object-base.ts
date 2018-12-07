@@ -9,7 +9,7 @@ export class ObjectBase {
     SeoNoIndex: boolean;
     SeoTitle: string;
     SeoDescription: string;
-    SeoKeywords: string;     
+    SeoKeywords: string;
     Id: number;
     PathId: number;
     PathLatin: string;
@@ -21,7 +21,7 @@ export class ObjectBase {
     HistoryPath: Array<any>;
     HistoryObject: Array<any>;
     Redirects: Array<any>;
-  
+
     constructor(obj: {
         GlobalId?: number,
         ObjectId?: number,
@@ -33,7 +33,7 @@ export class ObjectBase {
         SeoEnable?: boolean,
         SeoTitle?: string,
         SeoDescription?: string,
-        SeoKeywords?: string,        
+        SeoKeywords?: string,
         Id?: number,
         PathId?: number,
         PathLatin?: string,
@@ -45,8 +45,7 @@ export class ObjectBase {
         HistoryPath?: Array<any>,
         HistoryObject?: Array<any>,
         Redirects?: Array<any>
-    } = {}) 
-    {
+    } = {} ) {
         this.GlobalId = obj.GlobalId;
         this.ObjectId = obj.ObjectId;
         this.ObjectTypeId = obj.ObjectTypeId;
@@ -57,7 +56,7 @@ export class ObjectBase {
         this.SeoEnable = obj.SeoEnable;
         this.SeoTitle = obj.SeoTitle  || '';
         this.SeoDescription = obj.SeoDescription  || '';
-        this.SeoKeywords = obj.SeoKeywords || '';        
+        this.SeoKeywords = obj.SeoKeywords || '';
         this.Id = obj.Id;
         this.PathId = obj.PathId;
         this.PathLatin = obj.PathLatin || '';
@@ -73,214 +72,214 @@ export class ObjectBase {
   }
 
 export interface MoveObject {
-    Ids?: Array<number>,
-    ObjectTypeId: number,
-    ObjectId: number
+    Ids?: Array<number>;
+    ObjectTypeId: number;
+    ObjectId: number;
 }
 
-interface Channel { 
-    Id: number,
-    Name: string,
-    Description: string,
-    Url: string,
+interface Channel {
+    Id: number;
+    Name: string;
+    Description: string;
+    Url: string;
 
-    SeoKeywords: string,
-    SeoNoIndex: boolean,
-    SeoEnable: boolean,
-    
-    Path: string,
-    PathId: number,
-    PathLatin: string,
-    PathSuffix: number,
+    SeoKeywords: string;
+    SeoNoIndex: boolean;
+    SeoEnable: boolean;
 
-    ParentPath: string,
-    ParentPathId: number,
-    ParentPathLatin: string,
-    ParentPathSuffix: number,
-    
-    IconId: number,
-    LogoId: number,
+    Path: string;
+    PathId: number;
+    PathLatin: string;
+    PathSuffix: number;
+
+    ParentPath: string;
+    ParentPathId: number;
+    ParentPathLatin: string;
+    ParentPathSuffix: number;
+
+    IconId: number;
+    LogoId: number;
 }
 
 export interface Tag {
-    Id: number,
-    Name: string,    
-    Description: string,
-    Url: string,
+    Id: number;
+    Name: string;
+    Description: string;
+    Url: string;
 
-    SeoKeywords: string,
-    SeoNoIndex: boolean,
-    SeoEnable: boolean,
-    
-    Path: string,    
-    PathId: number,
-    PathLatin: string,
-    PathSuffix: number,
+    SeoKeywords: string;
+    SeoNoIndex: boolean;
+    SeoEnable: boolean;
 
-    ParentPath: string,
-    ParentPathId: number,
-    ParentPathLatin: string,
-    ParentPathSuffix: number,
+    Path: string;
+    PathId: number;
+    PathLatin: string;
+    PathSuffix: number;
 
-    SeoTitle: string,
-    SeoDescription: string,
+    ParentPath: string;
+    ParentPathId: number;
+    ParentPathLatin: string;
+    ParentPathSuffix: number;
+
+    SeoTitle: string;
+    SeoDescription: string;
 }
 
 interface Theme {
-    Id: number,
-    Name: string,    
-    Description: string,
-    Url: string,
+    Id: number;
+    Name: string;
+    Description: string;
+    Url: string;
 
-    SeoKeywords: string,
-    SeoNoIndex: boolean,
-    SeoEnable: boolean,
-    
-    Path: string,    
-    PathId: number,
-    PathLatin: string,
-    PathSuffix: number,
+    SeoKeywords: string;
+    SeoNoIndex: boolean;
+    SeoEnable: boolean;
 
-    ParentPath: string,
-    ParentPathId: number,
-    ParentPathLatin: string,
-    ParentPathSuffix: number,
-    
-    IconId: number,
-    LogoId: number,
+    Path: string;
+    PathId: number;
+    PathLatin: string;
+    PathSuffix: number;
+
+    ParentPath: string;
+    ParentPathId: number;
+    ParentPathLatin: string;
+    ParentPathSuffix: number;
+
+    IconId: number;
+    LogoId: number;
 }
 
 interface Person {
-    Id: number,
-    Name: string,    
-    Description: string,
-    Url: string,
+    Id: number;
+    Name: string;
+    Description: string;
+    Url: string;
 
-    SeoKeywords: string,
-    SeoNoIndex: boolean,
-    SeoEnable: boolean,
-    
-    Path: string,
-    PathId: number,
-    PathLatin: string,
-    PathSuffix: number,
+    SeoKeywords: string;
+    SeoNoIndex: boolean;
+    SeoEnable: boolean;
 
-    ParentPath: string,
-    ParentPathId: number,
-    ParentPathLatin: string,
-    ParentPathSuffix: number,
+    Path: string;
+    PathId: number;
+    PathLatin: string;
+    PathSuffix: number;
 
-    IconId: number,
-    LogoId: number,
+    ParentPath: string;
+    ParentPathId: number;
+    ParentPathLatin: string;
+    ParentPathSuffix: number;
+
+    IconId: number;
+    LogoId: number;
 }
 
-interface Section {    
-    Id: number,
-    Name: string,
-    Description: string,
-    Url: string,
-    
-    SeoKeywords: string,
-    SeoNoIndex: boolean,
-    SeoEnable: boolean,
-    
-    Path: string,
-    PathId: number,
-    PathLatin: string,
-    PathSuffix: number,
+interface Section {
+    Id: number;
+    Name: string;
+    Description: string;
+    Url: string;
 
-    ParentPath: string,    
-    ParentPathId: number,
-    ParentPathLatin: string,
-    ParentPathSuffix: number,
+    SeoKeywords: string;
+    SeoNoIndex: boolean;
+    SeoEnable: boolean;
 
-    FullName: string,
-    ParentId: number,
-    ParentName: string,
-    
-    SeoTitle: string,
-    SeoDescription: string,
-    
-    IconId: number,
-    LogoId: number,
+    Path: string;
+    PathId: number;
+    PathLatin: string;
+    PathSuffix: number;
+
+    ParentPath: string;
+    ParentPathId: number;
+    ParentPathLatin: string;
+    ParentPathSuffix: number;
+
+    FullName: string;
+    ParentId: number;
+    ParentName: string;
+
+    SeoTitle: string;
+    SeoDescription: string;
+
+    IconId: number;
+    LogoId: number;
 }
 
 interface Media {
-    Id: number,
-    Name: string,
-    Description: string,
-    Url: string,
+    Id: number;
+    Name: string;
+    Description: string;
+    Url: string;
 
-    Path: string,
-    PathId: number,
-    PathLatin: string,
-    PathSuffix: number,
+    Path: string;
+    PathId: number;
+    PathLatin: string;
+    PathSuffix: number;
 
-    ParentPath: string,
-    ParentPathId: number,
-    ParentPathLatin: string,
-    ParentPathSuffix: number,
+    ParentPath: string;
+    ParentPathId: number;
+    ParentPathLatin: string;
+    ParentPathSuffix: number;
 
-    ShootDate: Date,
-    PubDate: Date,
-    StateId: number,
-    StateName: string,
-    Duration: number,
-    ChannelId: number,
-    ChannelName: string,
-    SectionId: number,
-    SectionName: string,
-    SeriesId: number,
-    SeriesName: string,
-    KeyFrameId: number,
-    Tags: Array<Tag>,
-    Sections: Array<Section>,
-    Persons: Array<Person>,    
-    Themes: Array<Theme>,
+    ShootDate: Date;
+    PubDate: Date;
+    StateId: number;
+    StateName: string;
+    Duration: number;
+    ChannelId: number;
+    ChannelName: string;
+    SectionId: number;
+    SectionName: string;
+    SeriesId: number;
+    SeriesName: string;
+    KeyFrameId: number;
+    Tags: Array<Tag>;
+    Sections: Array<Section>;
+    Persons: Array<Person>;
+    Themes: Array<Theme>;
 }
 
 
 export interface Path {
-    Id: number,
-    Name: string,
-    Description: string,
-    Url: string,    
-    
-    SeoKeywords: string,
-    SeoNoIndex: boolean,
-    SeoEnable: boolean,
-    
-    Path: string,
-    PathId: number,
-    PathLatin: string,
-    PathSuffix: number,
+    Id: number;
+    Name: string;
+    Description: string;
+    Url: string;
 
-    ParentPath: string,
-    ParentPathId: number,
-    ParentPathLatin: string,
-    ParentPathSuffix: number,
+    SeoKeywords: string;
+    SeoNoIndex: boolean;
+    SeoEnable: boolean;
 
-    SeoTitle: string,
-    SeoDescription: string,  
+    Path: string;
+    PathId: number;
+    PathLatin: string;
+    PathSuffix: number;
 
-    GlobalId: number,
-    ObjectId: number,
-    ObjectTypeId: number,
-    ObjectTypeName: string,
-    Redirect: Path | Channel | Tag | Theme | Person | Section | Media, 
-    HistoryPath: Array<HistoryPath>,
-    HistoryObject: Array<HistoryObject>,
-    Redirects: Array<Path>,      
+    ParentPath: string;
+    ParentPathId: number;
+    ParentPathLatin: string;
+    ParentPathSuffix: number;
+
+    SeoTitle: string;
+    SeoDescription: string;
+
+    GlobalId: number;
+    ObjectId: number;
+    ObjectTypeId: number;
+    ObjectTypeName: string;
+    Redirect: Path | Channel | Tag | Theme | Person | Section | Media;
+    HistoryPath: Array<HistoryPath>;
+    HistoryObject: Array<HistoryObject>;
+    Redirects: Array<Path>;
 }
 
 interface HistoryPath {
-    Id: number,
-    Item: Path,
-    CreateTime: Date
+    Id: number;
+    Item: Path;
+    CreateTime: Date;
 }
 
 interface HistoryObject {
-    Id: number,
-    Item: Path | Channel | Tag | Theme | Person | Section | Media,
-    CreateTime: Date
+    Id: number;
+    Item: Path | Channel | Tag | Theme | Person | Section | Media;
+    CreateTime: Date;
 }

@@ -7,7 +7,7 @@ export interface Meta {
     DefaultFilter: {
         Column: number;
         Operation: number;
-    }
+    };
 }
 
 export interface MetaColumn {

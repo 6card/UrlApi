@@ -19,10 +19,10 @@ import { finalize, map, filter } from 'rxjs/operators';
 @Component({
     selector: 'app-move-tags',
     templateUrl: './move-tags.component.html',
-    //providers: [ MetaService ]
+    // providers: [ MetaService ]
 })
 
-export class MoveTagsComponent implements OnInit{ 
+export class MoveTagsComponent implements OnInit {
 
     public tagIds: string;
     public searchMedias: Array<any>;
@@ -48,20 +48,22 @@ export class MoveTagsComponent implements OnInit{
     ) { }
 
     ngOnInit() {
-        //this.metaService.loadMeta(6);
+        // this.metaService.loadMeta(6);
         this.activatedRoute.queryParams
         .pipe(filter( param => param.tagIds ))
         .subscribe( (param: Params) => {
-            this.tagIds = this.parseParam(param.tagIds);                
-            let query: SimpleQuery = { Operation: 0, Columns: [], Tables: [ {Table: 6, Values: this.numberTagIds}] };
+            this.tagIds = this.parseParam(param.tagIds);
+            const query: SimpleQuery = { Operation: 0, Columns: [], Tables: [ {Table: 6, Values: this.numberTagIds}] };
             this.searchMediasQuery = new SearchQuery([query]);
             this.getMediasItem();
-        }); 
+        });
     }
 
     private parseParam(param: string) {
-        if (typeof param === "undefined") return false;
-        return JSON.parse(decodeURIComponent(param))
+        if (typeof param === 'undefined') {
+            return false;
+        }
+        return JSON.parse(decodeURIComponent(param));
     }
 
     onChangeTagsIds(ids: string) {
@@ -82,34 +84,34 @@ export class MoveTagsComponent implements OnInit{
     */
 
 
-    public pageChange(page: number) {    
+    public pageChange(page: number) {
         this.searchMediasQuery.setPage(page);
-        this.getMediasItem();    
+        this.getMediasItem();
     }
 
-    public getMediasItem() {        
+    public getMediasItem() {
 
         this.loading = true;
-  
+
         forkJoin (
             this.searchService.search(3, this.authenticationService.sessionId, this.searchMediasQuery),
-            this.searchService.searchCount(3,this.authenticationService.sessionId, this.searchMediasQuery.Query),
+            this.searchService.searchCount(3, this.authenticationService.sessionId, this.searchMediasQuery.Query),
         )
-        .pipe( 
+        .pipe(
             finalize(() => this.loading = false),
             map( ([items, count]) => {
                 return {Items: items, Count: count};
-            })            
+            })
         )
         .subscribe( data => {
             this.searchMedias = data.Items;
             this.searchMediasCount = data.Count;
         });
-        
+
     }
 
     public deleteTags() {
-        if(confirm(
+        if (confirm(
           `Вы уверены что хотите удалить выбранные теги?`
         )) {
           this.deleteLoading = true;
@@ -119,7 +121,7 @@ export class MoveTagsComponent implements OnInit{
                 data => {
                   this.alertService.success('Теги удалены', 2000, true);
                   this.router.navigate(['/']);
-            });        
+            });
         }
       }
 
@@ -134,8 +136,7 @@ export class MoveTagsComponent implements OnInit{
         if (this.tagIds) {
             const params = { tagIds: encodeURIComponent(JSON.stringify(this.tagIds)) };
             this.router.navigate([], { replaceUrl: replaceUrl || false, queryParams: params});
-        }
-        else {
+        } else {
             this.router.navigate([], { replaceUrl: replaceUrl || false});
         }
     }

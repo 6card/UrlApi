@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, ViewChild, ElementRef, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -10,7 +10,7 @@ import { AuthenticationService } from '../../services/auth.service';
 import { PathService } from '../../services/path.service';
 import { AlertService } from '../../services/alert.service';
 
-import { finalize } from 'rxjs/operators';
+import { Path } from '../../models/object-base';
 
 @Component({
     selector: 'app-path',
@@ -18,13 +18,13 @@ import { finalize } from 'rxjs/operators';
   })
 
 export class EditPathComponent implements OnInit {
-  item: any;
+  item: Path;
   collapsePath: boolean = true;
   collapseObject: boolean = true;
   collapseRedirect: boolean = true;
-  
-  //@ViewChild("modal-content") modalContent: ElementRef;
-    
+
+  // @ViewChild("modal-content") modalContent: ElementRef;
+
     constructor(
         private pathService: PathService,
         private authenticationService: AuthenticationService,
@@ -32,23 +32,19 @@ export class EditPathComponent implements OnInit {
         private activeRoute: ActivatedRoute,
         private modalService: NgbModal
       ) {}
-    
+
     public loadItem(id: number) {
       this.pathService.getByPathIdDetail(this.authenticationService.sessionId, id)
-        .subscribe(
-            data => {
-              this.item = data;
-            });
-
+        .subscribe( (data: Path) => this.item = data );
     }
 
-    public deleteObject () {      
+    public deleteObject () {
       this.pathService.deleteObject(this.authenticationService.sessionId, this.item.Id)
         .subscribe(
             data => {
               this.alertService.success('Объект удален', 2000);
               this.loadItem(this.item.Id);
-            });    
+            });
     }
 
 
@@ -70,22 +66,23 @@ export class EditPathComponent implements OnInit {
             this.setObject(data);
           }
       );
-      
+
     }
 
     public setObject(success: boolean) {
-      if (success)
+      if (success) {
         this.loadItem(this.item.Id);
+      }
     }
 
     public isRedirect(): boolean {
-      return this.item.ObjectTypeId == 11 ? true : false;
+      return this.item.ObjectTypeId === 11 ? true : false;
     }
 
     ngOnInit() {
         this.activeRoute.params.subscribe(routeParams => {
           this.loadItem(routeParams.id);
         });
-        
+
     }
 }

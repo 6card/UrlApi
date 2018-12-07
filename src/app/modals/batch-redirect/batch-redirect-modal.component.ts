@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angu
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { forkJoin } from 'rxjs';
-import { finalize, takeWhile, map } from 'rxjs/operators'
+import { finalize, takeWhile, map } from 'rxjs/operators';
 
 import { AuthenticationService } from '../../services/auth.service';
 import { PathService } from '../../services/path.service';
@@ -14,7 +14,7 @@ import { SortService } from '../../components/search-table/sort.service';
 import { SearchQuery, SimpleQuery, PageQuery } from '../../models/search-query.model';
 
 @Component({
-  selector: 'batch-redirect-modal',
+  selector: 'app-batch-redirect-modal',
   templateUrl: './batch-redirect-modal.component.html',
   providers: [ MetaService, SortService ]
 })
@@ -47,7 +47,7 @@ export class BatchRedirectModal implements OnInit, OnDestroy {
     ngOnInit() {
         this.sortService.columnSorted$
         .pipe(takeWhile(() => this.alive))
-        .subscribe(columns => {            
+        .subscribe(columns => {
             this.onSortChange(columns);
         });
     }
@@ -62,28 +62,25 @@ export class BatchRedirectModal implements OnInit, OnDestroy {
             this.sq = new SearchQuery();
 
             this.getResults();
-            this.metaService.loadMeta(id);    
-        }    
+            this.metaService.loadMeta(id);
+        }
     }
 
-    public isActive(id: number): boolean{
-        return this.typeId == id;
+    public isActive(id: number): boolean {
+        return this.typeId === id;
     }
 
     public onQuery(searchQuery: Array<SimpleQuery>) {
-        //console.log('onQuery');     
         this.sq.setQuery(searchQuery);
         this.getResults();
     }
 
     public onPageChange(pageNumber: number) {
-        //console.log('onPageChange');
         this.sq.setPage(pageNumber);
         this.getResults();
     }
 
-    public onSortChange(columns) {   
-        //console.log('onSortChange');     
+    public onSortChange(columns) {
         this.sq.setSort(columns);
         this.getResults();
     }
@@ -95,11 +92,11 @@ export class BatchRedirectModal implements OnInit, OnDestroy {
             this.searchService.search(this.typeId, this.authenticationService.sessionId, this.sq),
             this.searchService.searchCount(this.typeId,this.authenticationService.sessionId, this.sq.Query),
         )
-        .pipe( 
+        .pipe(
             finalize(() => this.submitLoading = false),
             map( ([items, count]) => {
                 return {Items: items, Count: count};
-            })            
+            })
         )
         .subscribe( data => {
             this.searchResult = data.Items;
@@ -107,24 +104,26 @@ export class BatchRedirectModal implements OnInit, OnDestroy {
         });
 
     }
-    
+
     public setObject(item: any, objectTypeId: number) {
         let text: string;
-        if (objectTypeId)
+        if (objectTypeId) {
             text = `Вы уверены назначить переадрессацию на "${this.searchService.getSerachTypeName(objectTypeId)}: ${item.Name}"?`;
-        else
+        } else {
             text = `Вы уверены назначить переадрессацию на "${item}"?`;
+        }
 
-        if(confirm(text)) {
-            let obj = {
-                "SetPathIds": this.objectsFromRedirect.pathIds,
-                "SetUrls": this.objectsFromRedirect.urls,
+        if (confirm(text)) {
+            const obj = {
+                'SetPathIds': this.objectsFromRedirect.pathIds,
+                'SetUrls': this.objectsFromRedirect.urls,
             };
-            if (objectTypeId)
+            if (objectTypeId) {
                 obj['ToPathId'] = item.PathId;
-            else
+            } else {
                 obj['ToUrl'] = item;
-           
+            }
+
             this.submitLoading = true;
             this.pathService.createManyRedirect(this.authenticationService.sessionId, obj)
             .pipe( finalize(() => this.submitLoading = false) )
@@ -133,7 +132,7 @@ export class BatchRedirectModal implements OnInit, OnDestroy {
                 this.activeModal.close();
                 this.finishQuery.emit(pathId);
             });
-            
+
         }
 
     }
@@ -141,10 +140,10 @@ export class BatchRedirectModal implements OnInit, OnDestroy {
     public navigateToPath(obj: any) {
         if (typeof obj === 'string') {
             this.error = null;
-            this.setObject(obj, 0)
+            this.setObject(obj, 0);
         } else {
             this.error = null;
-            this.setObject(obj, obj.ObjectTypeId)
+            this.setObject(obj, obj.ObjectTypeId);
         }
     }
 }

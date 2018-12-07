@@ -14,7 +14,7 @@ import { SortService } from '../../components/search-table/sort.service';
 import { SearchQuery, SimpleQuery } from '../../models/search-query.model';
 
 @Component({
-  selector: 'move-tag-modal',
+  selector: 'app-move-tag-modal',
   templateUrl: './move-tag-modal.component.html',
   providers: [ MetaService, SortService ]
 })
@@ -33,17 +33,17 @@ export class MoveTagModal implements OnInit, OnDestroy {
     constructor(
         public activeModal: NgbActiveModal,
         protected metaService: MetaService,
-        protected sortService: SortService, 
+        protected sortService: SortService,
         protected searchService: SearchService,
         protected pathService: PathService,
         protected alertService: AlertService,
         protected authenticationService: AuthenticationService,
     ) {}
 
-    ngOnInit() {        
+    ngOnInit() {
         this.sortService.columnSorted$
         .pipe(takeWhile(() => this.alive))
-        .subscribe(columns => {            
+        .subscribe(columns => {
             this.onSortChange(columns);
         });
 
@@ -60,12 +60,12 @@ export class MoveTagModal implements OnInit, OnDestroy {
             this.sq = new SearchQuery();
 
             this.getResults();
-            this.metaService.loadMeta(id);    
-        }    
+            this.metaService.loadMeta(id);
+        }
     }
 
-    public isActive(id: number): boolean{
-        return this.typeId == id;
+    public isActive(id: number): boolean {
+        return this.typeId === id;
     }
 
 
@@ -74,13 +74,13 @@ export class MoveTagModal implements OnInit, OnDestroy {
 
         forkJoin (
             this.searchService.search(this.typeId, this.authenticationService.sessionId, this.sq),
-            this.searchService.searchCount(this.typeId,this.authenticationService.sessionId, this.sq.Query),
+            this.searchService.searchCount(this.typeId, this.authenticationService.sessionId, this.sq.Query),
         )
-        .pipe( 
+        .pipe(
             finalize(() => this.loading = false),
             map( ([items, count]) => {
                 return {Items: items, Count: count};
-            })            
+            })
         )
         .subscribe( data => {
             this.searchResult = data.Items;
@@ -100,20 +100,21 @@ export class MoveTagModal implements OnInit, OnDestroy {
         this.getResults();
     }
 
-    public onSortChange(columns) {        
+    public onSortChange(columns) {
         this.sq.setSort(columns);
         this.getResults();
     }
 
     public setObject(item: any, objectTypeId: number) {
-        if(confirm(
-            `Вы уверены что хотите перенести ролики из объекта "${this.currentItem.ObjectTypeName}: ${this.currentItem.Name}" в "${this.searchService.getSerachTypeName(objectTypeId)}: ${item.Name}"?`
+        if (confirm(
+            `Вы уверены что хотите перенести ролики из объекта "${this.currentItem.ObjectTypeName}: ${this.currentItem.Name}"
+            в "${this.searchService.getSerachTypeName(objectTypeId)}: ${item.Name}"?`
         )) {
             const obj = {
-                "ObjectTypeId": objectTypeId,
-                "ObjectId": item.Id
+                'ObjectTypeId': objectTypeId,
+                'ObjectId': item.Id
             };
-           
+
             this.loading = true;
             this.pathService.moveAndDeleteTag(this.authenticationService.sessionId, this.currentItem.ObjectId, obj)
             .pipe( finalize(() => this.loading = false) )
@@ -122,7 +123,7 @@ export class MoveTagModal implements OnInit, OnDestroy {
                 this.activeModal.close();
                 this.finishQuery.emit(obj);
             });
-            
+
         }
 
     }

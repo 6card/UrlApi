@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
-import { Router, ActivatedRoute, Params } from "@angular/router";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { forkJoin } from 'rxjs';
-import { filter, finalize, takeWhile, map } from 'rxjs/operators'
+import { filter, finalize, takeWhile, map } from 'rxjs/operators';
 
 import { AuthenticationService } from '../../services/auth.service';
 import { SearchService } from '../../services/search.service';
@@ -45,21 +45,27 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
         private sortService: SortService,
         private modalService: NgbModal,
     ) { }
-    
+
     ngOnInit() {
 
         this.activatedRoute.queryParams
         .pipe(filter( param => param.q || param.p || param.typeId))
         .subscribe( (param: Params) => {
             this.metaService.loadMeta(Number(param.typeId));
-            this.setSearchParams(Number(param.typeId), this.parseParam(param.q), this.parseParam(param.p), this.parseParam(param.sm), this.parseParam(param.smu));                
+            this.setSearchParams(
+                Number(param.typeId),
+                this.parseParam(param.q),
+                this.parseParam(param.p),
+                this.parseParam(param.sm),
+                this.parseParam(param.smu)
+            );
             this.getResults();
-            this.getSelectedMedias(); 
-        }); 
+            this.getSelectedMedias();
+        });
 
         this.sortService.columnSorted$
         .pipe(takeWhile(() => this.alive))
-        .subscribe(columns => {            
+        .subscribe(columns => {
             this.onSortChange(columns);
         });
 
@@ -82,7 +88,7 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
         this.navigate();
     }
 
-    public onSortChange(columns) {     
+    public onSortChange(columns) {
         this.sq.setSort(columns);
         this.navigate();
     }
@@ -93,22 +99,26 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
     }
 
     private parseParam(param: string) {
-        if (typeof param === "undefined") return false;
-        return JSON.parse(decodeURIComponent(param))
+        if (typeof param === 'undefined') {
+            return false;
+        }
+        return JSON.parse(decodeURIComponent(param));
     }
 
     public setType(id: number): void {
         this.typeId = id;
-        let params = { typeId: this.typeId };
-        if (this.selectedMediaIds.length)
+        const params = { typeId: this.typeId };
+        if (this.selectedMediaIds.length) {
             params['sm'] = this.encodeUri(this.selectedMediaIds);
-        if (this.selectedMediaUrls.length)
+        }
+        if (this.selectedMediaUrls.length) {
             params['smu'] = this.encodeUri(this.selectedMediaUrls);
+        }
         this.navigate(false, params);
     }
 
-    public isActive(id: number): boolean{
-        return this.typeId == id;
+    public isActive(id: number): boolean {
+        return this.typeId === id;
     }
 
     private encodeUri(value: any): string {
@@ -124,34 +134,37 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
     }
 
     public navigate(replaceUrl?: boolean, params?: any) {
-        let prm = { typeId: this.typeId };
+        const prm = { typeId: this.typeId };
         const srl = this.serialize(this.sq.Query, this.sq.Page, this.selectedMediaIds, this.selectedMediaUrls);
-        if (this.typeId) {            
-            prm['q']= srl.q;
+        if (this.typeId) {
+            prm['q'] = srl.q;
             prm['p'] = srl.p;
         }
-        if (this.selectedMediaIds.length)
+        if (this.selectedMediaIds.length) {
             prm['sm'] = srl.sm;
-        if (this.selectedMediaUrls.length)
+        }
+        if (this.selectedMediaUrls.length) {
             prm['smu'] = srl.smu;
+        }
 
         this.router.navigate([], { replaceUrl: replaceUrl || false, queryParams: params ? params : prm });
     }
 
     getResults() {
-        if (!this.typeId)
+        if (!this.typeId) {
             return;
+        }
         this.submitLoading = true;
 
         forkJoin (
             this.searchService.search(this.typeId, this.authenticationService.sessionId, this.sq),
-            this.searchService.searchCount(this.typeId,this.authenticationService.sessionId, this.sq.Query),
+            this.searchService.searchCount(this.typeId, this.authenticationService.sessionId, this.sq.Query),
         )
-        .pipe( 
+        .pipe(
             finalize(() => this.submitLoading = false),
             map( ([items, count]) => {
                 return {Items: items, Count: count};
-            })            
+            })
         )
         .subscribe( data => {
             this.searchResult = data.Items;
@@ -160,36 +173,40 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
     }
 
     public containInMediaIds(id: number): boolean {
-        if (this.selectedMediaIds.indexOf(id) != -1)
+        if (this.selectedMediaIds.indexOf(id) !== -1) {
             return true;
-
+        }
         return false;
     }
 
     public selectMedia(id: number) {
-        if (!this.containInMediaIds(id))
+        if (!this.containInMediaIds(id)) {
             this.selectedMediaIds.push(id);
+        }
 
         this.navigate(true);
     }
 
-    public deleteMediaItem(item: any) {        
-        if (typeof item === 'string')
+    public deleteMediaItem(item: any) {
+        if (typeof item === 'string') {
             this.selectedMediaUrls.splice(this.selectedMediaUrls.indexOf(item), 1);
-        else
+        } else {
             this.selectedMediaIds.splice(this.selectedMediaIds.indexOf(item), 1);
+        }
         this.navigate(true);
     }
 
 
     public getSelectedMedias() {
         this.urlListLoading = true;
-        let query: SimpleQuery = { Operation: 0, Columns: [ { Column: 1, Operation: 9, Value: this.selectedMediaIds}], Tables: [ ] };
-        let pathSearchQuery = new SearchQuery([query]);
+        const query: SimpleQuery = {
+            Operation: 0, Columns: [ { Column: 1, Operation: 9, Value: this.selectedMediaIds}], Tables: [ ]
+        };
+        const pathSearchQuery = new SearchQuery([query]);
 
         this.searchService.search(11, this.authenticationService.sessionId, pathSearchQuery.queryWithoutPage)
-        .pipe( 
-            finalize(() => this.urlListLoading = false),          
+        .pipe(
+            finalize(() => this.urlListLoading = false),
         )
         .subscribe( data => {
             this.selectedMedias = data;
@@ -201,13 +218,13 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
     }
 
     public addToMedias($event) {
-        if ($event){
+        if ($event) {
             if (typeof $event === 'string') {
-                if (!this.selectedMediaUrls.find( i => i == $event))
+                if (!this.selectedMediaUrls.find( i => i === $event)) {
                     this.selectedMediaUrls.push($event);
-                    this.navigate(true);
-            }
-            else {            
+                }
+                this.navigate(true);
+            } else {
                 this.selectMedia($event.PathId);
             }
         }
@@ -215,7 +232,9 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
     }
 
     public openRedirectModal() {
-        const modalRef = this.modalService.open(BatchRedirectModal, {size: 'lg', ariaLabelledBy: 'modal-batch-redirect', backdrop: 'static'});
+        const modalRef = this.modalService.open(
+            BatchRedirectModal, {size: 'lg', ariaLabelledBy: 'modal-batch-redirect', backdrop: 'static'}
+        );
         modalRef.componentInstance.objectsFromRedirect = {pathIds: this.selectedMediaIds, urls: this.selectedMediaUrls};
         modalRef.componentInstance.finishQuery
             .subscribe( pathId => this.router.navigate(['/path', pathId]));

@@ -6,7 +6,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 
 import { Meta, MetaColumn } from '../models/meta.model';
 
-import { AlertService } from './alert.service'
+import { AlertService } from './alert.service';
 
 import { APP_API_URLS } from '../config/config';
 
@@ -25,14 +25,14 @@ export class MetaService {
         private alertService: AlertService
     ) { }
 
-    get meta(): Observable<any> {        
+    get meta(): Observable<any> {
         return this._meta.asObservable();
     }
 
-    loadMeta(typeId: number){
-        this.lastMeta = null; 
+    loadMeta(typeId: number) {
+        this.lastMeta = null;
         this.getMeta(typeId)
-        .subscribe(            
+        .subscribe(
             (data: Meta) => {
                 if (data !== null) {
                     this._meta.next(data);
@@ -43,9 +43,9 @@ export class MetaService {
         );
     }
 
-    getMeta(typeId: number) { 
-        const url = `${this.API_URLS.ROOT}${this.API_URLS.META_GET_META}`
-        const params = new HttpParams().set('typeId', String(typeId));    
+    getMeta(typeId: number) {
+        const url = `${this.API_URLS.ROOT}${this.API_URLS.META_GET_META}`;
+        const params = new HttpParams().set('typeId', String(typeId));
         return this.http.get(url, {params})
         .pipe( catchError(this.handleError(url)) );
     }
@@ -56,5 +56,5 @@ export class MetaService {
           this.alertService.error(`Response ${operation} failed. ${error.message}`);
           return of(result as T);
         };
-    };
+    }
 }
