@@ -1,11 +1,10 @@
 
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, Inject } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { MoveTagModal } from './move-tag-modal.component';
 
-import { Subscription, forkJoin } from 'rxjs';
-import { finalize, map, takeWhile } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 
 import { AuthenticationService } from '../../services/auth.service';
 import { SearchService } from '../../services/search.service';
@@ -14,14 +13,16 @@ import { AlertService } from '../../services/alert.service';
 import { MetaService } from '../../services/meta.service';
 import { SortService } from '../../components/search-table/sort.service';
 
-import { APP_CONST } from '../../config/const';
-
+@Component({
+    selector: 'move-tags-modal',
+    templateUrl: './move-tag-modal.component.html',
+    providers: [ MetaService, SortService ]
+})
 export class MoveTagsModal extends MoveTagModal{
 
     @Input() selectedIds: Array<number>;
 
     constructor(
-        @Inject(APP_CONST) protected config,
         public activeModal: NgbActiveModal,
         protected metaService: MetaService,
         protected sortService: SortService, 
