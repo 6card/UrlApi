@@ -1,22 +1,23 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { CookieService } from 'ngx-cookie-service';
 
 import { map, first } from 'rxjs/operators';
+
+import { APP_API_URLS } from '../config/config';
  
 @Injectable({
     providedIn: 'root'
-  })
+})
 export class AuthenticationService {
     sessionId: string;
     username: string;
-    access: string = '2B646AA4-4ECC-43E0-8C42-4527329B0051';
 
     constructor(
+        @Inject(APP_API_URLS) private API_URLS,
         private http: HttpClient,
-        private cookieService: CookieService
-    
+        private cookieService: CookieService,    
     ) {
         //let lcstg = localStorage.getItem('currentUser');
         let lcstg = this.cookieService.get('currentUser');
@@ -29,7 +30,7 @@ export class AuthenticationService {
     private check() {
         const params = new HttpParams()
         .set('sessionId', this.sessionId);
-        return this.http.get(`https://api.newstube.ru/v2/Auth/Check`, {params})
+        return this.http.get(`${this.API_URLS.AUTH_ROOT}${this.API_URLS.AUTH_CHECK}`, {params})
         .subscribe(
             data => {
                 if (data === false)
@@ -41,7 +42,7 @@ export class AuthenticationService {
     }
  
     login(username: string, password: string) {
-        return this.http.post<any>(`https://api.newstube.ru/v2/Auth/Login`, { UserName: username, Password: password })
+        return this.http.post<any>(`${this.API_URLS.AUTH_ROOT}${this.API_URLS.AUTH_LOGIN}`, { UserName: username, Password: password })
             .pipe(
                 map(response => {
 

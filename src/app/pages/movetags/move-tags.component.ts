@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { MoveTagsModal } from '../../components/modals/move-tags-modal.component';
+import { MoveTagsModal } from '../../modals/move-tag/move-tags-modal.component';
 
 import { AuthenticationService } from '../../services/auth.service';
 import { PathService } from '../../services/path.service';

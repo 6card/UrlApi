@@ -14,7 +14,7 @@ import { SortService } from '../../components/search-table/sort.service';
 
 import { SearchQuery, SimpleQuery, PageQuery } from '../../models/search-query.model';
 
-import { BatchRedirectModal } from '../../components/modals/batch-redirect-modal.component';
+import { BatchRedirectModal } from '../../modals/batch-redirect/batch-redirect-modal.component';
 
 @Component({
   selector: 'app-batch-redirect',

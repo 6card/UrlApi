@@ -34,7 +34,7 @@ export class SearchPathComponent implements OnInit {
 
   ngOnInit() {
     this.pathByUrlForm = this.formBuilder.group({
-      url: [' https://www.newstube.ru/obrashchenie-putina', Validators.required],
+      url: ['', Validators.required],
     });
   }
 

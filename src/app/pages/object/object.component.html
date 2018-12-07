@@ -20,8 +20,8 @@
                 <div class="card-header">
                     <h4>Список роликов</h4>
                     <div class="btn-group" role="group" aria-label="Basic example" *ngIf="meta && meta.MediaListEditable">
-                        <button class="btn btn-outline-success" (click)="openModal(config.ADD)"><i class="fas fa-plus"></i> Добавить ролики</button>
-                        <button class="btn btn-outline-danger" (click)="openModal(config.DELETE)"><i class="fas fa-minus"></i> Удалить ролики</button>
+                        <button class="btn btn-outline-success" (click)="openModal(CONST.mediasMode.ADD)"><i class="fas fa-plus"></i> Добавить ролики</button>
+                        <button class="btn btn-outline-danger" (click)="openModal(CONST.mediasMode.DELETE)"><i class="fas fa-minus"></i> Удалить ролики</button>
                     </div>
                 </div>
                 <div class="card-body" [appLoading]="loading">

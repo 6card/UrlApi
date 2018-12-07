@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
 
 import { AlertService } from './alert.service'
@@ -6,26 +6,43 @@ import { AlertService } from './alert.service'
 import {Observable, throwError, of} from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
+import { APP_API_URLS } from '../config/config';
+
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService {
 
   constructor(
+    @Inject(APP_API_URLS) private API_URLS,
     private http: HttpClient,
     private alertService: AlertService
     ) { }
 
   private getSerachType(index: number): string{
     const types = {
-        1: "Channel",
-        3: "Media",
-        4: "Theme",
-        5: "Person",
-        6: "Tag",
-        7: "Section",
-        8: "Series",
-        11: "Path"
+        1: this.API_URLS.CHANNEL_SEARCH,
+        3: this.API_URLS.MEDIA_SEARCH,
+        4: this.API_URLS.THEME_SEARCH,
+        5: this.API_URLS.PERSON_SEARCH,
+        6: this.API_URLS.TAG_SEARCH,
+        7: this.API_URLS.SECTION_SEARCH,
+        8: this.API_URLS.SERIES_SEARCH,
+        11: this.API_URLS.PATH_SEARCH,
+    };
+    return types[index] || null;
+  }
+
+  private getSerachCountType(index: number): string{
+    const types = {
+        1: this.API_URLS.CHANNEL_SEARCH_COUNT,
+        3: this.API_URLS.MEDIA_SEARCH_COUNT,
+        4: this.API_URLS.THEME_SEARCH_COUNT,
+        5: this.API_URLS.PERSON_SEARCH_COUNT,
+        6: this.API_URLS.TAG_SEARCH_COUNT,
+        7: this.API_URLS.SECTION_SEARCH_COUNT,
+        8: this.API_URLS.SERIES_SEARCH_COUNT,
+        11: this.API_URLS.PATH_SEARCH_COUNT,
     };
     return types[index] || null;
   }
@@ -45,7 +62,7 @@ export class SearchService {
 
   search(typeId: number, sessionId: string, data: any) {
     const method = this.getSerachType(typeId);
-    const url = `https://api.newstube.ru/urldev/${method}/Search`
+    const url = `${this.API_URLS.ROOT}${method}`
     const params = new HttpParams()
     .set('sessionId', sessionId);
 
@@ -54,8 +71,8 @@ export class SearchService {
   }
 
   searchCount(typeId: number, sessionId: string, data: any) {
-      const method = this.getSerachType(typeId);
-      const url = `https://api.newstube.ru/urldev/${method}/SearchCount`
+      const method = this.getSerachCountType(typeId);
+      const url = `${this.API_URLS.ROOT}${method}`
       const params = new HttpParams()
       .set('sessionId', sessionId);
   
@@ -65,14 +82,9 @@ export class SearchService {
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-
-      // TODO: send the error to remote logging infrastructure
-      //console.error(error); // log to console instead
-  
-      // TODO: better job of transforming error for user consumption
+      
       this.alertService.error(`Response ${operation} failed. ${error.message}`);
-  
-      // Let the app keep running by returning an empty result.
+
       return of(result as T);
     };
   };

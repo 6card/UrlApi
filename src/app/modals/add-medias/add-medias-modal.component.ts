@@ -42,7 +42,7 @@ export class AddMediasModal implements OnInit, OnDestroy, AfterViewInit {
     private _columnSortedSubscription: Subscription;    
 
     constructor(
-        @Inject(APP_CONST) private config,
+        @Inject(APP_CONST) private CONST,
         public activeModal: NgbActiveModal,
         private metaService: MetaService,
         private sortService: SortService, 
@@ -72,9 +72,9 @@ export class AddMediasModal implements OnInit, OnDestroy, AfterViewInit {
     public loadMedias(searchQuery: SearchQuery) {
         let search = new SearchQuery( Object.assign([], searchQuery.Query), Object.assign({}, searchQuery.Page));
         
-        if (this.mode == this.config.ADD)
+        if (this.mode == this.CONST.mediasMode.ADD)
             search.addExceptTableQuery(this.objectSq);
-        else if (this.mode == this.config.DELETE)
+        else if (this.mode == this.CONST.mediasMode.DELETE)
             search.addIntersectTableQuery(this.objectSq);
 
         this.loading = true;
@@ -120,11 +120,11 @@ export class AddMediasModal implements OnInit, OnDestroy, AfterViewInit {
         //this.finishQuery.emit({mode: this.mode, query: this.sq});
 
         switch(this.mode) {
-            case this.config.ADD: { 
+            case this.CONST.mediasMode.ADD: { 
                 this.addMedias(this.sq.Query);
                 break; 
             }
-            case this.config.DELETE: { 
+            case this.CONST.mediasMode.DELETE: { 
                 this.deleteMedias(this.sq.Query);
                 break; 
             } 

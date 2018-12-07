@@ -7,8 +7,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
-import { AddMediasModal } from '../../components/modals/add-medias-modal.component';
-import { MoveTagModal } from '../../components/modals/move-tag-modal.component';
+import { AddMediasModal } from '../../modals/add-medias/add-medias-modal.component';
+import { MoveTagModal } from '../../modals/move-tag/move-tag-modal.component';
 
 import { AuthenticationService } from '../../services/auth.service';
 import { PathService } from '../../services/path.service';
@@ -41,7 +41,7 @@ export class ObjectComponent implements OnInit, AfterViewInit {
   public deleteLoading: boolean = false;
     
     constructor(
-        @Inject(APP_CONST) private config,
+        @Inject(APP_CONST) private CONST,
         @Inject(MetaService) private metaService,
         private pathService: PathService,
         private searchService: SearchService,

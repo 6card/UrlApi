@@ -3,8 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { SetObjectModal } from '../../components/modals/set-object-modal.component';
-import { AddRedirectModal } from '../../components/modals/add-redirect-modal.component';
+import { SetObjectModal } from '../../modals/set-object/set-object-modal.component';
+import { AddRedirectModal } from '../../modals/add-redirect/add-redirect-modal.component';
 
 import { AuthenticationService } from '../../services/auth.service';
 import { PathService } from '../../services/path.service';

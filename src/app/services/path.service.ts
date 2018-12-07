@@ -1,13 +1,15 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
+
+import {Observable, of, throwError} from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 
 import { AlertService } from './alert.service'
 
 import { ObjectBase, MoveObject, Path, Tag } from '../models/object-base';
 import { SimpleQuery } from '../models/search-query.model'
 
-import {Observable, of, throwError} from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { APP_API_URLS } from '../config/config';
 
 @Injectable({
   providedIn: 'root'
@@ -15,12 +17,13 @@ import { catchError, map, tap } from 'rxjs/operators';
 export class PathService {
 
   constructor(
+    @Inject(APP_API_URLS) private API_URLS,
     private http: HttpClient,
     private alertService: AlertService
     ) { }
 
   getByUrl(sessionId: string, str: string) {
-    const url = `https://api.newstube.ru/urldev/Path/GetByUrl`;
+    const url = `${this.API_URLS.ROOT}${this.API_URLS.PATH_GET_BY_URL}`;
     const params = new HttpParams()
     .set('sessionId', sessionId)
     .set('url', str);
@@ -29,7 +32,7 @@ export class PathService {
   }
 
   getByPathIdDetail(sessionId: string, id: number) {
-    const url = `https://api.newstube.ru/urldev/Path/GetByPathIdDetail`;
+    const url = `${this.API_URLS.ROOT}${this.API_URLS.PATH_GET_BY_PATH_ID_DETAIL}`;
     const params = new HttpParams()
     .set('sessionId', sessionId)
     .set('id', String(id));
@@ -38,7 +41,7 @@ export class PathService {
   }
 
   getByObjectDetail(sessionId: string, typeId: number, objectId: number) {
-    const url = `https://api.newstube.ru/urldev/Path/GetByObjectDetail`;
+    const url = `${this.API_URLS.ROOT}${this.API_URLS.PATH_GET_BY_OBJECT_DETAIL}`;
     const params = new HttpParams()
     .set('sessionId', sessionId)
     .set('objectId', String(objectId))
@@ -48,7 +51,7 @@ export class PathService {
   }
 
   updatePath(sessionId: string, data: Path) {
-    const url = `https://api.newstube.ru/urldev/Path/Update`;
+    const url = `${this.API_URLS.ROOT}${this.API_URLS.PATH_UPDATE}`;
     const params = new HttpParams()
       .set('sessionId', sessionId);
       return this.http.post<any>(url, data, {params})
@@ -57,7 +60,7 @@ export class PathService {
   }
 
   setObject(sessionId: string, id: number, object: MoveObject) {
-    const url = `https://api.newstube.ru/urldev/Path/SetObject`;
+    const url = `${this.API_URLS.ROOT}${this.API_URLS.PATH_SET_OBJECT}`;
     const params = new HttpParams()
       .set('sessionId', sessionId)
       .set('id', String(id));
@@ -66,7 +69,7 @@ export class PathService {
   }
 
   deleteObject(sessionId: string, id: number) {
-    const url = `https://api.newstube.ru/urldev/Path/Delete`;
+    const url = `${this.API_URLS.ROOT}${this.API_URLS.PATH_DELETE}`;
     const params = new HttpParams()
       .set('sessionId', sessionId)
       .set('id', String(id));
@@ -75,7 +78,7 @@ export class PathService {
   }
 
   getLatin(text: string) {
-    const url = `https://api.newstube.ru/urldev/Path/Latin`;
+    const url = `${this.API_URLS.ROOT}${this.API_URLS.PATH_LATIN}`;
     const params = new HttpParams()
     .set('text', text);
     return this.http.get<string>(url, {params})
@@ -83,7 +86,7 @@ export class PathService {
   }
 
   createTag(sessionId: string, tag: Tag) {
-    const url = `https://api.newstube.ru/urldev/Tag/Create`;
+    const url = `${this.API_URLS.ROOT}${this.API_URLS.TAG_CREATE}`;
     const params = new HttpParams()
       .set('sessionId', sessionId);
     return this.http.post<number>(url, tag, {params})
@@ -91,7 +94,7 @@ export class PathService {
   }
 
   deleteTag(sessionId: string, tagId: number) {
-    const url = `https://api.newstube.ru/urldev/Tag/Delete`;
+    const url = `${this.API_URLS.ROOT}${this.API_URLS.TAG_DELETE}`;
     const params = new HttpParams()
       .set('sessionId', sessionId)
       .set('id', String(tagId));
@@ -100,7 +103,7 @@ export class PathService {
   }
 
   moveAndDeleteTag(sessionId: string, tagId: Number, newTag: MoveObject) {
-    const url = `https://api.newstube.ru/urldev/Tag/MoveAndDelete`;
+    const url = `${this.API_URLS.ROOT}${this.API_URLS.TAG_MOVE_AND_DELETE}`;
     const params = new HttpParams()
       .set('sessionId', sessionId)
       .set('id', String(tagId));
@@ -109,7 +112,7 @@ export class PathService {
   }
 
   deleteManyTags(sessionId: string, tagIds: Array<number>) {
-    const url = `https://api.newstube.ru/urldev/Tag/DeleteMany`;
+    const url = `${this.API_URLS.ROOT}${this.API_URLS.TAG_DELETE_MANY}`;
     const params = new HttpParams()
       .set('sessionId', sessionId);
     return this.http.post<any>(url, {Ids: tagIds}, {params})
@@ -117,7 +120,7 @@ export class PathService {
   }
 
   moveAndDeleteManyTags(sessionId: string, newTag: MoveObject) {
-    const url = `https://api.newstube.ru/urldev/Tag/MoveAndDeleteMany`;
+    const url = `${this.API_URLS.ROOT}${this.API_URLS.TAG_MOVE_AND_DELETE_MANY}`;
     const params = new HttpParams()
       .set('sessionId', sessionId);
     return this.http.post<any>(url, newTag, {params})
@@ -125,7 +128,7 @@ export class PathService {
   }
 
   mediasAdd(sessionId: string, typeId: number, objectId: number, data: Array<SimpleQuery>) {
-    const url = `https://api.newstube.ru/urldev/Path/MediasAdd`;
+    const url = `${this.API_URLS.ROOT}${this.API_URLS.PATH_MEDIAS_ADD}`;
     const params = new HttpParams()
       .set('sessionId', sessionId)
       .set('typeId', String(typeId))
@@ -136,7 +139,7 @@ export class PathService {
   }
 
   mediasRemove(sessionId: string, typeId: number, objectId: number, data: Array<SimpleQuery>) {
-    const url = `https://api.newstube.ru/urldev/Path/MediasRemove`;
+    const url = `${this.API_URLS.ROOT}${this.API_URLS.PATH_MEDIAS_REMOVE}`;
     const params = new HttpParams()
       .set('sessionId', sessionId)
       .set('typeId', String(typeId))
@@ -147,7 +150,7 @@ export class PathService {
   }
 
   mediasClear(sessionId: string, typeId: number, objectId: number) {
-    const url = `https://api.newstube.ru/urldev/Path/MediasClear`;
+    const url = `${this.API_URLS.ROOT}${this.API_URLS.PATH_MEDIAS_CLEAR}`;
     const params = new HttpParams()
       .set('sessionId', sessionId)
       .set('typeId', String(typeId))
@@ -158,7 +161,7 @@ export class PathService {
   }
 
   getParents(sessionId: string) {
-    const url = `https://api.newstube.ru/urldev/Path/Parents`;
+    const url = `${this.API_URLS.ROOT}${this.API_URLS.PATH_PARENTS}`;
     const params = new HttpParams()
       .set('sessionId', sessionId);
       return this.http.get<any>(url, {params})
@@ -166,7 +169,7 @@ export class PathService {
   }
 
   createRedirect(sessionId: string, pathId: number, object: any) {
-    const url = `https://api.newstube.ru/urldev/Path/CreateRedirect`;
+    const url = `${this.API_URLS.ROOT}${this.API_URLS.PATH_CREATE_REDIRECT}`;
     const params = new HttpParams()
       .set('sessionId', sessionId)
       .set('id', String(pathId));
@@ -175,7 +178,7 @@ export class PathService {
   }
 
   createManyRedirect(sessionId: string, object: any) {
-    const url = `https://api.newstube.ru/urldev/Path/CreateRedirectMany`;
+    const url = `${this.API_URLS.ROOT}${this.API_URLS.PATH_CREATE_REDIRECT_MANY}`;
     const params = new HttpParams()
       .set('sessionId', sessionId);
     return this.http.post<number>(url, object, {params})
@@ -186,13 +189,8 @@ export class PathService {
 
     return (error: any): Observable<T> => {
 
-      // TODO: send the error to remote logging infrastructure
-      //console.error(error); // log to console instead
-  
-      // TODO: better job of transforming error for user consumption
       this.alertService.error(`Response ${operation} failed. ${error.message}`);
-  
-      // Let the app keep running by returning an empty result.
+
       return throwError(
         `Response ${operation} failed. ${error.message}`);
     }

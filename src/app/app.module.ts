@@ -2,25 +2,23 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
-import { AutocompleteModule } from './components/autocomplete/autocomplete.module';
-import { DtpickerModule } from './components/dtpicker/dtpicker.module';
-
-import { AppComponent } from './app.component';
-
-import { AppRoutingModule } from "./routing.module";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { SetObjectModal } from './components/modals/set-object-modal.component';
-import { AddMediasModal } from './components/modals/add-medias-modal.component';
-import { AddRedirectModal } from './components/modals/add-redirect-modal.component';
-import { MoveTagModal } from './components/modals/move-tag-modal.component';
-import { MoveTagsModal } from './components/modals/move-tags-modal.component';
-import { BatchRedirectModal } from './components/modals/batch-redirect-modal.component';
-//import { ModalModule } from './components/modals/modal.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CookieService } from 'ngx-cookie-service';
 
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from "./routing.module";
+
+/* MODALS */
+import { SetObjectModal } from './modals/set-object/set-object-modal.component';
+import { AddMediasModal } from './modals/add-medias/add-medias-modal.component';
+import { AddRedirectModal } from './modals/add-redirect/add-redirect-modal.component';
+import { MoveTagModal } from './modals/move-tag/move-tag-modal.component';
+import { MoveTagsModal } from './modals/move-tag/move-tags-modal.component';
+import { BatchRedirectModal } from './modals/batch-redirect/batch-redirect-modal.component';
+
+/* PAGES */
 import { LoginComponent } from './pages/login/login.component';
 import { ObjectComponent } from './pages/object/object.component';
 import { SearchComponent } from './pages/search/search.component';
@@ -28,10 +26,12 @@ import { SearchPathComponent } from './components/search-path/search-path.compon
 import { EditPathComponent } from './pages/path/path.component';
 import { CreateTagComponent } from './pages/cteatetag/create-tag.component';
 import { SetObjectComponent } from './pages/set-object/set-object.component';
-import { TestComponent } from './pages/test.component';
 import { MoveTagsComponent } from './pages/movetags/move-tags.component';
 import { BatchRedirectComponent } from './pages/batch-redirect/batch-redirect.component';
 
+/* COMPONENTS */
+import { AutocompleteModule } from './components/autocomplete/autocomplete.module';
+import { DtpickerModule } from './components/dtpicker/dtpicker.module';
 import { CommonSearchComponent } from './components/common-search/common-search.component';
 import { NavigationComponent } from "./components/navigation/navigation.component";
 import { SearchFormComponent } from './components/search-form/search-form.component';
@@ -40,21 +40,21 @@ import { SearchTableComponent } from './components/search-table/search-table.com
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { AlertComponent } from './components/alert/alert.component';
 import { TagFormComponent } from './components/tag-form/tag-from.component';
-//import { AutocompleteComponent } from './components/test/autocomplete.component';
-import { NgbDateTimePicker } from './components/datetimepiker/datetimepicker.component';
 import { SortableColumnComponent } from './components/search-table/sortable-column.component';
 import { LoadingDirective, BtnLoadingDirective } from './components/search-table/loading.directive';
 
-import { CookieService } from 'ngx-cookie-service';
+/* SERVICES */
 import { AuthenticationService } from './services/auth.service';
 import { AlertService } from './services/alert.service';
 import { AuthGuard } from './guards/auth.guard';
-
 import { APP_CONST, Constants } from './config/const';
+import { APP_API_URLS, Urls } from './config/config';
 
 @NgModule({
   declarations: [
     AppComponent,
+
+    /* PAGES */
     LoginComponent,
     SearchComponent,
     NavigationComponent,
@@ -62,10 +62,10 @@ import { APP_CONST, Constants } from './config/const';
     EditPathComponent,
     CreateTagComponent,
     SetObjectComponent,
-    TestComponent,
     MoveTagsComponent,
     BatchRedirectComponent,
-    
+
+    /* COMPONENTS */
     CommonSearchComponent,
     ObjectComponent,
     SearchFormComponent,
@@ -74,19 +74,17 @@ import { APP_CONST, Constants } from './config/const';
     PaginationComponent,
     AlertComponent,
     TagFormComponent,
+    SortableColumnComponent,
+    LoadingDirective,
+    BtnLoadingDirective,
     
-    
+    /* MODALS */
     SetObjectModal,
     AddMediasModal,
     AddRedirectModal,
     MoveTagModal,
     MoveTagsModal,
-    BatchRedirectModal,
-    //AutocompleteWindowComponent,
-    NgbDateTimePicker,
-    SortableColumnComponent,
-    LoadingDirective,
-    BtnLoadingDirective
+    BatchRedirectModal,    
   ],
   imports: [
     NgbModule.forRoot(),
@@ -96,8 +94,7 @@ import { APP_CONST, Constants } from './config/const';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    //PathModule,
-    AutocompleteModule,
+    AutocompleteModule.forRoot(),
     DtpickerModule.forRoot()
   ],
   providers: [
@@ -105,12 +102,17 @@ import { APP_CONST, Constants } from './config/const';
     AuthenticationService,
     CookieService,
     AlertService,
-
-    { provide: APP_CONST, useValue: Constants }
-
-    //PathService
+    { provide: APP_CONST, useValue: Constants },
+    { provide: APP_API_URLS, useValue: Urls }
   ],
-  entryComponents: [SetObjectModal, AddMediasModal, AddRedirectModal, MoveTagModal, MoveTagsModal, BatchRedirectModal],
+  entryComponents: [
+    SetObjectModal, 
+    AddMediasModal, 
+    AddRedirectModal, 
+    MoveTagModal, 
+    MoveTagsModal,
+    BatchRedirectModal
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

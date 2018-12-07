@@ -9,7 +9,7 @@ import { PathService } from '../../services/path.service';
 import { SearchService } from '../../services/search.service';
 import { AlertService } from '../../services/alert.service';
 import { MetaService } from '../../services/meta.service';
-import { SortService } from '../search-table/sort.service';
+import { SortService } from '../../components/search-table/sort.service';
 
 import { SearchQuery, SimpleQuery, PageQuery } from '../../models/search-query.model';
 

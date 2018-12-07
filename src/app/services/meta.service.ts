@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
 
 import { Observable, of, Subject, ReplaySubject } from 'rxjs';
@@ -7,6 +7,8 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Meta, MetaColumn } from '../models/meta.model';
 
 import { AlertService } from './alert.service'
+
+import { APP_API_URLS } from '../config/config';
 
 @Injectable({
     providedIn: 'root'
@@ -18,6 +20,7 @@ export class MetaService {
     public lastMeta = null;
 
     constructor(
+        @Inject(APP_API_URLS) private API_URLS,
         private http: HttpClient,
         private alertService: AlertService
     ) { }
@@ -41,7 +44,7 @@ export class MetaService {
     }
 
     getMeta(typeId: number) { 
-        const url = `https://api.newstube.ru/urldev/Meta/GetMeta`
+        const url = `${this.API_URLS.ROOT}${this.API_URLS.META_GET_META}`
         const params = new HttpParams().set('typeId', String(typeId));    
         return this.http.get(url, {params})
         .pipe( catchError(this.handleError(url)) );

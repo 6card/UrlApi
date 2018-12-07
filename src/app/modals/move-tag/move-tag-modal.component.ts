@@ -9,13 +9,9 @@ import { SearchService } from '../../services/search.service';
 import { PathService } from '../../services/path.service';
 import { AlertService } from '../../services/alert.service';
 import { MetaService } from '../../services/meta.service';
-import { SortService } from '../search-table/sort.service';
+import { SortService } from '../../components/search-table/sort.service';
 
-import { CheckedMedia } from '../../models/media';
 import { SearchQuery, SimpleQuery } from '../../models/search-query.model';
-
-import { APP_CONST } from '../../config/const';
-
 
 @Component({
   selector: 'move-tag-modal',
@@ -32,11 +28,9 @@ export class MoveTagModal implements OnInit, OnDestroy {
     public typeId: number = 4;
 
     @Input() currentItem;
-
     @Output() finishQuery = new EventEmitter();
 
     constructor(
-        @Inject(APP_CONST) protected config,
         public activeModal: NgbActiveModal,
         protected metaService: MetaService,
         protected sortService: SortService, 
