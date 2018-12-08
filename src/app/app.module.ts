@@ -8,15 +8,15 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
 
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from "./routing.module";
+import { AppRoutingModule } from './routing.module';
 
 /* MODALS */
-import { SetObjectModal } from './modals/set-object/set-object-modal.component';
-import { AddMediasModal } from './modals/add-medias/add-medias-modal.component';
-import { AddRedirectModal } from './modals/add-redirect/add-redirect-modal.component';
-import { MoveTagModal } from './modals/move-tag/move-tag-modal.component';
-import { MoveTagsModal } from './modals/move-tag/move-tags-modal.component';
-import { BatchRedirectModal } from './modals/batch-redirect/batch-redirect-modal.component';
+import { SetObjectModalComponent } from './modals/set-object/set-object-modal.component';
+import { AddMediasModalComponent } from './modals/add-medias/add-medias-modal.component';
+import { AddRedirectModalComponent } from './modals/add-redirect/add-redirect-modal.component';
+import { MoveTagModalComponent } from './modals/move-tag/move-tag-modal.component';
+import { MoveTagsModalComponent } from './modals/move-tag/move-tags-modal.component';
+import { BatchRedirectModalComponent } from './modals/batch-redirect/batch-redirect-modal.component';
 
 /* PAGES */
 import { LoginComponent } from './pages/login/login.component';
@@ -33,7 +33,7 @@ import { BatchRedirectComponent } from './pages/batch-redirect/batch-redirect.co
 import { AutocompleteModule } from './components/autocomplete/autocomplete.module';
 import { DtpickerModule } from './components/dtpicker/dtpicker.module';
 import { CommonSearchComponent } from './components/common-search/common-search.component';
-import { NavigationComponent } from "./components/navigation/navigation.component";
+import { NavigationComponent } from './components/navigation/navigation.component';
 import { SearchFormComponent } from './components/search-form/search-form.component';
 import { SearchSubFormComponent } from './components/search-sub-from/search-sub-from.component';
 import { SearchTableComponent } from './components/search-table/search-table.component';
@@ -77,25 +77,25 @@ import { APP_API_URLS, Urls } from './config/config';
     SortableColumnComponent,
     LoadingDirective,
     BtnLoadingDirective,
-    
+
     /* MODALS */
-    SetObjectModal,
-    AddMediasModal,
-    AddRedirectModal,
-    MoveTagModal,
-    MoveTagsModal,
-    BatchRedirectModal,    
+    SetObjectModalComponent,
+    AddMediasModalComponent,
+    AddRedirectModalComponent,
+    MoveTagModalComponent,
+    MoveTagsModalComponent,
+    BatchRedirectModalComponent,
   ],
   imports: [
-    NgbModule.forRoot(),
+    NgbModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    AutocompleteModule.forRoot(),
-    DtpickerModule.forRoot()
+    AutocompleteModule,
+    DtpickerModule,
   ],
   providers: [
     AuthGuard,
@@ -106,12 +106,12 @@ import { APP_API_URLS, Urls } from './config/config';
     { provide: APP_API_URLS, useValue: Urls }
   ],
   entryComponents: [
-    SetObjectModal, 
-    AddMediasModal, 
-    AddRedirectModal, 
-    MoveTagModal, 
-    MoveTagsModal,
-    BatchRedirectModal
+    SetObjectModalComponent,
+    AddMediasModalComponent,
+    AddRedirectModalComponent,
+    MoveTagModalComponent,
+    MoveTagsModalComponent,
+    BatchRedirectModalComponent
   ],
   bootstrap: [AppComponent]
 })

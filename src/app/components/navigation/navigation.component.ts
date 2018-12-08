@@ -6,13 +6,13 @@ import { AuthenticationService } from '../../services/auth.service';
   selector: 'app-navigation',
   templateUrl: './navigation.component.html'
 })
-export class NavigationComponent implements OnInit{
-  //reportsUrl: any;
-  //isLoggedIn : boolean = false;
+export class NavigationComponent implements OnInit {
+  // reportsUrl: any;
+  // isLoggedIn : boolean = false;
 
   constructor(
-    public authService:AuthenticationService,
-  ){ }
+    public authService: AuthenticationService,
+  ) { }
 
-  ngOnInit(){ }
+  ngOnInit() { }
 }

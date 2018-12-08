@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { MoveTagsModal } from '../../modals/move-tag/move-tags-modal.component';
+import { MoveTagsModalComponent } from '../../modals/move-tag/move-tags-modal.component';
 
 import { AuthenticationService } from '../../services/auth.service';
 import { PathService } from '../../services/path.service';
@@ -126,7 +126,7 @@ export class MoveTagsComponent implements OnInit {
       }
 
     public openMoveModal() {
-        const modalRef = this.modalService.open(MoveTagsModal, {size: 'lg', ariaLabelledBy: 'modal-move-tag', backdrop: 'static'});
+        const modalRef = this.modalService.open(MoveTagsModalComponent, {size: 'lg', ariaLabelledBy: 'modal-move-tag', backdrop: 'static'});
         modalRef.componentInstance.selectedIds = this.numberTagIds;
         modalRef.componentInstance.finishQuery
           .subscribe( obj => this.router.navigate(['/object', obj.ObjectTypeId, obj.ObjectId]));

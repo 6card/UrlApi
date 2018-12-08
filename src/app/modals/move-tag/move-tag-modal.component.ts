@@ -18,7 +18,7 @@ import { SearchQuery, SimpleQuery } from '../../models/search-query.model';
   templateUrl: './move-tag-modal.component.html',
   providers: [ MetaService, SortService ]
 })
-export class MoveTagModal implements OnInit, OnDestroy {
+export class MoveTagModalComponent implements OnInit, OnDestroy {
 
     private alive: boolean = true;
     public loading: boolean = false;

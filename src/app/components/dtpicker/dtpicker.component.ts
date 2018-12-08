@@ -1,4 +1,5 @@
-import { Component, Input, ViewChild, ViewContainerRef, ComponentFactoryResolver, Renderer2, Inject, ComponentRef, forwardRef, HostListener } from '@angular/core';
+import { Component, Input, ViewChild, ViewContainerRef, ComponentFactoryResolver,
+    Renderer2, Inject, ComponentRef, forwardRef, HostListener } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
 
@@ -10,12 +11,17 @@ import { DtpickerWindowComponent } from './dtpicker-window.component';
     selector: 'dt-picker',
     template: `
         <div style="position: relative;">
-            <input class="form-control" [ngClass]="invalidClass" type="text" #dtinput (click)="toggle()" (blur)="setValidateValue($event.target)" (keyup)="handleKeyboard($event)" />        
+            <input class="form-control" type="text" #dtinput
+                [ngClass]="invalidClass"
+                (click)="toggle()"
+                (blur)="setValidateValue($event.target)"
+                (keyup)="handleKeyboard($event)"
+            />
             <ng-template #dtpw></ng-template>
-        </div>  
+        </div>
     `,
     providers: [
-        { 
+        {
           provide: NG_VALUE_ACCESSOR,
           useExisting: forwardRef(() => DtpickerComponent),
           multi: true
@@ -29,12 +35,12 @@ export class DtpickerComponent implements ControlValueAccessor {
     @Input() dtTemplate: string = 'DD.MM.YYYY HH:mm';
     @Input() invalidClass: string;
 
-    @ViewChild("dtpw", { read: ViewContainerRef }) container: ViewContainerRef;
-    @ViewChild("dtinput") dtinput;
+    @ViewChild('dtpw', { read: ViewContainerRef }) container: ViewContainerRef;
+    @ViewChild('dtinput') dtinput;
 
     @HostListener('click', ['$event.target'])
     public onClick(targetElement) {
-        //this.dtinput.nativeElement.focus();
+        // this.dtinput.nativeElement.focus();
     }
 
     constructor(
@@ -44,11 +50,11 @@ export class DtpickerComponent implements ControlValueAccessor {
     ) { }
 
     setValidateValue(target) {
-        if(target.value != '')
+        if (target.value !== '') {
             target.value = moment(target.value, this.dtTemplate).format(this.dtTemplate);
-        else
+        } else {
             target.value = moment(new Date()).format(this.dtTemplate);
-
+        }
         this.onChange(moment(target.value, this.dtTemplate).toISOString());
     }
 
@@ -56,14 +62,14 @@ export class DtpickerComponent implements ControlValueAccessor {
         if (this.isOpen()) {
             const v = event.target.value;
             this._componentRef.instance.setDateTime(v);
-            //this.dtinput.nativeElement.value = moment(v, this.dtTemplate).format(this.dtTemplate);
-            //this.dtinput.nativeElement.setSelectionRange(3, 3);
-            //console.log(this.dtinput.nativeElement.selectionStart);
+            // this.dtinput.nativeElement.value = moment(v, this.dtTemplate).format(this.dtTemplate);
+            // this.dtinput.nativeElement.setSelectionRange(3, 3);
+            // console.log(this.dtinput.nativeElement.selectionStart);
             this.onChange((moment(v, this.dtTemplate).toISOString()));
         }
     }
 
-    onChange (value: any) {};
+    onChange (value: any) { }
 
     registerOnChange(fn: (_: any) => void): void {
         this.onChange = fn;
@@ -76,9 +82,10 @@ export class DtpickerComponent implements ControlValueAccessor {
     }
 
     private _setNewValue(value: string) {
-        if (!value)
+        if (!value) {
             return;
-        let dt = new Date(value);
+        }
+        const dt = new Date(value);
         this.dtinput.nativeElement.value = moment(dt).format(this.dtTemplate);
     }
 
@@ -90,8 +97,8 @@ export class DtpickerComponent implements ControlValueAccessor {
 
     isOpen() { return !!this._componentRef; }
 
-    open() {        
-        this.container.clear(); 
+    open() {
+        this.container.clear();
         const factory = this._resolver.resolveComponentFactory(DtpickerWindowComponent);
         this._componentRef = this.container.createComponent(factory);
         this._applyStyling(this._componentRef.location.nativeElement);
@@ -107,7 +114,7 @@ export class DtpickerComponent implements ControlValueAccessor {
             }
         );
 
-        this._renderer.listen(this._document, 'click', (e:MouseEvent) => {
+        this._renderer.listen(this._document, 'click', (e: MouseEvent) => {
             if (this._componentRef) {
                 const target = e.target as Element;
                 if (!(this._componentRef.location.nativeElement as Element).contains(target)) {
@@ -115,9 +122,9 @@ export class DtpickerComponent implements ControlValueAccessor {
                 }
             }
         });
-    }    
+    }
 
-    close() {        
+    close() {
         this.container.remove(this.container.indexOf(this._componentRef.hostView));
         this._componentRef = null;
     }
@@ -126,7 +133,7 @@ export class DtpickerComponent implements ControlValueAccessor {
         if (this.isOpen()) {
           this.close();
         } else {
-            setTimeout(() => this.open(), 0); //fix to click handler
+            setTimeout(() => this.open(), 0); // fix to click handler
         }
     }
 }

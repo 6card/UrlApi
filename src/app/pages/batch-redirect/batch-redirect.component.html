@@ -9,7 +9,7 @@
     <li class="nav-item"><a href="javascript:void(0)" (click)="setType(8)" [class.active]="isActive(8)" class="nav-link">Передача</a></li>
 </ul>
 <div class="tabs-body">
-    <app-search-path *ngIf="!typeId" (onFound)="addToMedias($event)" buttonLabel="Добавить" [returnInputOnError]="true"></app-search-path>
+    <app-search-path *ngIf="!typeId" (found)="addToMedias($event)" buttonLabel="Добавить" [returnInputOnError]="true"></app-search-path>
 
     <div style="position: relative" [appLoading]="submitLoading" *ngIf="typeId">        
         <search-form

@@ -10,7 +10,7 @@
 </ul>
 <div class="tabs-body">
     <common-search *ngIf="typeId" [pathId]="pathId" (selectObject)="setObject($event)"></common-search>
-    <app-search-path *ngIf="!typeId" (onFound)="navigateToPath($event)"></app-search-path>
+    <app-search-path *ngIf="!typeId" (found)="navigateToPath($event)"></app-search-path>
 
     <div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
         <strong>{{error}}</strong>

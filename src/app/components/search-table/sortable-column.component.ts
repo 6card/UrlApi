@@ -10,7 +10,7 @@ import { SortService } from './sort.service';
 })
 export class SortableColumnComponent {
 
-    //private columnSortedSubscription: Subscription;
+    // private columnSortedSubscription: Subscription;
 
     constructor(private sortService: SortService) { }
 
@@ -18,16 +18,18 @@ export class SortableColumnComponent {
     @Input('sort-direction') sortDirection: string = '';
 
     sort() {
-        if (this.sortDirection === '')
-            this.sortDirection = 'asc'
-        else if (this.sortDirection === 'asc')
-            this.sortDirection = 'desc'
-        else if (this.sortDirection === 'desc')
-            this.sortDirection = ''
+        if (this.sortDirection === '') {
+            this.sortDirection = 'asc';
+        } else if (this.sortDirection === 'asc') {
+            this.sortDirection = 'desc';
+        } else if (this.sortDirection === 'desc') {
+            this.sortDirection = '';
+        }
 
-        if (this.sortDirection)
-            this.sortService.setSorted({ Column: this.columnName, Desc: this.sortDirection == 'desc' ? true : false });
-        else
+        if (this.sortDirection) {
+            this.sortService.setSorted({ Column: this.columnName, Desc: this.sortDirection === 'desc' ? true : false });
+        } else {
             this.sortService.clearSorted(this.columnName);
+        }
     }
 }

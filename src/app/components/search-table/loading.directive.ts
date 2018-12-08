@@ -1,12 +1,12 @@
-import { Directive, OnInit, AfterViewInit, Input, Renderer2, ElementRef, SimpleChanges } from '@angular/core';
+import { Directive, OnInit, OnChanges, AfterViewInit, Input, Renderer2, ElementRef, SimpleChanges } from '@angular/core';
 
 @Directive({
   selector: '[appLoading]'
 })
-export class LoadingDirective implements OnInit {
+export class LoadingDirective implements OnInit, OnChanges {
     private loaderCotainer: ElementRef;
     @Input() appLoading: boolean;
-    
+
     constructor(private el: ElementRef, private renderer: Renderer2) {
         const loader = this.renderer.createElement('div');
         this.loaderCotainer = this.renderer.createElement('div');
@@ -14,22 +14,21 @@ export class LoadingDirective implements OnInit {
         this.renderer.addClass(loader, 'loader');
         this.renderer.addClass(loader, 'loader-60');
         this.renderer.appendChild(this.loaderCotainer, loader);
-        //this.renderer.appendChild(el.nativeElement, loaderCotainer);
+        // this.renderer.appendChild(el.nativeElement, loaderCotainer);
     }
 
-    ngOnInit() {
-        
-    }
+    ngOnInit() { }
 
     pasteLoader() {
-        if (this.appLoading)
+        if (this.appLoading) {
             this.renderer.appendChild(this.el.nativeElement, this.loaderCotainer);
-        else
+        } else {
             this.renderer.removeChild(this.el.nativeElement, this.loaderCotainer);
+        }
     }
 
-    ngOnChanges(changes: SimpleChanges){
-        if(changes.appLoading){
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes.appLoading) {
           this.pasteLoader();
         }
     }
@@ -38,13 +37,13 @@ export class LoadingDirective implements OnInit {
 @Directive({
     selector: '[btnLoading]'
   })
-  export class BtnLoadingDirective implements OnInit, AfterViewInit {
+  export class BtnLoadingDirective implements OnInit, AfterViewInit, OnChanges {
       private loaderCotainer: ElementRef;
       private btnText: string;
       private loader;
       @Input() btnLoading: boolean;
-      
-      constructor(private el: ElementRef, private renderer: Renderer2) {        
+
+      constructor(private el: ElementRef, private renderer: Renderer2) {
           this.loader = this.renderer.createElement('span');
           this.renderer.addClass(this.loader, 'loader');
           this.renderer.addClass(this.loader, 'loader-20');
@@ -58,20 +57,19 @@ export class LoadingDirective implements OnInit {
         this.el.nativeElement.innerText = '';
         this.renderer.appendChild(this.el.nativeElement, this.btnText);
       }
-  
+
       pasteLoader() {
-        
           if (this.btnLoading) {
             this.setExplicitButtonWidth();
             this.renderer.setAttribute(this.el.nativeElement, 'disabled', '');
             this.renderer.appendChild(this.el.nativeElement, this.loader);
             this.renderer.removeChild(this.el.nativeElement, this.btnText);
-          }              
-          else {
+          } else {
             this.renderer.removeAttribute(this.el.nativeElement, 'disabled');
             this.renderer.removeChild(this.el.nativeElement, this.loader);
-            if (this.btnText)
+            if (this.btnText) {
                 this.renderer.appendChild(this.el.nativeElement, this.btnText);
+            }
           }
       }
 
@@ -81,10 +79,10 @@ export class LoadingDirective implements OnInit {
           this.renderer.setStyle(this.el.nativeElement, 'width', `${boundingClientRect.width}px`);
         }
       }
-  
-      ngOnChanges(changes: SimpleChanges){
-          if(changes.btnLoading){
+
+      ngOnChanges(changes: SimpleChanges) {
+          if (changes.btnLoading) {
             this.pasteLoader();
           }
       }
-  }
+}

@@ -43,8 +43,8 @@ export class SearchFormComponent implements OnInit, OnDestroy, OnChanges  {
         this.metaSubscription.unsubscribe();
     }
 
-    ngOnChanges(changes: SimpleChanges) {    
-        /*    
+    ngOnChanges(changes: SimpleChanges) {
+        /*
         if(changes.firstQuery) {
             this.generateForm(); //переделываем форму при изменении typeId или firstQuery
         }
@@ -53,10 +53,10 @@ export class SearchFormComponent implements OnInit, OnDestroy, OnChanges  {
 
     getCondition(qop: number) {
         switch (qop) {
-            case 0 : return "ИЛИ";
-            case 1 : return "И";
-            case 2 : return "НЕ";
-            default: return "undefined"
+            case 0 : return 'ИЛИ';
+            case 1 : return 'И';
+            case 2 : return 'НЕ';
+            default: return 'undefined';
         }
     }
 
@@ -65,7 +65,7 @@ export class SearchFormComponent implements OnInit, OnDestroy, OnChanges  {
         if (this.firstQuery[0] && this.firstQuery[0].Columns.length > 0) {
             this.firstQuery.forEach( item => {
                 this.addItem(Number(item.Operation), item.Columns[0]);
-            })
+            });
         }
         /*
         else {
@@ -80,7 +80,7 @@ export class SearchFormComponent implements OnInit, OnDestroy, OnChanges  {
         });
     }
 
-    addItem(qop? : number, obj?: any): void {
+    addItem(qop?: number, obj?: any): void {
         let searchItems: FormArray;
         searchItems = this.searchForm.get('items') as FormArray;
         searchItems.push(this.createSearchItem(qop, obj || this.meta.DefaultFilter));
@@ -89,8 +89,8 @@ export class SearchFormComponent implements OnInit, OnDestroy, OnChanges  {
     createSearchItem(qop: number = 0, obj?: any) {
         return this.formBuilder.group({
           queryOperation: [qop, Validators.required],
-          column: [obj? obj.Column: null, Validators.required],
-          operation: [obj? obj.Operation : null, Validators.required],
+          column: [obj ? obj.Column : null, Validators.required],
+          operation: [obj ? obj.Operation : null, Validators.required],
           value: [obj && obj.Value ? this.arrayToString(obj.Value) : '', Validators.required]
         });
     }
@@ -100,13 +100,14 @@ export class SearchFormComponent implements OnInit, OnDestroy, OnChanges  {
     }
 
     deleteSearchItem(index: number) {
-        let searchItems: FormArray;    
+        let searchItems: FormArray;
         searchItems = this.searchForm.get('items') as FormArray;
         searchItems.removeAt(index);
 
-        if (searchItems.at(0))
-            searchItems.at(0).get('queryOperation').setValue(0); // set first "Operation" to 0         
-            
+        if (searchItems.at(0)) {
+            searchItems.at(0).get('queryOperation').setValue(0); // set first "Operation" to 0
+        }
+
         this.onSubmit();
     }
 
@@ -114,7 +115,7 @@ export class SearchFormComponent implements OnInit, OnDestroy, OnChanges  {
         return control.invalid && control.touched;
     }
 
-    public getGroupControls(){
+    public getGroupControls() {
         let searchItems: FormArray;
         searchItems = this.searchForm.get('items') as FormArray;
         return (<any>Object).values(searchItems.controls);
@@ -137,28 +138,30 @@ export class SearchFormComponent implements OnInit, OnDestroy, OnChanges  {
     }
 
     getInputValue(op: number, val: string) {
-        if (op == 9 || op == 10)            
+        if (op === 9 || op === 10) {
             return val.split(', ');
+        }
         return val;
     }
 
     onSubmit() {
         this.markFormGroupTouched(this.searchForm);
 
-        if (!this.searchForm.valid)
+        if (!this.searchForm.valid) {
             return;
+        }
 
         const query = this.searchForm.controls.items.value
         .map(item => {
             return {
-                Operation: item.queryOperation,  
+                Operation: item.queryOperation,
                 Columns: [
                     {
-                    Column: item.column, 
-                    Operation: item.operation, 
+                    Column: item.column,
+                    Operation: item.operation,
                     Value: this.getInputValue(item.operation, item.value)
                     }
-                ]          
+                ]
             };
         });
 

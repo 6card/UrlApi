@@ -19,7 +19,7 @@ import { SearchQuery, SimpleQuery, PageQuery } from '../../models/search-query.m
   providers: [ MetaService, SortService ]
 })
 
-export class BatchRedirectModal implements OnInit, OnDestroy {
+export class BatchRedirectModalComponent implements OnInit, OnDestroy {
 
     private alive: boolean = true;
     public submitLoading: boolean = false;
@@ -90,7 +90,7 @@ export class BatchRedirectModal implements OnInit, OnDestroy {
 
         forkJoin (
             this.searchService.search(this.typeId, this.authenticationService.sessionId, this.sq),
-            this.searchService.searchCount(this.typeId,this.authenticationService.sessionId, this.sq.Query),
+            this.searchService.searchCount(this.typeId, this.authenticationService.sessionId, this.sq.Query),
         )
         .pipe(
             finalize(() => this.submitLoading = false),

@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, Output, EventEmitter, Input, HostListener, ViewChild, ElementRef, HostBinding } from "@angular/core";
+import { Component, OnInit, OnDestroy, AfterViewInit, Output, EventEmitter, Input, HostListener, ElementRef } from '@angular/core';
 
-import { Tag } from './autocomplete.component';
+import { TagItem } from './autocomplete.component';
 
 @Component({
-    selector: "autocomplete-window",
+    selector: 'autocomplete-window',
     exportAs: 'AutocompleteWindowComponent',
     host: {'class': 'dropdown-menu show', 'style': 'max-height: 300px; overflow-y: scroll;'},
     template: `
@@ -22,7 +22,7 @@ export class AutocompleteWindowComponent implements OnInit, OnDestroy, AfterView
 
     activeIdx = 0;
     @Input() loading: boolean;
-    @Input() searchResults: Array<Tag>;
+    @Input() searchResults: Array<TagItem>;
     @Input() focusFirst = false;
 
     @Output() selectEvent = new EventEmitter();
@@ -58,7 +58,7 @@ export class AutocompleteWindowComponent implements OnInit, OnDestroy, AfterView
         }
         this.scrollToElement();
     }
-    
+
     selectPrev() {
         if (this.activeIdx < 0) {
           this.activeIdx = this.searchResults.length - 1;
@@ -71,32 +71,31 @@ export class AutocompleteWindowComponent implements OnInit, OnDestroy, AfterView
     }
 
     scrollToElement(top: boolean = false) {
+      let notVisible = false;
       const button = this.selectedElement;
-      if (!button)
+      if (!button) {
         return;
+      }
 
-      let notVisible: boolean = false;
-      if (button.offsetTop + button.offsetHeight > this.element.nativeElement.scrollTop + this.element.nativeElement.offsetHeight || button.offsetTop < this.element.nativeElement.scrollTop)
+      if (button.offsetTop + button.offsetHeight > this.element.nativeElement.scrollTop + this.element.nativeElement.offsetHeight || button.offsetTop < this.element.nativeElement.scrollTop) {
         notVisible = true;
-        
-      if (top) { // scroll to top        
+      }
+
+      if (top) { // scroll to top
         if (this.element.nativeElement.scrollTop + button.offsetHeight > button.offsetTop || notVisible) {
           this.element.nativeElement.scrollTo(0, button.offsetTop - button.offsetHeight);
         }
-      }
-      else { // scroll to bottom
+      } else { // scroll to bottom
         if ( (this.element.nativeElement.offsetHeight + this.element.nativeElement.scrollTop ) <= button.offsetTop + button.offsetHeight + 10  || notVisible ) {
-          this.element.nativeElement.scrollTo(0, button.offsetTop + button.offsetHeight*2 - this.element.nativeElement.offsetHeight);
+          this.element.nativeElement.scrollTo(0, button.offsetTop + button.offsetHeight * 2 - this.element.nativeElement.offsetHeight);
         }
       }
     }
 
     get selectedElement(): HTMLElement {
-      let el = document.getElementById(`aid-${this.activeIdx}`)
+      const el = document.getElementById(`aid-${this.activeIdx}`);
       return el ? el : null;
     }
-
-    
 
     ngOnInit() { this.resetActive(); }
 

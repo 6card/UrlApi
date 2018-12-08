@@ -14,7 +14,7 @@ import { SortService } from '../../components/search-table/sort.service';
 
 import { SearchQuery, SimpleQuery, PageQuery } from '../../models/search-query.model';
 
-import { BatchRedirectModal } from '../../modals/batch-redirect/batch-redirect-modal.component';
+import { BatchRedirectModalComponent } from '../../modals/batch-redirect/batch-redirect-modal.component';
 
 @Component({
   selector: 'app-batch-redirect',
@@ -233,7 +233,7 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
 
     public openRedirectModal() {
         const modalRef = this.modalService.open(
-            BatchRedirectModal, {size: 'lg', ariaLabelledBy: 'modal-batch-redirect', backdrop: 'static'}
+            BatchRedirectModalComponent, {size: 'lg', ariaLabelledBy: 'modal-batch-redirect', backdrop: 'static'}
         );
         modalRef.componentInstance.objectsFromRedirect = {pathIds: this.selectedMediaIds, urls: this.selectedMediaUrls};
         modalRef.componentInstance.finishQuery

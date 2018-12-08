@@ -1,6 +1,7 @@
 {
     "extends": "../tslint.json",
     "rules": {
+        "no-inferrable-types": [true, "ignore-params", "ignore-properties"],
         "directive-selector": [
             true,
             "attribute",
