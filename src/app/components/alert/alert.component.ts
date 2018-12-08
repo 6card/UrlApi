@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 
 import { Alert, AlertType } from '../../models/alert';
 import { AlertService } from '../../services/alert.service';
@@ -28,16 +28,13 @@ export class AlertComponent implements OnInit, OnDestroy {
                 this.alerts = [];
                 return;
             }
-            //добавляем alert в массив
-            //if (!this.alerts.filter(item => item.id == alert.id)[0]) {
+            // добавляем alert в массив
                 this.alerts.push(alert);
                 if (alert.timeout) {
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         this.alerts.splice(this.alerts.indexOf(alert), 1);
                    }, alert.timeout);
-                } 
-                //document.getElementById("messages").scrollIntoView();
-            //}
+                }
         });
     }
 
@@ -61,7 +58,7 @@ export class AlertComponent implements OnInit, OnDestroy {
         }
     }
 
-    ngOnDestroy() { 
+    ngOnDestroy() {
         this.alive = false;
     }
 }

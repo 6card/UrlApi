@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter  } from '@angular/core';
-import { Router, ActivatedRoute, Params } from "@angular/router";
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { forkJoin } from 'rxjs';
-import { filter, finalize, takeWhile, map } from 'rxjs/operators'
+import { filter, finalize, takeWhile, map } from 'rxjs/operators';
 
 import { AuthenticationService } from '../../services/auth.service';
 import { SearchService } from '../../services/search.service';
@@ -18,7 +18,7 @@ import { SearchQuery, SimpleQuery, PageQuery } from '../../models/search-query.m
     templateUrl: './common-search.component.html',
     providers: [ MetaService, SortService ]
   })
-  
+
 export class CommonSearchComponent implements OnInit, OnDestroy {
 
     private alive: boolean = true;
@@ -41,21 +41,21 @@ export class CommonSearchComponent implements OnInit, OnDestroy {
         private sortService: SortService
     ) { }
 
-    ngOnInit() { 
+    ngOnInit() {
         this.activatedRoute.queryParams
         .pipe(filter( param => param.q || param.p || param.typeId))
         .subscribe( (param: Params) => {
             this.metaService.loadMeta(Number(param.typeId));
-            this.setSearchParams(Number(param.typeId), this.parseParam(param.q), this.parseParam(param.p));                
+            this.setSearchParams(Number(param.typeId), this.parseParam(param.q), this.parseParam(param.p));
             this.getResults();
-        }); 
+        });
 
         this.sortService.columnSorted$
         .pipe(takeWhile(() => this.alive))
-        .subscribe(columns => {            
+        .subscribe(columns => {
             this.onSortChange(columns);
         });
-        
+
     }
 
     ngOnDestroy() {
@@ -69,8 +69,10 @@ export class CommonSearchComponent implements OnInit, OnDestroy {
     }
 
     private parseParam(param: string) {
-        if (typeof param === "undefined") return;
-        return JSON.parse(decodeURIComponent(param))
+        if (typeof param === 'undefined') {
+            return;
+        }
+        return JSON.parse(decodeURIComponent(param));
     }
 
     public onPageChange(pageNumber: number) {
@@ -82,7 +84,7 @@ export class CommonSearchComponent implements OnInit, OnDestroy {
         this.sq.setSort(columns);
         this.navigate();
     }
-    
+
     public onQuery(searchQuery: Array<SimpleQuery>) {
         this.sq.setQuery(searchQuery);
         this.navigate();
@@ -94,14 +96,14 @@ export class CommonSearchComponent implements OnInit, OnDestroy {
       const p: string = encodeURIComponent(JSON.stringify(page));
       return {q: q, p: p};
     }
-    
+
     public navigate(replaceUrl?: boolean) {
         const srl = this.serialize(this.sq.Query, this.sq.Page);
         const params = {
             q: srl.q,
             p: srl.p,
             typeId: this.typeId
-        };        
+        };
         this.router.navigate([], { replaceUrl: replaceUrl || false, queryParams: params });
     }
 
@@ -114,13 +116,13 @@ export class CommonSearchComponent implements OnInit, OnDestroy {
 
         forkJoin (
             this.searchService.search(this.typeId, this.authenticationService.sessionId, this.sq),
-            this.searchService.searchCount(this.typeId,this.authenticationService.sessionId, this.sq.Query),
+            this.searchService.searchCount(this.typeId, this.authenticationService.sessionId, this.sq.Query),
         )
-        .pipe( 
+        .pipe(
             finalize(() => this.submitLoading = false),
             map( ([items, count]) => {
                 return {Items: items, Count: count};
-            })            
+            })
         )
         .subscribe( data => {
             this.searchResult = data.Items;

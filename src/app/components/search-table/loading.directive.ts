@@ -3,7 +3,7 @@ import { Directive, OnInit, OnChanges, AfterViewInit, Input, Renderer2, ElementR
 @Directive({
   selector: '[appLoading]'
 })
-export class LoadingDirective implements OnInit {
+export class LoadingDirective implements OnInit, OnChanges {
     private loaderCotainer: ElementRef;
     @Input() appLoading: boolean;
 
@@ -57,7 +57,7 @@ export class LoadingDirective implements OnInit {
         this.el.nativeElement.innerText = '';
         this.renderer.appendChild(this.el.nativeElement, this.btnText);
       }
-  
+
       pasteLoader() {
           if (this.btnLoading) {
             this.setExplicitButtonWidth();
