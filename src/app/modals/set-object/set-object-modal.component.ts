@@ -19,7 +19,7 @@ import { SearchQuery, SimpleQuery, PageQuery } from '../../models/search-query.m
   providers: [ MetaService, SortService ]
 })
 
-export class SetObjectModal implements OnInit, OnDestroy {
+export class SetObjectModalComponent implements OnInit, OnDestroy {
 
     private alive: boolean = true;
     public submitLoading: boolean = false;

@@ -106,24 +106,22 @@ export class PaginationComponent {
         //}
     }
 	
-	writeValue(value:number) {
+    writeValue(value: number) {
         this.page = value;
         this.pages = this.getPages(this.page, this.totalPages);
     }
-	
-	
-	// base class
-    private calculateTotalPages():number {
-        let totalPages = this.itemsPerPage < 1 ? 1 : Math.ceil(this.totalItems / this.itemsPerPage);
-        //console.log(this.totalItems + ' ' + this.itemsPerPage)
+
+    private calculateTotalPages(): number {
+        const totalPages = this.itemsPerPage < 1 ? 1 : Math.ceil(this.totalItems / this.itemsPerPage);
+        // console.log(this.totalItems + ' ' + this.itemsPerPage)
         return Math.max(totalPages || 0, 1);
     }
-	
-	private noNext():boolean {
+
+    private noNext(): boolean {
         return this.page === this.totalPages;
     }
-	
-	private noPrevious():boolean {
+
+    private noPrevious(): boolean {
         return this.page === 1;
     }
 

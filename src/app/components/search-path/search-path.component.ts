@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 
-import { Router, ActivatedRoute, Params } from "@angular/router";
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 
 import { AuthenticationService } from '../../services/auth.service';
@@ -20,9 +20,9 @@ export class SearchPathComponent implements OnInit {
   item: Object = null;
   error: string = null;
 
-  @Input() buttonLabel: string = "Перейти";
+  @Input() buttonLabel: string = 'Перейти';
   @Input() returnInputOnError: boolean = false;
-  @Output() onFound = new EventEmitter();
+  @Output() found = new EventEmitter();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,7 +39,7 @@ export class SearchPathComponent implements OnInit {
   }
 
   onSubmit() {
-    this.submitLoading = true;  
+    this.submitLoading = true;
     this.error = null;
 
     if (this.pathByUrlForm.invalid) {
@@ -50,17 +50,16 @@ export class SearchPathComponent implements OnInit {
       .pipe( finalize(() => this.submitLoading = false))
         .subscribe(
           data => {
-            let result: any | boolean = false;        
-            if (data){
+            let result: any | boolean = false;
+            if (data) {
               result = data;
-            }
-            else {
+            } else {
               if (this.returnInputOnError) {
                 result = this.pathByUrlForm.controls.url.value;
-                //this.pathByUrlForm.reset();
+                // this.pathByUrlForm.reset();
               }
             }
-            this.onFound.emit(result);
+            this.found.emit(result);
         });
     }
 

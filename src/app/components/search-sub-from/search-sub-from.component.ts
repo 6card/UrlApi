@@ -1,8 +1,7 @@
-import { Component, OnInit, OnDestroy, Input, Output, ViewChild, ElementRef, EventEmitter, SimpleChanges, SimpleChange } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, FormArray, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { FormGroup, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 
 import { Subscription } from 'rxjs';
-import { finalize, distinctUntilChanged } from 'rxjs/operators';
 
 import * as moment from 'moment';
 
@@ -29,20 +28,20 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
     constructor(
         private metaService: MetaService,
     ) { }
-    
+
     ngOnInit() {
         this.selectedColumn = this.subForm.get('column').value || null;
         this.selectedOperation = this.subForm.get('operation').value || null;
         this.meta = this.metaService.lastMeta;
         this.metaSubscription = this.metaService.meta
         .pipe(
-            //distinctUntilChanged()
+            // distinctUntilChanged()
         )
         .subscribe(
             (meta: Meta) => {
-                //if (meta)
+                // if (meta)
                     this.meta = meta;
-                //this.setValueValidators();
+                // this.setValueValidators();
         });
     }
 
@@ -52,44 +51,39 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
 
     setValueValidators() {
         if (this.selectedColumn) {
-            let validators: Array<ValidatorFn> = [Validators.required];
+            const validators: Array<ValidatorFn> = [Validators.required];
 
-            if (this.metaColumn.MaxLength)
+            if (this.metaColumn.MaxLength) {
                 validators.push(Validators.maxLength(this.metaColumn.MaxLength));
-            
-            if (this.metaColumn.Type == 'Int32') {
-                if( (this.metaColumn.Operations.indexOf(9) != -1) || (this.metaColumn.Operations.indexOf(10) != -1)) {
+            }
+            if (this.metaColumn.Type === 'Int32') {
+                if ( (this.metaColumn.Operations.indexOf(9) !== -1) || (this.metaColumn.Operations.indexOf(10) !== -1)) {
                     validators.push(this.digitsArrayValidator());
-                    //console.log("array");
-                }
-                else {
+                } else {
                     validators.push(this.digitsValidator());
-                    //console.log("number");
                 }
             }
 
-            if (this.metaColumn.Type == 'DateTime') {
+            if (this.metaColumn.Type === 'DateTime') {
                 validators.push(this.datetimeValidator());
             }
 
-            this.subForm.get('value').setValidators(validators);    
-            this.subForm.get('value').updateValueAndValidity();   
+            this.subForm.get('value').setValidators(validators);
+            this.subForm.get('value').updateValueAndValidity();
         }
     }
 
     datetimeValidator(): ValidatorFn {
-        
-        const pattern: RegExp = new RegExp(/^\d{2}.\d{2}.\d{4}\s\d{2}:\d{2}$/i)
+        const pattern: RegExp = new RegExp(/^\d{2}.\d{2}.\d{4}\s\d{2}:\d{2}$/i);
         return (control: AbstractControl): {[key: string]: any} | null => {
-            const value = moment(control.value).format("DD.MM.YYYY HH:mm");
-            //console.log(control.value);
+            const value = moment(control.value).format('DD.MM.YYYY HH:mm');
             const forbidden = value.match(pattern);
             return !forbidden ? {'datetime': true} : null;
         };
     }
 
     digitsArrayValidator(): ValidatorFn {
-        const pattern: RegExp = new RegExp(/^([0-9],?\s?)*$/i)
+        const pattern: RegExp = new RegExp(/^([0-9],?\s?)*$/i);
         return (control: AbstractControl): {[key: string]: any} | null => {
           const forbidden = control.value.match(pattern);
           return !forbidden ? {'digitsArray': true} : null;
@@ -97,7 +91,7 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
     }
 
     digitsValidator(): ValidatorFn {
-        const pattern: RegExp = new RegExp(/^[0-9]*$/i)
+        const pattern: RegExp = new RegExp(/^[0-9]*$/i);
         return (control: AbstractControl): {[key: string]: any} | null => {
           const forbidden = control.value.match(pattern);
           return !forbidden ? {'digits': true} : null;
@@ -106,27 +100,31 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
 
     public getControlErrorMessage(controlName: string): string {
         const control = this.subForm.get(controlName);
-        //console.log(control.errors);
-        if (control.errors.required)
-            return 'Поле обязательно для заполнения!'
-        if (control.errors.maxlength) 
+        if (control.errors.required) {
+            return 'Поле обязательно для заполнения!';
+        }
+        if (control.errors.maxlength) {
             return `Максимальная длина поля ${control.errors.maxlength.requiredLength} символов`;
-        if (control.errors.digits) 
+        }
+        if (control.errors.digits) {
             return `Поле должно содержать только цифры`;
-        if (control.errors.digitsArray) 
-            return `Поле должно содержать только цифры или список цифр через запятую`; 
-        if (control.errors.datetime) 
-            return `Значение должно соответствовать шаблону "DD.MM.YYYY HH:mm"`; 
+        }
+        if (control.errors.digitsArray) {
+            return `Поле должно содержать только цифры или список цифр через запятую`;
+        }
+        if (control.errors.datetime) {
+            return `Значение должно соответствовать шаблону "DD.MM.YYYY HH:mm"`;
+        }
 
         return null;
     }
 
     get metaColumn(): MetaColumn {
-        return this.meta.Columns.find( c => c.Id == this.selectedColumn) || null;
+        return this.meta.Columns.find( c => c.Id === this.selectedColumn) || null;
     }
 
-    onChangeColumn(id: number) {   
-        if (this.selectedColumn != id) {   
+    onChangeColumn(id: number) {
+        if (this.selectedColumn !== id) {
             this.selectedColumn = id;
             this.subForm.get('operation').setValue(null);
             this.subForm.get('value').setValue('');
@@ -136,44 +134,48 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
 
     onChangeOperation(id: number) {
         this.selectedOperation = id;
-        //this.setValueValidators();
+        // this.setValueValidators();
     }
 
-    getColumns(){
+    getColumns() {
         return this.meta.Columns
         .sort(function(a, b) {
-          if (a.Id > b.Id) return 1;
-          if (a.Id < b.Id) return -1;
-          return 0;
+            if (a.Id > b.Id) {
+                return 1;
+            }
+            if (a.Id < b.Id) {
+                return -1;
+            }
+            return 0;
         })
-        .filter(item => item.Filter == true)
-        .map(item =>  { return {id: item.Id, name: item.DisplayName || item.PropertyName} });
+        .filter( item => item.Filter === true )
+        .map( item => ( {id: item.Id, name: item.DisplayName || item.PropertyName} ) );
     }
 
-    getOperations(columnId: number){
+    getOperations(columnId: number) {
         const operations = [
-            {id: 1, name: "равно"},
-            {id: 2, name: "больше"},
-            {id: 3, name: "меньше"},
-            {id: 4, name: "больше или равно"},
-            {id: 5, name: "меньше или равно"},
-            {id: 6, name: "не равно"},
-            {id: 7, name: "вхождение текста"},
-            {id: 8, name: "текст не должен входить"},
-            {id: 9, name: "список значенией"},
-            {id: 10, name: "исключить список значений"},
-            {id: 11, name: "в начале текста"},
-            {id: 12, name: "в конце текста"},
-            {id: 13, name: "не сначала текста"},
-            {id: 14, name: "не с конца текста"},
-            {id: 15, name: "в начале слова"},
-            {id: 16, name: "в конце слова"},
-            {id: 17, name: "слово"},
-            {id: 18, name: "не в начале слова"},
-            {id: 19, name: "не в конце слова"},
-            {id: 20, name: "исключить слово"},
-            {id: 21, name: "регулярное выражение"},
-            {id: 22, name: "регулярное выражение исключить"}                 
+            {id: 1, name: 'равно'},
+            {id: 2, name: 'больше'},
+            {id: 3, name: 'меньше'},
+            {id: 4, name: 'больше или равно'},
+            {id: 5, name: 'меньше или равно'},
+            {id: 6, name: 'не равно'},
+            {id: 7, name: 'вхождение текста'},
+            {id: 8, name: 'текст не должен входить'},
+            {id: 9, name: 'список значенией'},
+            {id: 10, name: 'исключить список значений'},
+            {id: 11, name: 'в начале текста'},
+            {id: 12, name: 'в конце текста'},
+            {id: 13, name: 'не сначала текста'},
+            {id: 14, name: 'не с конца текста'},
+            {id: 15, name: 'в начале слова'},
+            {id: 16, name: 'в конце слова'},
+            {id: 17, name: 'слово'},
+            {id: 18, name: 'не в начале слова'},
+            {id: 19, name: 'не в конце слова'},
+            {id: 20, name: 'исключить слово'},
+            {id: 21, name: 'регулярное выражение'},
+            {id: 22, name: 'регулярное выражение исключить'}
         ];
 
         const op = this.metaColumn.Operations;
@@ -184,7 +186,7 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
     }
 
     getColumnValues() {
-        let values = this.metaColumn.Values;
+        const values = this.metaColumn.Values;
         return values || null;
     }
 
@@ -196,14 +198,14 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
     */
 
     isAutocomplete() {
-        //return (this.selectedOperation == 9 || this.selectedOperation == 10);
-        //console.log(this.metaColumn.ValueObjectType);
-        return this.metaColumn.ValueObjectType && this.metaColumn.Type == 'Int32';
+        // return (this.selectedOperation == 9 || this.selectedOperation == 10);
+        // console.log(this.metaColumn.ValueObjectType);
+        return this.metaColumn.ValueObjectType && this.metaColumn.Type === 'Int32';
     }
 
     isDateTime() {
-        //return (this.selectedOperation == 9 || this.selectedOperation == 10);
-        return !this.metaColumn.ValueObjectType && this.metaColumn.Type == 'DateTime';
+        // return (this.selectedOperation == 9 || this.selectedOperation == 10);
+        return !this.metaColumn.ValueObjectType && this.metaColumn.Type === 'DateTime';
     }
 
     public controlIsInvalid(controlName: string): boolean {

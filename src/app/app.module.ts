@@ -11,12 +11,12 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from "./routing.module";
 
 /* MODALS */
-import { SetObjectModal } from './modals/set-object/set-object-modal.component';
-import { AddMediasModal } from './modals/add-medias/add-medias-modal.component';
-import { AddRedirectModal } from './modals/add-redirect/add-redirect-modal.component';
-import { MoveTagModal } from './modals/move-tag/move-tag-modal.component';
-import { MoveTagsModal } from './modals/move-tag/move-tags-modal.component';
-import { BatchRedirectModal } from './modals/batch-redirect/batch-redirect-modal.component';
+import { SetObjectModalComponent } from './modals/set-object/set-object-modal.component';
+import { AddMediasModalComponent } from './modals/add-medias/add-medias-modal.component';
+import { AddRedirectModalComponent } from './modals/add-redirect/add-redirect-modal.component';
+import { MoveTagModalComponent } from './modals/move-tag/move-tag-modal.component';
+import { MoveTagsModalComponent } from './modals/move-tag/move-tags-modal.component';
+import { BatchRedirectModalComponent } from './modals/batch-redirect/batch-redirect-modal.component';
 
 /* PAGES */
 import { LoginComponent } from './pages/login/login.component';
@@ -79,12 +79,12 @@ import { APP_API_URLS, Urls } from './config/config';
     BtnLoadingDirective,
     
     /* MODALS */
-    SetObjectModal,
-    AddMediasModal,
-    AddRedirectModal,
-    MoveTagModal,
-    MoveTagsModal,
-    BatchRedirectModal,    
+    SetObjectModalComponent,
+    AddMediasModalComponent,
+    AddRedirectModalComponent,
+    MoveTagModalComponent,
+    MoveTagsModalComponent,
+    BatchRedirectModalComponent,    
   ],
   imports: [
     NgbModule.forRoot(),
@@ -106,12 +106,12 @@ import { APP_API_URLS, Urls } from './config/config';
     { provide: APP_API_URLS, useValue: Urls }
   ],
   entryComponents: [
-    SetObjectModal, 
-    AddMediasModal, 
-    AddRedirectModal, 
-    MoveTagModal, 
-    MoveTagsModal,
-    BatchRedirectModal
+    SetObjectModalComponent, 
+    AddMediasModalComponent, 
+    AddRedirectModalComponent, 
+    MoveTagModalComponent, 
+    MoveTagsModalComponent,
+    BatchRedirectModalComponent
   ],
   bootstrap: [AppComponent]
 })

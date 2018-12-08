@@ -2,7 +2,7 @@
 import { Component, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { MoveTagModal } from './move-tag-modal.component';
+import { MoveTagModalComponent } from './move-tag-modal.component';
 
 import { finalize } from 'rxjs/operators';
 
@@ -18,7 +18,7 @@ import { SortService } from '../../components/search-table/sort.service';
     templateUrl: './move-tag-modal.component.html',
     providers: [ MetaService, SortService ]
 })
-export class MoveTagsModal extends MoveTagModal {
+export class MoveTagsModalComponent extends MoveTagModalComponent {
 
     @Input() selectedIds: Array<number>;
 

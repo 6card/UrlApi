@@ -2,7 +2,7 @@ import { InjectionToken, Injectable } from '@angular/core';
 
 export const APP_API_URLS = new InjectionToken<string>('app.config');
 
-export const Urls = {    
+export const Urls = {
     AUTH_ROOT: 'https://api.newstube.ru/v2',
     AUTH_CHECK: '/Auth/Check',
     AUTH_LOGIN: '/Auth/Login',
@@ -27,7 +27,7 @@ export const Urls = {
     TAG_DELETE: '/Tag/Delete',
     TAG_DELETE_MANY: '/Tag/DeleteMany',
     TAG_MOVE_AND_DELETE: '/Tag/MoveAndDelete',
-    TAG_MOVE_AND_DELETE_MANY:'/Tag/MoveAndDeleteMany',
+    TAG_MOVE_AND_DELETE_MANY: '/Tag/MoveAndDeleteMany',
 
     CHANNEL_SEARCH: '/Channel/Search',
     MEDIA_SEARCH: '/Media/Search',
@@ -46,4 +46,4 @@ export const Urls = {
     SECTION_SEARCH_COUNT: '/Section/SearchCount',
     SERIES_SEARCH_COUNT: '/Series/SearchCount',
     PATH_SEARCH_COUNT: '/Path/SearchCount',
-}
+};

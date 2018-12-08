@@ -3,8 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { SetObjectModal } from '../../modals/set-object/set-object-modal.component';
-import { AddRedirectModal } from '../../modals/add-redirect/add-redirect-modal.component';
+import { SetObjectModalComponent } from '../../modals/set-object/set-object-modal.component';
+import { AddRedirectModalComponent } from '../../modals/add-redirect/add-redirect-modal.component';
 
 import { AuthenticationService } from '../../services/auth.service';
 import { PathService } from '../../services/path.service';
@@ -49,7 +49,10 @@ export class EditPathComponent implements OnInit {
 
 
     public openDialog() {
-      const modalRef = this.modalService.open(SetObjectModal, {size: 'lg', ariaLabelledBy: 'modal-set-object', backdrop: 'static'});
+      const modalRef = this.modalService.open(
+        SetObjectModalComponent,
+        {size: 'lg', ariaLabelledBy: 'modal-set-object', backdrop: 'static'}
+      );
       modalRef.componentInstance.currentItem = this.item;
       modalRef.componentInstance.selectObject
         .subscribe(
@@ -58,9 +61,12 @@ export class EditPathComponent implements OnInit {
     }
 
     public openRedirectDialog() {
-      const modalRef = this.modalService.open(AddRedirectModal, {size: 'lg', ariaLabelledBy: 'modal-add-redirect', backdrop: 'static'});
+      const modalRef = this.modalService.open(
+        AddRedirectModalComponent,
+        {size: 'lg', ariaLabelledBy: 'modal-add-redirect', backdrop: 'static'}
+      );
       modalRef.componentInstance.item = this.item;
-      modalRef.componentInstance.onSetRedirect
+      modalRef.componentInstance.pushRedirect
         .subscribe(
           data => {
             this.setObject(data);

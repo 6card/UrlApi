@@ -10,24 +10,125 @@ import { AuthenticationService } from '../../services/auth.service';
 
 import { Tag } from '../../models/object-base';
 
+class TagFormControl extends FormControl {
+    label: string;
+    modelProperty: string;
+    type: number;
+
+    constructor(label: string, property: string, type: number, value: any, validator?: any) {
+        super(value, validator);
+        this.label = label;
+        this.modelProperty = property;
+        this.type = type;
+    }
+
+    get isValid() {
+        return this.invalid && this.touched;
+    }
+
+    getValidationMessages() {
+        const messages: string[] = [];
+        if (this.errors) {
+            for (const errorName in this.errors) {
+                if (this.errors.hasOwnProperty(errorName)) {
+                    switch (errorName) {
+                        case 'required':
+                            messages.push(`Заполните ${this.label}`);
+                        break;
+                        case 'minlength':
+                            messages.push(`A ${this.label} must be at least ${this.errors['minlength'].requiredLength} characters`);
+                        break;
+                        case 'maxlength':
+                            messages.push(`A ${this.label} must be no more than ${this.errors['maxlength'].requiredLength} characters`);
+                        break;
+                        case 'limit':
+                            messages.push(`A ${this.label} cannot be more than ${this.errors['limit'].limit}`);
+                        break;
+                        case 'pattern':
+                            messages.push(`The ${this.label} containsillegal characters`);
+                        break;
+                    }
+                }
+            }
+        }
+        if (messages.length > 0) {
+            return messages;
+        }
+
+        return null;
+    }
+    getValidationLastMessage() {
+        return this.getValidationMessages()[0] || null;
+    }
+
+}
+
+const CONTROL_INPUT = 0;
+const CONTROL_TEXTAREA = 1;
+const CONTROL_CHECKBOX = 2;
+const CONTROL_SELECT = 3;
+
+class TagFormGroup extends FormGroup {
+
+    constructor() {
+        super({
+            PathId: new TagFormControl('PathId', 'PathId', CONTROL_INPUT, ''),
+
+            PathLatin: new TagFormControl('PathLatin', 'PathLatin', CONTROL_INPUT, ''),
+            PathSuffix: new TagFormControl('PathSuffix', 'PathSuffix', CONTROL_INPUT, ''),
+            ParentPathLatin: new TagFormControl('ParentPathLatin', 'ParentPathLatin', CONTROL_INPUT, ''),
+            ParentPathId: new TagFormControl('ParentPathId', 'ParentPathId', CONTROL_INPUT, ''),
+
+            Url: new TagFormControl('Url', 'Url', CONTROL_INPUT, ''),
+            GenerateLatin: new TagFormControl('зафиксировать', 'GenerateLatin', CONTROL_CHECKBOX, false),
+            Name: new TagFormControl('Название', 'Name', CONTROL_INPUT, '', Validators.compose([Validators.required])),
+            Description: new TagFormControl('Описание', 'Description', CONTROL_TEXTAREA, ''),
+            SeoNoIndex: new TagFormControl('Запрет индексации', 'SeoNoIndex', CONTROL_CHECKBOX, false),
+            SeoEnable: new TagFormControl('Использовать данные SEO', 'SeoEnable', CONTROL_CHECKBOX, false),
+            SeoTitle: new TagFormControl('Title', 'SeoTitle', CONTROL_INPUT, ''),
+            SeoDescription: new TagFormControl('Description', 'SeoDescription', CONTROL_TEXTAREA, ''),
+            SeoKeywords: new TagFormControl('Keywords', 'SeoKeywords', CONTROL_INPUT, ''),
+            /*
+            PathParentId: new TagFormControl('PathParentId', 'PathParentId', CONTROL_INPUT, ''),
+            PathId: new TagFormControl('PathId', 'PathId', CONTROL_INPUT, ''),
+            */
+        });
+    }
+
+    get tagControls(): TagFormControl[] {
+        return Object.keys(this.controls).map(k => this.controls[k] as TagFormControl);
+    }
+
+    public markControlsTouched() {
+        (Object).values(this.controls).forEach( control => control.markAsTouched() );
+    }
+
+    /*
+    getFormValidationMessages(form: any) : string[] {
+        let messages: string[] = [];
+        this.productControls.forEach(c => c.getValidationMessages().forEach(m => messages.push(m)));
+            return messages;
+    }
+    */
+}
+
 @Component({
     selector: 'app-tag-form',
     templateUrl: './tag-form.component.html'
 })
-
 export class TagFormComponent implements OnInit, OnDestroy, OnChanges {
 
     tagForm = new TagFormGroup();
 
     newTag: Tag;
-    //formSubmitted: boolean = false;
+    // formSubmitted: boolean = false;
 
     public parents: Array<any>;
 
     private unsubscribe: Subject<void> = new Subject();
 
     @Input() currentObject: Tag;
-    @Input() formSubmitted: boolean = false;;
+    @Input() formSubmitted: boolean = false;
 
     constructor(
         private pathService: PathService,
@@ -38,32 +139,31 @@ export class TagFormComponent implements OnInit, OnDestroy, OnChanges {
 
     ngOnChanges(changes: SimpleChanges) {
         const object: SimpleChange = changes.currentObject;
-        if (object)
+        if (object) {
             this.tagForm.patchValue(object.currentValue, {emitEvent: false});
+        }
     }
 
     ngOnInit() {
-        
 
         this.tagForm.get('Name').valueChanges
-            .pipe( 
-                takeUntil(this.unsubscribe),             
+            .pipe(
+                takeUntil(this.unsubscribe),
                 debounceTime(500),
                 distinctUntilChanged(),
-                filter(_ => !this.tagForm.get('GenerateLatin').value)           
+                filter(_ => !this.tagForm.get('GenerateLatin').value)
             )
             .subscribe( val => {
                 this.setPathLatin(val);
             });
 
         this.pathService.getParents(this.authenticationService.sessionId)
-        .subscribe( 
+        .subscribe(
             data => {
                 this.parents = data;
-                if (!data.find( i => i.Id == this.tagForm.get('ParentPathId').value)) {
-                    this.parents.push({Id: this.tagForm.get('ParentPathId').value, PathLatin: this.tagForm.get('ParentPathLatin').value})
+                if (!data.find( i => i.Id === this.tagForm.get('ParentPathId').value)) {
+                    this.parents.push({Id: this.tagForm.get('ParentPathId').value, PathLatin: this.tagForm.get('ParentPathLatin').value});
                 }
-                
             });
     }
 
@@ -78,13 +178,13 @@ export class TagFormComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     setPathLatin(text: string) {
-        if (text.length == 0) {
-            this.tagForm.get('PathLatin').setValue('')
+        if (text.length === 0) {
+            this.tagForm.get('PathLatin').setValue('');
             return;
         }
         this.pathService.getLatin(text)
         .pipe( first() )
-        .subscribe( 
+        .subscribe(
             data => {
                 this.tagForm.get('PathLatin').setValue(data);
                 this.resetPath();
@@ -114,115 +214,16 @@ export class TagFormComponent implements OnInit, OnDestroy, OnChanges {
     submitForm(form: any) {
         this.tagForm.markControlsTouched();
 
-        if (!this.tagForm.valid)
+        if (!this.tagForm.valid) {
             return;
+        }
 
-        //this.formSubmitted = true;
+        // this.formSubmitted = true;
         if (form.valid) {
             this.newTagEvent.emit(this.tagForm.value);
 
-            //this.tagForm.reset();            
+            // this.tagForm.reset();
         }
-        //this.formSubmitted = false;
+        // this.formSubmitted = false;
     }
-}
-
-class TagFormControl extends FormControl {
-    label: string;
-    modelProperty: string;
-    type: number;
-
-    constructor(label:string, property:string, type: number, value: any, validator?: any) {
-        super(value, validator);
-        this.label = label;
-        this.modelProperty = property;
-        this.type = type;
-    }
-
-    get isValid() {
-        return this.invalid && this.touched;
-    }
-
-    
-    getValidationMessages() {
-        let messages: string[] = [];
-        if (this.errors) {
-            for (let errorName in this.errors) {
-                switch (errorName) {
-                    case 'required':
-                        messages.push(`Заполните ${this.label}`);
-                    break;
-                    case 'minlength':
-                        messages.push(`A ${this.label} must be at least ${this.errors['minlength'].requiredLength} characters`);
-                    break;
-                    case 'maxlength':
-                        messages.push(`A ${this.label} must be no more than ${this.errors['maxlength'].requiredLength} characters`);
-                    break;
-                    case 'limit':
-                        messages.push(`A ${this.label} cannot be more than ${this.errors['limit'].limit}`);
-                    break;
-                    case 'pattern':
-                        messages.push(`The ${this.label} containsillegal characters`);
-                    break;
-                }
-            }
-        }
-        if (messages.length > 0)
-            return messages;
-
-        return null;
-    }
-    getValidationLastMessage() {
-        return this.getValidationMessages()[0] || null;
-    }
-    
-}
-
-const CONTROL_INPUT = 0;
-const CONTROL_TEXTAREA = 1;
-const CONTROL_CHECKBOX = 2;
-const CONTROL_SELECT = 3;
-
-class TagFormGroup extends FormGroup {
-
-    constructor() {
-        super({
-            PathId: new TagFormControl('PathId', 'PathId', CONTROL_INPUT, ''),
-            
-            PathLatin: new TagFormControl('PathLatin', 'PathLatin', CONTROL_INPUT, ''),
-            PathSuffix: new TagFormControl('PathSuffix', 'PathSuffix', CONTROL_INPUT, ''),
-            ParentPathLatin: new TagFormControl('ParentPathLatin', 'ParentPathLatin', CONTROL_INPUT, ''),
-            ParentPathId: new TagFormControl('ParentPathId', 'ParentPathId', CONTROL_INPUT, ''),
-
-            Url: new TagFormControl('Url', 'Url', CONTROL_INPUT, ''),
-            GenerateLatin: new TagFormControl('зафиксировать', 'GenerateLatin', CONTROL_CHECKBOX, false),
-            Name: new TagFormControl('Название', 'Name', CONTROL_INPUT, '', Validators.compose([Validators.required])),
-            Description: new TagFormControl('Описание', 'Description', CONTROL_TEXTAREA, ''),
-            SeoNoIndex: new TagFormControl('Запрет индексации', 'SeoNoIndex', CONTROL_CHECKBOX, false),
-            SeoEnable: new TagFormControl('Использовать данные SEO', 'SeoEnable', CONTROL_CHECKBOX, false),
-            SeoTitle: new TagFormControl('Title', 'SeoTitle', CONTROL_INPUT, ''),
-            SeoDescription: new TagFormControl('Description', 'SeoDescription', CONTROL_TEXTAREA, ''),
-            SeoKeywords: new TagFormControl('Keywords', 'SeoKeywords', CONTROL_INPUT, ''),            
-            /*
-            PathParentId: new TagFormControl('PathParentId', 'PathParentId', CONTROL_INPUT, ''),
-            PathId: new TagFormControl('PathId', 'PathId', CONTROL_INPUT, ''),
-            */
-        });
-    }
-
-    get tagControls(): TagFormControl[] {
-        return Object.keys(this.controls).map(k => this.controls[k] as TagFormControl);
-    }
-
-    public markControlsTouched() {
-        (Object).values(this.controls).forEach( control => control.markAsTouched() );
-    }
-
-    /*
-    getFormValidationMessages(form: any) : string[] {
-        let messages: string[] = [];
-        this.productControls.forEach(c => c.getValidationMessages().forEach(m => messages.push(m)));
-            return messages;
-    }
-    */
 }

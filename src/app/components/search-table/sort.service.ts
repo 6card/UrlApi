@@ -9,38 +9,42 @@ export class SortService {
     private columnSortedSource = new Subject<ColumnSorted[]>();
     columnSorted$ = this.columnSortedSource.asObservable();
 
-    constructor() { }    
+    constructor() { }
 
     clearSorted(colunmId: number) {
-        const sortedColumn = this._columns.find( i => i.Column == colunmId);
-        if (sortedColumn)
+        const sortedColumn = this._columns.find( i => i.Column === colunmId);
+        if (sortedColumn) {
             this._columns.splice(this._columns.indexOf(sortedColumn), 1);
+        }
         this.columnSortedSource.next(this._columns);
     }
 
     setInitSorted(event: Array<ColumnSortedEvent>) {
-        this._columns = event.filter( i => i.Column != 1);
+        this._columns = event.filter( i => i.Column !== 1);
     }
 
     setSorted(event: ColumnSortedEvent) {
-        if (event.Column == 1)
+        if (event.Column === 1) {
             return;
-        const sortedColumn = this._columns.find( i => i.Column == event.Column);
-        if (sortedColumn)
+        }
+
+        const sortedColumn = this._columns.find( i => i.Column === event.Column);
+        if (sortedColumn) {
             sortedColumn.Desc = event.Desc;
-        else 
+        } else {
             this._columns.push(event);
+        }
 
         this.columnSortedSource.next(this._columns);
     }
 
     clearAllColumns() {
         this._columns = [];
-        //this.columnSortedSource.next(this._columns);
+        // this.columnSortedSource.next(this._columns);
     }
 
     setColumns(columns: number[]) {
-        //this._columns = columns.map( i => new ColumnSorted(i));
+        // this._columns = columns.map( i => new ColumnSorted(i));
     }
 }
 

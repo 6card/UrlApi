@@ -18,11 +18,11 @@ import { APP_CONST } from '../../config/const';
 
 
 @Component({
-  selector: 'add-medias-modal',
+  selector: 'app-add-medias-modal',
   templateUrl: './add-medias-modal.component.html',
   providers: [ MetaService, SortService ]
 })
-export class AddMediasModal implements OnInit, OnDestroy, AfterViewInit {
+export class AddMediasModalComponent implements OnInit, OnDestroy, AfterViewInit {
 
     public medias: Array<CheckedMedia>;
     public searchItems: Array<any>;
@@ -31,31 +31,27 @@ export class AddMediasModal implements OnInit, OnDestroy, AfterViewInit {
     public loading: boolean = false;
     public sq = new SearchQuery();
 
-    //dialogMediaAction: DialogMediaAction;
-
     @Input() objectSq: SearchQuery;
     @Input() mode;
     @Input() objectId: number;
     @Input() objectTypeId: number;
     @Output() finishQuery = new EventEmitter();
 
-    private _columnSortedSubscription: Subscription;    
+    private _columnSortedSubscription: Subscription;
 
     constructor(
         @Inject(APP_CONST) private CONST,
         public activeModal: NgbActiveModal,
         private metaService: MetaService,
-        private sortService: SortService, 
+        private sortService: SortService,
         private searchService: SearchService,
         private pathService: PathService,
         private alertService: AlertService,
         private authenticationService: AuthenticationService,
     ) {}
 
-    ngOnInit() {        
+    ngOnInit() {
         this.metaService.loadMeta(3);
-        //console.log('ngOnInit');
-        //this.loadMedias(this.sq);
         this._columnSortedSubscription = this.sortService.columnSorted$.subscribe(columns => {
             this.onSortChange(columns);
         });
@@ -70,12 +66,13 @@ export class AddMediasModal implements OnInit, OnDestroy, AfterViewInit {
     ngAfterViewInit() { }
 
     public loadMedias(searchQuery: SearchQuery) {
-        let search = new SearchQuery( Object.assign([], searchQuery.Query), Object.assign({}, searchQuery.Page));
-        
-        if (this.mode == this.CONST.mediasMode.ADD)
+        const search = new SearchQuery( Object.assign([], searchQuery.Query), Object.assign({}, searchQuery.Page));
+
+        if (this.mode === this.CONST.mediasMode.ADD) {
             search.addExceptTableQuery(this.objectSq);
-        else if (this.mode == this.CONST.mediasMode.DELETE)
+        } else if (this.mode === this.CONST.mediasMode.DELETE) {
             search.addIntersectTableQuery(this.objectSq);
+        }
 
         this.loading = true;
         forkJoin (
@@ -83,11 +80,11 @@ export class AddMediasModal implements OnInit, OnDestroy, AfterViewInit {
             this.searchService.searchCount(3, this.authenticationService.sessionId, search.Query),
             this.searchService.searchCount(3, this.authenticationService.sessionId, this.sq.Query),
         )
-        .pipe( 
+        .pipe(
             finalize(() => this.loading = false),
             map( ([items, count, countAll]) => {
                 return {Items: items, Count: count, CountAll: countAll};
-            })            
+            })
         )
         .subscribe( data => {
             this.searchItems = data.Items;
@@ -96,40 +93,35 @@ export class AddMediasModal implements OnInit, OnDestroy, AfterViewInit {
         });
     }
 
-
-
     public onQuery(searchQuery: Array<SimpleQuery>) {
         this.sq.setQuery(searchQuery);
-        //console.log('onQuery');
         this.loadMedias(this.sq);
     }
 
     public onPageChange(pageNumber: number) {
         this.sq.setPage(pageNumber);
-        //console.log('onPageChange');
         this.loadMedias(this.sq);
     }
 
-    public onSortChange(columns) {        
+    public onSortChange(columns) {
         this.sq.setSort(columns);
-        //console.log('onSortChange');
         this.loadMedias(this.sq);
     }
 
     public pushQuery() {
-        //this.finishQuery.emit({mode: this.mode, query: this.sq});
+        // this.finishQuery.emit({mode: this.mode, query: this.sq});
 
-        switch(this.mode) {
-            case this.CONST.mediasMode.ADD: { 
+        switch (this.mode) {
+            case this.CONST.mediasMode.ADD: {
                 this.addMedias(this.sq.Query);
-                break; 
+                break;
             }
-            case this.CONST.mediasMode.DELETE: { 
+            case this.CONST.mediasMode.DELETE: {
                 this.deleteMedias(this.sq.Query);
-                break; 
-            } 
+                break;
+            }
         }
-        //this.activeModal.close();
+        // this.activeModal.close();
     }
 
     public addMedias(query: any) {
@@ -143,7 +135,7 @@ export class AddMediasModal implements OnInit, OnDestroy, AfterViewInit {
                 this.finishQuery.emit(true);
             }
         );
-	}
+    }
 
     public deleteMedias(query: any) {
         this.loading = true;
@@ -156,5 +148,5 @@ export class AddMediasModal implements OnInit, OnDestroy, AfterViewInit {
                 this.finishQuery.emit(true);
             }
         );
-	}
+    }
 }

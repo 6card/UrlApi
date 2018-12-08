@@ -10,20 +10,20 @@ import { PathService } from '../../services/path.service';
 import { AlertService } from '../../services/alert.service';
 
 @Component({
-    selector: 'add-redirect-modal',
+    selector: 'app-add-redirect-modal',
     templateUrl: './add-redirect-modal.component.html'
 })
-export class AddRedirectModal implements OnInit, OnDestroy{
+export class AddRedirectModalComponent implements OnInit, OnDestroy {
 
     urlForm: FormGroup;
 
-    //error: any = null;
+    // error: any = null;
     itemRedirect: any = null;
     public loading: boolean = false;
     private alive: boolean = true;
 
     @Input() item: any;
-    @Output() onSetRedirect = new EventEmitter();
+    @Output() pushRedirect = new EventEmitter();
 
     constructor(
         private formBuilder: FormBuilder,
@@ -40,26 +40,27 @@ export class AddRedirectModal implements OnInit, OnDestroy{
         });
 
         this.urlForm.get('url').valueChanges
-            .pipe( 
-                takeWhile(() => this.alive),             
+            .pipe(
+                takeWhile(() => this.alive),
                 debounceTime(300),
-                distinctUntilChanged(),         
+                distinctUntilChanged(),
             )
             .subscribe( val => {
                 this.getUrl(val);
         });
     }
 
-    ngOnDestroy() { 
+    ngOnDestroy() {
         this.alive = false;
     }
 
 
     public showObject(obj: any | boolean) {
-        if (obj) 
+        if (obj) {
             this.itemRedirect = obj;
-        else 
+        } else {
             this.itemRedirect = null;
+        }
     }
 
     public setRedirect(url: any) {
@@ -70,11 +71,11 @@ export class AddRedirectModal implements OnInit, OnDestroy{
             data => {
                 this.alertService.success('Redirect установлен', 2000);
                 this.activeModal.close();
-                this.onSetRedirect.emit(true);
+                this.pushRedirect.emit(true);
             }
         );
     }
-    
+
     public getUrl(url) {
         this.loading = true;
         this.itemRedirect = null;
@@ -82,33 +83,29 @@ export class AddRedirectModal implements OnInit, OnDestroy{
         .pipe( finalize(() => this.loading = false))
         .subscribe(data => this.itemRedirect = data);
     }
-    
 
     private confirmRedirect(): boolean {
-        if(confirm(
-            `Создать Redirect объекта "${this.item.ObjectTypeName}: ${this.item.Name}" на ${this.urlForm.controls.url.value} который занимает объект "${this.itemRedirect.ObjectTypeName}: ${this.itemRedirect.Name}"?`
-            //`Вы уверены что хотите установить Redirect на Url "${this.urlForm.controls.url.value}"?`
+        if (confirm(
+            `Создать Redirect объекта "${this.item.ObjectTypeName}: ${this.item.Name}" на ${this.urlForm.controls.url.value}
+            который занимает объект "${this.itemRedirect.ObjectTypeName}: ${this.itemRedirect.Name}"?`
+            // `Вы уверены что хотите установить Redirect на Url "${this.urlForm.controls.url.value}"?`
         )) {
             return true;
-            
-        }
-        else
+        } else {
             return false;
+        }
     }
 
-    onSubmit() {    
+    onSubmit() {
         if (this.urlForm.invalid) {
             return;
         }
 
         if (this.itemRedirect) {
-            if (!this.confirmRedirect())
-                return;                    
+            if (!this.confirmRedirect()) {
+                return;
+            }
         }
         this.setRedirect(this.urlForm.controls.url.value);
-
-
-        
-
     }
 }

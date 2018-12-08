@@ -7,8 +7,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
-import { AddMediasModal } from '../../modals/add-medias/add-medias-modal.component';
-import { MoveTagModal } from '../../modals/move-tag/move-tag-modal.component';
+import { AddMediasModalComponent } from '../../modals/add-medias/add-medias-modal.component';
+import { MoveTagModalComponent } from '../../modals/move-tag/move-tag-modal.component';
 
 import { AuthenticationService } from '../../services/auth.service';
 import { PathService } from '../../services/path.service';
@@ -173,7 +173,9 @@ export class ObjectComponent implements OnInit, AfterViewInit {
       const group: any = {};
 
       for (const key in item) {
-        group[key] = new FormControl(item[key] || '');
+        if (item.hasOwnProperty(key)) {
+          group[key] = new FormControl(item[key] || '');
+        }
       }
 
       return new FormGroup(group);
@@ -196,14 +198,17 @@ export class ObjectComponent implements OnInit, AfterViewInit {
 
 
     public openMoveModal() {
-      const modalRef = this.modalService.open(MoveTagModal, {size: 'lg', ariaLabelledBy: 'modal-move-tag', backdrop: 'static'});
+      const modalRef = this.modalService.open(MoveTagModalComponent, {size: 'lg', ariaLabelledBy: 'modal-move-tag', backdrop: 'static'});
       modalRef.componentInstance.currentItem = this.item;
       modalRef.componentInstance.finishQuery
         .subscribe( obj => this.router.navigate(['/object', obj.ObjectTypeId, obj.ObjectId]));
     }
 
     public openModal(mode) {
-      const modalRef = this.modalService.open(AddMediasModal, {size: 'lg', ariaLabelledBy: 'modal-add-medias', backdrop: 'static'});
+      const modalRef = this.modalService.open(
+        AddMediasModalComponent,
+        {size: 'lg', ariaLabelledBy: 'modal-add-medias', backdrop: 'static'}
+      );
       modalRef.componentInstance.mode = mode;
       modalRef.componentInstance.objectId = this.item.ObjectId;
       modalRef.componentInstance.objectTypeId = this.item.ObjectTypeId;

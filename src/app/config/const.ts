@@ -7,4 +7,4 @@ export const Constants = {
         ADD: 0,
         DELETE: 1
     }
-}
+};
