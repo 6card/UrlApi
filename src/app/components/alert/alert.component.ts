@@ -1,4 +1,6 @@
-import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+
+import { trigger, style, transition, animate, group } from '@angular/animations';
 
 import { Alert, AlertType } from '../../models/alert';
 import { AlertService } from '../../services/alert.service';
@@ -8,7 +10,29 @@ import { takeWhile } from 'rxjs/operators';
 @Component({
     selector: 'app-alert',
     templateUrl: 'alert.component.html',
-    host: {'class' : 'messages'}
+    host: {'class' : 'messages'},
+    animations: [
+        trigger('slideInOut', [
+            transition(':leave', [
+                style({height: '*', opacity: 1}),
+
+                group([
+                    animate(300, style({height: 0})),
+                    animate('200ms ease-in-out', style({'opacity': '0'}))
+                ])
+
+            ]),
+            transition(':enter', [
+                style({height: '0', opacity: 0}),
+
+                group([
+                    animate(300, style({height: '*'})),
+                    animate('400ms ease-in-out', style({'opacity': '1'}))
+                ])
+
+            ])
+        ]),
+    ],
 })
 
 export class AlertComponent implements OnInit, OnDestroy {

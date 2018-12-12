@@ -1,8 +1,6 @@
-<div class="container">
-    <div *ngFor="let alert of alerts" class="alert" [ngClass]="cssClass(alert)">
-            {{alert.message}}
-        <button type="button" class="close" aria-label="Close" *ngIf="!alert.timeout">
-            <span aria-hidden="true" (click)="removeAlert(alert)">&times;</span>
-        </button>
-    </div>
+<div *ngFor="let alert of alerts" @slideInOut class="alert" [ngClass]="cssClass(alert)">
+        {{alert.message}}
+    <button type="button" class="close" aria-label="Close" *ngIf="!alert.timeout">
+        <span aria-hidden="true" (click)="removeAlert(alert)">&times;</span>
+    </button>
 </div>
