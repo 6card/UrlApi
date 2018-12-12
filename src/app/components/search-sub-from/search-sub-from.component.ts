@@ -120,7 +120,7 @@ export class SearchSubFormComponent implements OnInit, OnDestroy  {
     }
 
     get metaColumn(): MetaColumn {
-        return this.meta.Columns.find( c => c.Id === this.selectedColumn) || null;
+        return this.meta.Columns.find( c => c.Id == this.selectedColumn) || null;
     }
 
     onChangeColumn(id: number) {

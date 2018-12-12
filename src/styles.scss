@@ -173,33 +173,12 @@ span.loader {
 }
 
 /* datepicker component */
-.datetimepicker.form-control {
-    padding: 0 5px;    
-    display: flex;
-    height: auto;
-    &:focus-within{
-        @extend .form-control:focus;
-    }
-    input{
-        border: none;
+.datetimepicker {
+    ngb-datepicker {
         border-radius: 0;
-        color: #495057;
-    }
-    input:focus {
-        outline: none;
-        box-shadow: none;
-    }
-    input.date{
-        width: 6em;
-    }
-    .ngb-tp-input-container {
-        width: 2em;
-        input{
-            padding: 0 2px;            
-        }
-    }
-    .ngb-tp-spacer {
-        width: 0.5em;
+        border-top: none;
+        border-left: none;
+        border-right: none;
     }
 }
 
