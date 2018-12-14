@@ -11,10 +11,4 @@ import { AutocompleteWindowComponent } from './autocomplete-window.component';
     exports: [AutocompleteComponent, AutocompleteWindowComponent],
     entryComponents: [AutocompleteWindowComponent]
 })
-export class AutocompleteModule {
-    public static forRoot() {
-        return {
-            ngModule: AutocompleteModule,
-        };
-    }
-}
+export class AutocompleteModule { }

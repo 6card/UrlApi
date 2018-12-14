@@ -1,13 +1,11 @@
-import { Component, OnInit, Input, Output, ViewChild, EventEmitter, ElementRef} from '@angular/core';
+import { Component, OnInit, Input, Output, ViewChild, EventEmitter } from '@angular/core';
+import { NgbDateStruct, NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 
 import * as moment from 'moment';
 
-import { NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-
 @Component({
     selector: 'dt-picker-window',
-    templateUrl: './dtpicker-window.component.html',
+    templateUrl: './dtpicker-window.component.html'
 })
 
 export class DtpickerWindowComponent implements OnInit {
@@ -21,11 +19,8 @@ export class DtpickerWindowComponent implements OnInit {
 
     @ViewChild('datepicker') datepicker;
 
-    constructor (private _elementRef: ElementRef) {}
-
     ngOnInit() {
         this.setDateTime(this.datetime);
-        // this.change.emit(this._datetimeToString(this.date, this.time));
     }
 
     public setDateTime(datetime: string) {

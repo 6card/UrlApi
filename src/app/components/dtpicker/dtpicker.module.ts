@@ -1,22 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbDatepickerI18n } from '@ng-bootstrap/ng-bootstrap';
 
 import { DtpickerWindowComponent } from './dtpicker-window.component';
 import { DtpickerComponent } from './dtpicker.component';
+import { CustomDatepickerI18n } from './datepicker-ru';
 
 @NgModule({
     imports: [ CommonModule, NgbModule, FormsModule ],
-    declarations: [ DtpickerWindowComponent, DtpickerComponent ],
+    declarations: [ DtpickerWindowComponent, DtpickerComponent ],    
+    providers: [ {provide: NgbDatepickerI18n, useClass: CustomDatepickerI18n} ],
     exports: [ DtpickerComponent ],
     entryComponents: [ DtpickerWindowComponent ]
 })
-export class DtpickerModule {
-    public static forRoot() {
-        return {
-            ngModule: DtpickerModule,
-        };
-    }
-}
+export class DtpickerModule { }
