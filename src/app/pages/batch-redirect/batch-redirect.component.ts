@@ -12,6 +12,7 @@ import { PathService } from '../../services/path.service';
 import { MetaService } from '../../services/meta.service';
 import { SortService } from '../../components/search-table/sort.service';
 
+import { Path, Channel, Tag, Theme, Person, Section, Media, Serie }  from '../../models/object-base';
 import { SearchQuery, SimpleQuery, PageQuery } from '../../models/search-query.model';
 
 import { BatchRedirectModalComponent } from '../../modals/batch-redirect/batch-redirect-modal.component';
@@ -26,14 +27,14 @@ export class BatchRedirectComponent implements OnInit, OnDestroy {
     public typeId = 0;
     public submitLoading: boolean = false;
     public urlListLoading: boolean = false;
-    public searchResult: Array<any>;
+    public searchResult: Array<Channel | Media | Theme | Person | Tag | Section | Serie>;
     public searchItemsResult: number;
     public sq: SearchQuery;
     private alive: boolean = true;
 
-    public selectedMediaUrls: string[] = [];
-    public selectedMediaIds: number[] = [];
-    public selectedMedias: any[] = [];
+    public selectedMediaUrls: Array<string>;
+    public selectedMediaIds: Array<number>;
+    public selectedMedias: Array<Path | string>;
 
     constructor(
         protected router: Router,

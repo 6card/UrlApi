@@ -34,6 +34,9 @@ $badge-padding-x: .4em;
 
 .card-table .card-body {
     padding: 0;
+    &.no-results {
+        padding: 1.25rem;
+    }
     table {
         margin-bottom: 0;
         border: none;
@@ -180,6 +183,14 @@ span.loader {
         border-left: none;
         border-right: none;
     }
+    .input-wrapper {
+        position: relative;
+    }
+}
+.timepicker {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .invalid-feedback{

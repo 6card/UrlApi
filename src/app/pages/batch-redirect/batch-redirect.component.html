@@ -11,7 +11,7 @@
 <div class="tabs-body">
     <app-search-path *ngIf="!typeId" (found)="addToMedias($event)" buttonLabel="Добавить" [returnInputOnError]="true"></app-search-path>
 
-    <div style="position: relative" [appLoading]="submitLoading" *ngIf="typeId">        
+    <div [appLoading]="submitLoading" *ngIf="typeId">        
         <search-form
             (pushQuery)="onQuery($event)" 
             [(loading)]="submitLoading"
@@ -64,7 +64,12 @@
     <div class="card-header">
         <h4>Список путей</h4>
     </div>
-    <div class="card-body" [appLoading]="urlListLoading">
+
+    <div class="card-body no-results" *ngIf="resultSelectedArray && resultSelectedArray.length == 0"> 
+        Пути не выбраны
+    </div>
+
+    <div class="card-body" [appLoading]="urlListLoading" *ngIf="resultSelectedArray && resultSelectedArray.length > 0">
         <table class="table table-bordered">
             <thead class="thead-dark">
                 <tr>

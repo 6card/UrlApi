@@ -77,7 +77,7 @@ export interface MoveObject {
     ObjectId: number;
 }
 
-interface Channel {
+export interface Channel {
     Id: number;
     Name: string;
     Description: string;
@@ -125,7 +125,7 @@ export interface Tag {
     SeoDescription: string;
 }
 
-interface Theme {
+export interface Theme {
     Id: number;
     Name: string;
     Description: string;
@@ -149,7 +149,7 @@ interface Theme {
     LogoId: number;
 }
 
-interface Person {
+export interface Person {
     Id: number;
     Name: string;
     Description: string;
@@ -173,7 +173,7 @@ interface Person {
     LogoId: number;
 }
 
-interface Section {
+export interface Section {
     Id: number;
     Name: string;
     Description: string;
@@ -204,7 +204,7 @@ interface Section {
     LogoId: number;
 }
 
-interface Media {
+export interface Media {
     Id: number;
     Name: string;
     Description: string;
@@ -236,6 +236,32 @@ interface Media {
     Sections: Array<Section>;
     Persons: Array<Person>;
     Themes: Array<Theme>;
+}
+
+export interface Serie {
+    Id: number;
+    Name: string;
+    Description: string;
+    Url: string;
+
+    SeoKeywords: string;
+    SeoNoIndex: boolean;
+    SeoEnable: boolean;
+
+    Path: string;
+    PathId: number;
+    PathLatin: string;
+    PathSuffix: number;
+
+    ParentPath: string;
+    ParentPathId: number;
+    ParentPathLatin: string;
+    ParentPathSuffix: number;
+
+    IconId: number;
+    LogoId: number;
+
+    SeoDescription: string;
 }
 
 
@@ -280,6 +306,6 @@ interface HistoryPath {
 
 interface HistoryObject {
     Id: number;
-    Item: Path | Channel | Tag | Theme | Person | Section | Media;
+    Item: Path | Channel | Tag | Theme | Person | Section | Media | Serie;
     CreateTime: Date;
 }

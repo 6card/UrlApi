@@ -10,7 +10,7 @@ import { DtpickerWindowComponent } from './dtpicker-window.component';
 @Component({
     selector: 'dt-picker',
     template: `
-        <div style="position: relative;">
+        <div class="input-wrapper">
             <input class="form-control" type="text" #dtinput
                 [ngClass]="invalidClass"
                 (click)="toggle()"
