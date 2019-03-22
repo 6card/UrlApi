@@ -3,10 +3,10 @@
         <h1 class="h3 mb-3 font-weight-normal">NEWSTUBE</h1>
         <div class="form-group">            
             <label for="inputUsername" class="sr-only">Username</label>
-            <input type="text" id="inputUsername" class="form-control mb-3" placeholder="Username" autofocus formControlName="username">
+            <input type="text" id="inputUsername" class="form-control mb-3" placeholder="Username" autofocus formControlName="username" [class.is-invalid]="controlIsInvalid('username')">
             <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" id="inputPassword" class="form-control mb-3" placeholder="Password" formControlName="password">
-            <button class="btn btn-lg btn-primary btn-block" type="submit" [btnLoading]="submitLoading"><span></span>Вход</button>            
+            <input type="password" id="inputPassword" class="form-control mb-3" placeholder="Password" formControlName="password" [class.is-invalid]="controlIsInvalid('password')">
+            <button class="btn btn-lg btn-primary btn-block" type="submit" [btnLoading]="submitLoading">Вход</button>            
         </div>
         <div *ngIf="loginError" @error class="alert alert-danger" role="alert">
             Невероное имя пользователя или пароль

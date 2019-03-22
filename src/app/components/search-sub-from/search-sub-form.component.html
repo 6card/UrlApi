@@ -4,7 +4,7 @@
     <div class="row">
                 
         <div class="form-group col-md-4">
-                <select formControlName="column" class="form-control" [ngClass]="{'is-invalid' : controlIsInvalid('column')}" (change)="onChangeColumn($event.target.value)">
+                <select formControlName="column" class="form-control" [class.is-invalid]="controlIsInvalid('column')" (change)="onChangeColumn($event.target.value)">
                     <option disabled selected hidden [value]="null">-- select --</option>
                     <option *ngFor="let c of getColumns();" [value]="c.id">{{c.name}}</option>
                 </select>                  
@@ -13,7 +13,7 @@
         
         <div *ngIf="selectedColumn" class="form-group col-md-4">
 
-                <select formControlName="operation" class="form-control" [ngClass]="{'is-invalid' : controlIsInvalid('operation')}" (change)="onChangeOperation($event.target.value)">
+                <select formControlName="operation" class="form-control" [class.is-invalid]="controlIsInvalid('operation')" (change)="onChangeOperation($event.target.value)">
                     <option disabled selected hidden [value]="null">-- select --</option>
                     <option *ngFor="let o of getOperations(selectedColumn);" [value]="o.id">{{o.name}}</option>
                 </select>
@@ -22,19 +22,19 @@
         
         <div *ngIf="selectedColumn" class="form-group col-md-4">
 
-            <select *ngIf="getColumnValues()" formControlName="value" class="form-control" [ngClass]="{'is-invalid' : controlIsInvalid('value')}">
+            <select *ngIf="getColumnValues()" formControlName="value" class="form-control" [class.is-invalid]="controlIsInvalid('value')">
                 <option disabled selected hidden [value]="null">-- select --</option>
                 <option *ngFor="let v of getColumnValues();" [value]="v.Key">{{v.Value}}</option>
             </select>
 
-            <app-autocomplete *ngIf="isAutocomplete()" formControlName="value" [ngClass]="{'is-invalid' : controlIsInvalid('value')}"
+            <app-autocomplete *ngIf="isAutocomplete()" formControlName="value" [class.is-invalid]="controlIsInvalid('value')"
                 [multiValue]="true" 
                 [typeId]="metaColumn.ValueObjectType"
             ></app-autocomplete>
 
             <dt-picker *ngIf="isDateTime()" class="datetimepicker" formControlName="value" dtTemplate="DD.MM.YYYY HH:mm" [invalidClass]="controlIsInvalid('value') ? 'is-invalid' : ''"></dt-picker>
             
-            <input *ngIf="!(getColumnValues() || isAutocomplete() || isDateTime() )" type="text" formControlName="value" placeholder="Value" class="form-control" [ngClass]="{'is-invalid' : controlIsInvalid('value')}" />
+            <input *ngIf="!(getColumnValues() || isAutocomplete() || isDateTime() )" type="text" formControlName="value" placeholder="Value" class="form-control" [class.is-invalid]="controlIsInvalid('value')" />
 
             <div class="invalid-feedback" *ngIf="controlIsInvalid('value')">
                 {{getControlErrorMessage('value')}}

@@ -83,13 +83,18 @@ export class LoginComponent implements OnInit {
 
   }
 
-  onSubmit() {
-    this.submitLoading = true;
-    this.loginError = false;
+  public controlIsInvalid(controlName: string): boolean {
+    const control = this.loginForm.get(controlName);
+    return control.invalid && control.touched;
+  }
 
+  onSubmit() {
     if (this.loginForm.invalid) {
         return;
     }
+
+    this.submitLoading = true;
+    this.loginError = false;
 
     this.authenticationService.login(this.loginForm.controls.username.value, this.loginForm.controls.password.value)
       .pipe(

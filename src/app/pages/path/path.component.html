@@ -44,9 +44,9 @@
                 <div>{{item.SeoNoIndex ? 'установлен' : 'не установлен'}}</div>
             </div>
 
-            <div *ngIf="!isRedirect()" class="form-group" [ngClass]="!item.SeoEnable ? 'text-secondary' : ''"><label>Title</label><div>{{item.SeoTitle}}</div></div>
-            <div *ngIf="!isRedirect()" class="form-group" [ngClass]="!item.SeoEnable ? 'text-secondary' : ''"><label>Description</label><div>{{item.SeoDescription}}</div></div>
-            <div *ngIf="!isRedirect()" class="form-group" [ngClass]="!item.SeoEnable ? 'text-secondary' : ''"><label>Keywords</label><div>{{item.SeoKeywords}}</div></div>
+            <div *ngIf="!isRedirect()" class="form-group" [class.text-secondary]="!item.SeoEnable"><label>Title</label><div>{{item.SeoTitle}}</div></div>
+            <div *ngIf="!isRedirect()" class="form-group" [class.text-secondary]="!item.SeoEnable"><label>Description</label><div>{{item.SeoDescription}}</div></div>
+            <div *ngIf="!isRedirect()" class="form-group" [class.text-secondary]="!item.SeoEnable"><label>Keywords</label><div>{{item.SeoKeywords}}</div></div>
 
         </div>
     </div>
