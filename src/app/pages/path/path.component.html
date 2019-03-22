@@ -87,7 +87,7 @@
         <div class="col-sm-12">        
             <div class="card card-table">
                 <div class="card-header">
-                    <a class="no-line" href="javascript:void(0);" (click)="collapsePath = !collapsePath"><i class="fas" [ngClass]="collapsePath ? 'fa-plus-square' : ' fa-minus-square'"></i> Список изменений пути у объекта</a>
+                    <a class="no-line" href="javascript:void(0);" (click)="collapsePath = !collapsePath"><i class="fas" [ngClass]="collapsePath ? 'fa-plus-square' : ' fa-minus-square'"></i> Список изменений объектов у пути</a>
                 </div>
                 <div class="card-body" [ngbCollapse]="collapsePath">
                     <table class="table table-bordered">
@@ -124,7 +124,7 @@
 
             <div class="card card-table">
                 <div class="card-header">
-                    <a class="no-line" href="javascript:void(0);" (click)="collapseObject = !collapseObject"><i class="fas" [ngClass]="collapseObject ? 'fa-plus-square' : ' fa-minus-square'"></i> Список изменений объектов у пути</a>
+                    <a class="no-line" href="javascript:void(0);" (click)="collapseObject = !collapseObject"><i class="fas" [ngClass]="collapseObject ? 'fa-plus-square' : ' fa-minus-square'"></i> Список изменений пути у объекта</a>
                 </div>
                 <div class="card-body" [ngbCollapse]="collapseObject">
                     <table class="table table-bordered">
