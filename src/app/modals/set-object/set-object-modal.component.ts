@@ -116,7 +116,7 @@ export class SetObjectModalComponent implements OnInit, OnDestroy {
             };
 
             this.submitLoading = true;
-            this.pathService.setObject(this.authenticationService.sessionId, this.currentItem.pathId, obj)
+            this.pathService.setObject(this.authenticationService.sessionId, this.currentItem.Id, obj)
             .pipe( finalize(() => this.submitLoading = false) )
             .subscribe( _ => {
                 this.alertService.success('Объект выставлен', 2000);

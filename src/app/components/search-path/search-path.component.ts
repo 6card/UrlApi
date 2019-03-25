@@ -39,12 +39,12 @@ export class SearchPathComponent implements OnInit {
   }
 
   onSubmit() {
-    this.submitLoading = true;
-    this.error = null;
-
     if (this.pathByUrlForm.invalid) {
         return;
     }
+
+    this.submitLoading = true;
+    this.error = null;
 
     this.pathService.getByUrl(this.authenticationService.sessionId, this.pathByUrlForm.controls.url.value)
       .pipe( finalize(() => this.submitLoading = false))

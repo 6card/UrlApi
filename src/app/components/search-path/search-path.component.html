@@ -2,7 +2,7 @@
     <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Введите URL для поиска" aria-label="Введите URL для поиска" aria-describedby="basic-addon2" formControlName="url">
         <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="submit">{{buttonLabel}}</button>
+            <button class="btn btn-success" type="submit" [disabled]="pathByUrlForm.invalid">{{buttonLabel}}</button>
         </div>
     </div>
 </form>
