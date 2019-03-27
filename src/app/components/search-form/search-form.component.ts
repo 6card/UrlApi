@@ -138,8 +138,8 @@ export class SearchFormComponent implements OnInit, OnDestroy, OnChanges  {
     }
 
     getInputValue(op: number, val: string) {
-        if (op === 9 || op === 10) {
-            return val.split(', ');
+        if (op == 9 || op == 10) {
+            return val.split(',').map(e => e.trim());
         }
         return val;
     }
