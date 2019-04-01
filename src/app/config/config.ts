@@ -5,7 +5,8 @@ export const APP_API_URLS = new InjectionToken<string>('app.config');
 export const Urls = {
     AUTH_ROOT: 'https://api.newstube.ru/v2',
     AUTH_CHECK: '/Auth/Check',
-    AUTH_LOGIN: '/Auth/Login',
+    AUTH_CHECK_ACCESS: '/Auth/CheckAccess',
+    AUTH_LOGIN: '/Auth/Login',    
 
     ROOT: 'https://api.newstube.ru/urldev',
     META_GET_META: '/Meta/GetMeta',

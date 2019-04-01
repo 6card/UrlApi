@@ -9,7 +9,7 @@
             <button class="btn btn-lg btn-primary btn-block" type="submit" [btnLoading]="submitLoading">Вход</button>            
         </div>
         <div *ngIf="loginError" @error class="alert alert-danger" role="alert">
-            Невероное имя пользователя или пароль
+            {{loginError}}
         </div>
     </form>
 </div>

@@ -63,7 +63,7 @@ import { delay, finalize } from 'rxjs/operators';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   // returnUrl: string;
-  loginError: boolean = false;
+  loginError: boolean | string = false;
   submitLoading: boolean = false;
 
   constructor(
@@ -98,16 +98,17 @@ export class LoginComponent implements OnInit {
 
     this.authenticationService.login(this.loginForm.controls.username.value, this.loginForm.controls.password.value)
       .pipe(
-        delay(1000),
+        //delay(1000),
         finalize( () => this.submitLoading = false)
       )
         .subscribe(
             data => {
-              this.loginError = !data;
-              if (data) {
+              if (data === true) {
+                this.loginError = false;
                 const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
                 this.router.navigateByUrl(returnUrl);
               }
+              this.loginError = data;
             });
 }
 

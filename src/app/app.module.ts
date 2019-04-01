@@ -20,6 +20,7 @@ import { BatchRedirectModalComponent } from './modals/batch-redirect/batch-redir
 
 /* PAGES */
 import { LoginComponent } from './pages/login/login.component';
+import { AuthComponent } from './pages/auth/auth.component';
 import { ObjectComponent } from './pages/object/object.component';
 import { SearchComponent } from './pages/search/search.component';
 import { SearchPathComponent } from './components/search-path/search-path.component';
@@ -56,6 +57,7 @@ import { APP_API_URLS, Urls } from './config/config';
 
     /* PAGES */
     LoginComponent,
+    AuthComponent,
     SearchComponent,
     NavigationComponent,
     SearchPathComponent,
